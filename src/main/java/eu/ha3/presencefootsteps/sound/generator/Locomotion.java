@@ -13,7 +13,8 @@ public enum Locomotion {
     NONE(() -> StepSoundGenerator.EMPTY),
     BIPED(BipedalStepSoundGenerator::new),
     QUADRUPED(QuadrapedalStepSoundGenerator::new),
-    FLYING(PegasusStepSoundGenerator::new);
+    FLYING(PegasusStepSoundGenerator::new),
+    CROWLIKE(CrowStepSoundGenerator::new);
 
     private static final Map<String, Locomotion> registry = new HashMap<>();
 

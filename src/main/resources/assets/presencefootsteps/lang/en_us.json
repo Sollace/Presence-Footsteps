@@ -13,6 +13,7 @@
 	"menu.pf.stance.quadruped": "Quadrupedal",
 	"menu.pf.stance.biped": "Bipedal",
 	"menu.pf.stance.flying": "Avian",
+	"menu.pf.stance.crowlike": "Avian Biped",
 	"menu.pf.report.full": "Full report",
 	"menu.pf.report.concise": "Concise report",
 	"pf.report.save": "File saved as: %s",
