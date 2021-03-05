@@ -4,6 +4,7 @@ import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.util.MathUtil;
 import eu.ha3.presencefootsteps.sound.Options;
 import net.minecraft.entity.LivingEntity;
+
 class CrowStepSoundGenerator extends BipedalStepSoundGenerator {
 
     protected boolean isFalling = false;
