@@ -256,7 +256,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
         if (variator.EVENT_ON_JUMP) {
             if (motionTracker.getHorizontalSpeed() < variator.SPEED_TO_JUMP_AS_MULTIFOOT) {
                 // STILL JUMP
-                playMultifoot(ply, getOffsetMinus(ply) + 0.4d, State.JUMP);
+                playMultifoot(ply, getOffsetMinus(ply) + 0.4d, State.LAND);
                 // 2 - 0.7531999805212d (magic number for vertical offset?)
             } else {
                 playSinglefoot(ply, getOffsetMinus(ply) + 0.4d, State.JUMP, isRightFoot);

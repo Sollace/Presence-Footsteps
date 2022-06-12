@@ -28,7 +28,7 @@ public enum State {
      */
     JUMP(WANDER),
     /**
-     * Landing (after a fall)
+     * Landing (after a fall) and jumping in place
      */
     LAND(RUN),
     /**
