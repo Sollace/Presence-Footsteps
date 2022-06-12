@@ -71,7 +71,7 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
 
         // volume gets cut off at 1, so invert the function and lower it, so walking slower makes it quieter
         // and running causes it to ramp up to 1.
-        float runningDecrease = (config.getRunningVolumeIncrease() / 100F) * (1F - runningProgress);
+        float runningDecrease = Math.min((config.getRunningVolumeIncrease() / 100F) * (1F - runningProgress), 0.96F);
         return volume * (1F - runningDecrease);
     }
 

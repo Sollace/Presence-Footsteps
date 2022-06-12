@@ -99,7 +99,7 @@ public class MotionTracker {
     public float getSpeedScalingRatio(LivingEntity entity) {
         generator.variator.RUNNING_RAMPUP_BEGIN = 0.011F;
         generator.variator.RUNNING_RAMPUP_END = 0.022F;
-        double relativeSpeed = getHorizontalSpeed() - generator.variator.RUNNING_RAMPUP_BEGIN;
+        double relativeSpeed = getHorizontalSpeed() + (getMotionY() * getMotionY()) - generator.variator.RUNNING_RAMPUP_BEGIN;
         double maxSpeed = generator.variator.RUNNING_RAMPUP_END - generator.variator.RUNNING_RAMPUP_BEGIN;
         return (float)MathHelper.clamp(relativeSpeed / maxSpeed, 0, 1);
     }
