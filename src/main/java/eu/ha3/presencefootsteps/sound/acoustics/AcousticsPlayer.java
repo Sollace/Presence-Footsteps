@@ -2,6 +2,8 @@ package eu.ha3.presencefootsteps.sound.acoustics;
 
 import java.util.*;
 
+import com.google.common.base.Strings;
+
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.Options;
@@ -26,7 +28,12 @@ public class AcousticsPlayer implements AcousticLibrary {
     @Override
     public void playAcoustic(LivingEntity location, String acousticName, State event, Options inputOptions) {
         if (acousticName.contains(",")) {
-            Set.of(acousticName.split(",")).forEach(fragment -> playAcoustic(location, fragment, event, inputOptions));
+            List.of(acousticName.split(","))
+                .stream()
+                .map(Strings::nullToEmpty)
+                .filter(s -> !s.isEmpty())
+                .distinct()
+                .forEach(fragment -> playAcoustic(location, fragment, event, inputOptions));
         } else if (!acoustics.containsKey(acousticName)) {
             PresenceFootsteps.logger.warn("Tried to play a missing acoustic: " + acousticName);
         } else {
