@@ -127,7 +127,6 @@ class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
                         variator.WING_IMMOBILE_FADE_START,
                         variator.WING_IMMOBILE_FADE_START + variator.WING_IMMOBILE_FADE_DURATION);
             }
-            System.out.println("DFinal: " + volume + " === " + Options.singular("gliding_volume", volume).get("gliding_volume"));
 
             acoustics.playAcoustic(ply, "_WING", State.WALK, Options.singular("gliding_volume", volume));
         }
