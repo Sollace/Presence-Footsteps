@@ -31,7 +31,6 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
     // Airborne
     protected boolean isAirborne;
-    protected float fallDistance;
 
     protected float lastReference;
     protected boolean isImmobile;
@@ -165,7 +164,6 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
                 }
 
                 dwmYChange = distanceReference;
-
             } else {
                 distance = variator.DISTANCE_HUMAN;
             }
@@ -189,7 +187,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
         }
     }
 
-    public final void produceStep(LivingEntity ply, State event) {
+    public final void produceStep(LivingEntity ply, @Nullable State event) {
         produceStep(ply, event, 0d);
     }
 
@@ -223,9 +221,6 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
         if ((ply.isOnGround() || ply.isClimbing()) == isAirborne) {
             isAirborne = !isAirborne;
             simulateJumpingLanding(ply);
-        }
-        if (isAirborne) {
-            fallDistance = ply.fallDistance;
         }
     }
 
@@ -268,7 +263,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     }
 
     protected void simulateLanding(LivingEntity ply) {
-        if (fallDistance > variator.LAND_HARD_DISTANCE_MIN) {
+        if (ply.fallDistance > variator.LAND_HARD_DISTANCE_MIN) {
             playMultifoot(ply, getOffsetMinus(ply), State.LAND);
             // Always assume the player lands on their two feet
             // Do not toggle foot:
