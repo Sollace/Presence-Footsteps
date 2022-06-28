@@ -777,6 +777,22 @@
       "presencefootsteps:weakice/weakice_walk9"
     ]
   },
+  "pf_presence.crumbly_stone.crumbly_stone_walk": {
+    "category": "master",
+    "subtitle": "subtitles.pf.stone_crack",
+    "sounds": [
+      "presencefootsteps:weakice/weakice_walk1",
+      "presencefootsteps:weakice/weakice_walk10",
+      "presencefootsteps:weakice/weakice_walk2",
+      "presencefootsteps:weakice/weakice_walk3",
+      "presencefootsteps:weakice/weakice_walk4",
+      "presencefootsteps:weakice/weakice_walk5",
+      "presencefootsteps:weakice/weakice_walk6",
+      "presencefootsteps:weakice/weakice_walk7",
+      "presencefootsteps:weakice/weakice_walk8",
+      "presencefootsteps:weakice/weakice_walk9"
+    ]
+  },
   "pf_presence.wood.wood_walk": {
     "category": "master",
     "subtitle": "subtitles.pf.wood_creaks",

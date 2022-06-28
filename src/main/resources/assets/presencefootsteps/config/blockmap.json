@@ -972,7 +972,7 @@
 	"minecraft:crimson_door": "bluntwood,mushroom",
 	"minecraft:warped_door": "bluntwood,mushroom",
 
-	"minecraft:basalt": "sandstone,crumblystone",
+	"minecraft:basalt": "crumblystone",
 	"minecraft:polished_basalt": "marble,crumblystone",
 	"minecraft:smooth_basalt": "marble,crumblystone",
 	"minecraft:soul_soil": "souls",

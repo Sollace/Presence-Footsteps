@@ -1880,11 +1880,11 @@
           "pitch_max": 70
         },
           {
-            "name": "weakice.weakice_walk",
+            "name": "crumbly_stone.crumbly_stone_walk",
             "vol_min": 9,
             "vol_max": 11,
-            "pitch_min": 30,
-            "pitch_max": 30
+            "pitch_min": 0.5,
+            "pitch_max": 0.5
           }
         ]
       },
@@ -1892,16 +1892,16 @@
         "type": "simultaneous",
         "array": [
           {
-          "name": "stone.stone_walk",
-          "pitch_min": 65,
-          "pitch_max": 70
-        },
+            "name": "stone.stone_walk",
+            "pitch_min": 65,
+            "pitch_max": 70
+          },
           {
-            "name": "weakice.weakice_walk",
+            "name": "crumbly_stone.crumbly_stone_walk",
             "vol_min": 3,
             "vol_max": 8,
-            "pitch_min": 30,
-            "pitch_max": 30
+            "pitch_min": 0.4,
+            "pitch_max": 0.5
           }
         ]
       },
@@ -1913,14 +1913,11 @@
           {
             "type": "delayed",
             "delay": 30,
-            "name": "concrete.concrete_walk"
-          },
-          {
-            "name": "weakice.weakice_walk",
             "vol_min": 3,
             "vol_max": 10,
-            "pitch_min": 30,
-            "pitch_max": 30
+            "pitch_min": 0.4,
+            "pitch_max": 0.5,
+            "name": "crumbly_stone.crumbly_stone_walk"
           }
         ]
       }
