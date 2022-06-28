@@ -256,7 +256,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
         if (variator.EVENT_ON_JUMP) {
             if (motionTracker.getHorizontalSpeed() < variator.SPEED_TO_JUMP_AS_MULTIFOOT) {
                 // STILL JUMP
-                playMultifoot(ply, getOffsetMinus(ply) + 0.4d, State.LAND);
+                playMultifoot(ply, getOffsetMinus(ply) + 0.4d, State.WANDER);
                 // 2 - 0.7531999805212d (magic number for vertical offset?)
             } else {
                 playSinglefoot(ply, getOffsetMinus(ply) + 0.4d, State.JUMP, isRightFoot);
@@ -273,7 +273,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
             // Always assume the player lands on their two feet
             // Do not toggle foot:
             // After landing sounds, the first foot will be same as the one used to jump.
-        } else if (/* !this.stepThisFrame && */!ply.isSneaking()) {
+        } else if (/* !this.stepThisFrame &&*/ !ply.isSneaking()) {
             playSinglefoot(ply, getOffsetMinus(ply), motionTracker.pickState(ply, State.CLIMB, State.CLIMB_RUN), isRightFoot);
             if (!this.stepThisFrame)
                 isRightFoot = !isRightFoot;
@@ -322,9 +322,13 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
         Association leftFoot = solver.findAssociation(ply, verticalOffsetAsMinus, false);
         Association rightFoot = solver.findAssociation(ply, verticalOffsetAsMinus, true);
 
-        if (leftFoot.hasAssociation() && leftFoot.equals(rightFoot)) {
+        if (leftFoot.dataEquals(rightFoot)) {
             // If the two feet solve to the same sound, except NO_ASSOCIATION, only play the sound once
-            rightFoot = Association.NOT_EMITTER;
+            if (isRightFoot) {
+                leftFoot = Association.NOT_EMITTER;
+            } else {
+                rightFoot = Association.NOT_EMITTER;
+            }
         }
 
         solver.playAssociation(ply, leftFoot, eventType);

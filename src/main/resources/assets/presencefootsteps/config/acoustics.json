@@ -272,6 +272,8 @@
           {
             "type": "delayed",
             "delay": 50,
+            "vol_min": 60,
+            "vol_max": 70,
             "name": "grass.grass_run"
           }
         ]

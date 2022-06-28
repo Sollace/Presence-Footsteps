@@ -1,5 +1,7 @@
 package eu.ha3.presencefootsteps.world;
 
+import java.util.Objects;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -78,5 +80,9 @@ public class Association {
 
     public BlockSoundGroup getSoundGroup() {
         return blockState.getSoundGroup();
+    }
+
+    public boolean dataEquals(Association other) {
+        return hasAssociation() && Objects.equals(data, other.data);
     }
 }
