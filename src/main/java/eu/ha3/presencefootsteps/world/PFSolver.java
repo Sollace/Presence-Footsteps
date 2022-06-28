@@ -145,10 +145,10 @@ public class PFSolver implements Solver {
 
         // Take the maximum direction and try with the orthogonal direction of it
         if (isXdangMax) {
-            return findAssociation(player.world, pos.north(zdang > 0 ? 1 : -1), collider);
+            return findAssociation(player.world, pos.south(zdang > 0 ? 1 : -1), collider);
         }
 
-        return findAssociation(player.world, pos.west(xdang > 0 ? 1 : -1), collider);
+        return findAssociation(player.world, pos.east(xdang > 0 ? 1 : -1), collider);
     }
 
     private String findForGolem(World world, BlockPos pos, String substrate) {
