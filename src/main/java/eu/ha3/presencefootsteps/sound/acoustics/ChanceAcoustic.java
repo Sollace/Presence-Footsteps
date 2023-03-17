@@ -5,35 +5,24 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import net.minecraft.entity.LivingEntity;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 
-record ChanceAcoustic(Acoustic acoustic, float probability) implements Acoustic {
+record ChanceAcoustic(
+        @NotNull Acoustic acoustic,
+        @Range(from = 1, to = Integer.MAX_VALUE) float probability
+) implements Acoustic {
 
-    @Override
-    public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
-        float rand = player.getRNG().nextFloat();
-
-        if (rand * 100 <= probability) {
-            acoustic.playSound(player, location, event, inputOptions);
-        }
-    }
-
-    public static Acoustic fromJson(JsonObject json, AcousticsJsonParser context) {
+    @Contract(value = "_, _ -> new", pure = true)
+    public static @NotNull Acoustic fromJson(
+            final @NotNull JsonObject json,
+            final @NotNull AcousticsJsonParser context)
+    {
         Acoustic acoustic = context.solveAcoustic(json.get("acoustic"));
         float probability = json.get("probability").getAsFloat();
+
         return new ChanceAcoustic(acoustic, probability);
-    }
-}
-
-/*
-class ChanceAcoustic implements Acoustic {
-
-    protected final Acoustic acoustic;
-
-    protected final float probability;
-
-    public ChanceAcoustic(Acoustic acoustic, float probability) {
-        this.acoustic = acoustic;
-        this.probability = probability;
     }
 
     @Override
@@ -45,10 +34,4 @@ class ChanceAcoustic implements Acoustic {
         }
     }
 
-    public static Acoustic fromJson(JsonObject json, AcousticsJsonParser context) {
-        Acoustic acoustic = context.solveAcoustic(json.get("acoustic"));
-        float probability = json.get("probability").getAsFloat();
-        return new ChanceAcoustic(acoustic, probability);
-    }
 }
-*/

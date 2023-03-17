@@ -1,30 +1,34 @@
 package eu.ha3.presencefootsteps.world;
 
-import java.util.Collections;
+import eu.ha3.presencefootsteps.PresenceFootsteps;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectSets;
+import net.minecraft.block.BlockState;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.state.property.Property;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Lists;
-
-import eu.ha3.presencefootsteps.PresenceFootsteps;
-import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.property.Property;
-import net.minecraft.registry.*;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
 
 /**
  * A state lookup that finds an association for a given block state within a specific substrate (or no substrate).
  *
  * @author Sollace
  */
-public class StateLookup implements Lookup<BlockState> {
+public record StateLookup(Map<String, Bucket> substrates) implements Lookup<BlockState> {
 
-    private final Map<String, Bucket> substrates = new Object2ObjectLinkedOpenHashMap<>();
+    public StateLookup() {
+        this(new Object2ObjectLinkedOpenHashMap<>());
+    }
 
     @Override
     public String getAssociation(BlockState state, String substrate) {
@@ -38,7 +42,7 @@ public class StateLookup implements Lookup<BlockState> {
             return;
         }
 
-        Key k = new Key(key, value);
+        Key k = Key.of(key, value);
 
         substrates.computeIfAbsent(k.substrate, Bucket.Substrate::new).add(k);
     }
@@ -71,12 +75,11 @@ public class StateLookup implements Lookup<BlockState> {
             return false;
         }
 
-        final class Substrate implements Bucket {
-            private final KeyList wildcards = new KeyList();
-            private final Map<Identifier, Bucket> blocks = new Object2ObjectLinkedOpenHashMap<>();
-            private final Map<Identifier, Bucket> tags = new Object2ObjectLinkedOpenHashMap<>();
+        record Substrate(KeyList wildcards, Map<Identifier, Bucket> blocks, Map<Identifier, Bucket> tags) implements Bucket {
 
-            Substrate(String substrate) { }
+            Substrate(String substrate) {
+                this(new KeyList(), new Object2ObjectLinkedOpenHashMap<>(), new Object2ObjectLinkedOpenHashMap<>());
+            }
 
             @Override
             public void add(Key key) {
@@ -115,6 +118,33 @@ public class StateLookup implements Lookup<BlockState> {
             }
         }
 
+        record Tile(Map<BlockState, Key> cache, KeyList keys) implements Bucket {
+
+            public Tile() {
+                this(new Object2ObjectLinkedOpenHashMap<>(), new KeyList());
+            }
+
+            Tile(Identifier id) {
+                this(new Object2ObjectLinkedOpenHashMap<>(), new KeyList());
+            }
+
+            @Override
+            public void add(Key key) {
+                keys.add(key);
+            }
+
+            @Override
+            public Key get(BlockState state) {
+                return cache.computeIfAbsent(state, keys::findMatch);
+            }
+
+            @Override
+            public boolean contains(BlockState state) {
+                return get(state) != Key.NULL;
+            }
+        }
+
+        /*
         final class Tile implements Bucket {
             private final Map<BlockState, Key> cache = new Object2ObjectLinkedOpenHashMap<>();
             private final KeyList keys = new KeyList();
@@ -136,11 +166,14 @@ public class StateLookup implements Lookup<BlockState> {
                 return get(state) != Key.NULL;
             }
         }
+        */
     }
 
-    private static final class KeyList {
-        private final Set<Key> priorityKeys = new ObjectOpenHashSet<>();
-        private final Set<Key> keys = new ObjectOpenHashSet<>();
+    private record KeyList(Set<Key> priorityKeys, Set<Key> keys) {
+
+        public KeyList() {
+            this(new ObjectOpenHashSet<>(), new ObjectOpenHashSet<>());
+        }
 
         void add(Key key) {
             Set<Key> keys = getSetFor(key);
@@ -167,49 +200,29 @@ public class StateLookup implements Lookup<BlockState> {
         }
     }
 
-    private static final class Key {
+    private record Key(
+            Identifier identifier,
+            String substrate,
+            Set<Attribute> properties,
+            String value,
+            boolean empty,
+            boolean isTag,
+            boolean isWildcard
+    ) {
+
         public static final Key NULL = new Key();
 
-        public final Identifier identifier;
-
-        public final String substrate;
-
-        private final Set<Attribute> properties;
-
-        public final String value;
-
-        private final boolean empty;
-
-        public final boolean isTag;
-
-        public final boolean isWildcard;
-
-        private Key() {
-            identifier = new Identifier("air");
-            substrate = "";
-            properties = Collections.emptySet();
-            value = Emitter.UNASSIGNED;
-            empty = true;
-            isTag = false;
-            isWildcard = false;
-        }
-
-        /*
-         * minecraft:block[one=1,two=2].substrate
-         * #minecraft:blanks[one=1,two=2].substrate
-         */
-        Key(String key, String value) {
-
-            this.value = value;
-            this.isTag = key.indexOf('#') == 0;
+        @Contract(value = "_, _ -> new", pure = true)
+        public static @NotNull Key of(@NotNull String key, @NotNull String value) {
+            final boolean isTag = key.indexOf('#') == 0;
 
             if (isTag) {
                 key = key.replaceFirst("#", "");
             }
 
             String id = key.split("[\\.\\[]")[0];
-
-            isWildcard = id.indexOf('*') == 0;
+            final boolean isWildcard = id.indexOf('*') == 0;
+            Identifier identifier = new Identifier("air");
 
             if (!isWildcard) {
                 if (id.indexOf('^') > -1) {
@@ -222,28 +235,53 @@ public class StateLookup implements Lookup<BlockState> {
                 if (!isTag && !Registries.BLOCK.containsId(identifier)) {
                     PresenceFootsteps.logger.warn("Sound registered for unknown block id " + identifier);
                 }
-            } else {
-                identifier = new Identifier("air");
             }
 
             key = key.replace(id, "");
-
-            String substrate = key.replaceFirst("\\[[^\\]]+\\]", "");
+            final String substrate = key.replaceFirst("\\[[^\\]]+\\]", "");
+            String finalSubstrate = "";
 
             if (substrate.indexOf('.') > -1) {
-                this.substrate = substrate.split("\\.")[1];
-
+                finalSubstrate = substrate.split("\\.")[1];
                 key = key.replace(substrate, "");
-            } else {
-                this.substrate = "";
             }
 
-            properties = Lists.newArrayList(key.replace("[", "").replace("]", "").split(","))
-                .stream()
-                .filter(line -> line.indexOf('=') > -1)
-                .map(Attribute::new)
-                .collect(Collectors.toSet());
-            empty = properties.isEmpty();
+            Set<Key.Attribute> properties = ObjectArrayList.of(
+                         key.replace("[", "")
+                            .replace("]", "")
+                            .split(","))
+                    .stream()
+                    .filter(line -> line.indexOf('=') > -1)
+                    .map(Key.Attribute::new)
+                    .collect(Collectors.toSet());
+
+            /*
+            Set<Key.Attribute> properties = Lists.newArrayList(
+                    key.replace("[", "")
+                       .replace("]", "")
+                       .split(",")
+                    )
+                    .stream()
+                    .filter(line -> line.indexOf('=') > -1)
+                    .map(Key.Attribute::new)
+                    .collect(Collectors.toSet());
+            */
+
+            boolean empty = properties.isEmpty();
+
+            return new Key(identifier, finalSubstrate, properties, value, empty, isTag, isWildcard);
+        }
+
+        private Key() {
+            this(
+                    new Identifier("air"),
+                    "",
+                    ObjectSets.emptySet(),
+                    Emitter.UNASSIGNED,
+                    true,
+                    false,
+                    false
+            );
         }
 
         boolean matches(BlockState state) {
@@ -255,7 +293,7 @@ public class StateLookup implements Lookup<BlockState> {
             Map<Property<?>, Comparable<?>> entries = state.getEntries();
             Set<Property<?>> keys = entries.keySet();
 
-            for (Attribute property : properties) {
+            for (Key.Attribute property : properties) {
                 for (Property<?> key : keys) {
                     if (key.getName().equals(property.name)) {
                         Comparable<?> value = entries.get(key);
@@ -273,7 +311,7 @@ public class StateLookup implements Lookup<BlockState> {
         @Override
         public String toString() {
             return (isTag ? "#" : "") + identifier
-                    + "[" + properties.stream().map(Attribute::toString).collect(Collectors.joining()) + "]"
+                    + "[" + properties.stream().map(Key.Attribute::toString).collect(Collectors.joining()) + "]"
                     + "." + substrate
                     + "=" + value;
         }
@@ -302,7 +340,7 @@ public class StateLookup implements Lookup<BlockState> {
                     && Objects.equals(properties, other.properties);
         }
 
-        private record Attribute (String name, String value) {
+        private record Attribute(String name, String value) {
             Attribute(String prop) {
                 this(prop.split("="));
             }
@@ -314,5 +352,7 @@ public class StateLookup implements Lookup<BlockState> {
                 return name + "=" + value;
             }
         }
+
     }
+
 }

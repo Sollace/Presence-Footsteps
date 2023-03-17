@@ -174,7 +174,8 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     @Override
     public CompletableFuture<Void> reload(Synchronizer sync, ResourceManager sender,
             Profiler serverProfiler, Profiler clientProfiler,
-            Executor serverExecutor, Executor clientExecutor) {
+            Executor serverExecutor, Executor clientExecutor)
+    {
         return sync.whenPrepared(null).thenRunAsync(() -> {
             clientProfiler.startTick();
             clientProfiler.push("Reloading PF Sounds");

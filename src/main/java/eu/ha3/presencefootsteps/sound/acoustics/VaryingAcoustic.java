@@ -1,40 +1,57 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
 import com.google.gson.JsonObject;
-
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import eu.ha3.presencefootsteps.util.Range;
 import net.minecraft.entity.LivingEntity;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The simplest form of an acoustic. Plays one sound with a set volume and pitch range.
  *
  * @author Hurry
  */
-class VaryingAcoustic implements Acoustic {
+record VaryingAcoustic(
+        @NotNull String soundName,
+        @NotNull Range volume,
+        @NotNull Range pitch
+) implements Acoustic {
 
-    private final String soundName;
+    @Contract(value = "_, _ -> new", pure = true)
+    public static @NotNull VaryingAcoustic of(
+            final @NotNull String name,
+            final @NotNull AcousticsJsonParser context)
+    {
+        final Range volume = new Range(1);
+        final Range pitch = new Range(1);
 
-    private final Range volume = new Range(1);
-    private final Range pitch = new Range(1);
-
-    public VaryingAcoustic(JsonObject json, AcousticsJsonParser context) {
-        this(json.get("name").getAsString(), context);
-
-        volume.read("vol", json, context);
-        pitch.read("pitch", json, context);
-    }
-
-    public VaryingAcoustic(String name, AcousticsJsonParser context) {
         volume.copy(context.getVolumeRange());
         pitch.copy(context.getPitchRange());
-        soundName = context.getSoundName(name);
+
+        return new VaryingAcoustic(
+                context.getSoundName(name),
+                volume, pitch
+        );
     }
 
-    protected Options getOptions() {
-        return Options.EMPTY;
+    @Contract(value = "_, _ -> new", pure = true)
+    public static @NotNull VaryingAcoustic fromJson(
+            final @NotNull JsonObject json,
+            final @NotNull AcousticsJsonParser context)
+    {
+        final VaryingAcoustic acoustic = VaryingAcoustic.of(json.get("name").getAsString(), context);
+
+        acoustic.volume.read("vol", json, context);
+        acoustic.pitch.read("pitch", json, context);
+
+        return new VaryingAcoustic(
+                acoustic.soundName,
+                acoustic.volume,
+                acoustic.pitch
+        );
     }
 
     @Override
@@ -54,6 +71,7 @@ class VaryingAcoustic implements Acoustic {
             pitch = this.pitch.on(inputOptions.get("gliding_pitch"));
         }
 
-        player.playSound(location, soundName, volume, pitch, getOptions());
+        player.playSound(location, soundName, volume, pitch, Options.EMPTY);
     }
+
 }
