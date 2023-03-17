@@ -1,12 +1,12 @@
 package eu.ha3.presencefootsteps.sound.player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.util.MathUtil;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.LivingEntity;
 
 class DelayedSoundPlayer implements SoundPlayer {
@@ -18,7 +18,7 @@ class DelayedSoundPlayer implements SoundPlayer {
 
     private static final double EARLYNESS_THRESHOLD_POW = 0.75D;
 
-    private final List<PendingSound> pending = new ArrayList<>();
+    private final List<PendingSound> pending = new ObjectArrayList<>();
 
     private final SoundPlayer immediate;
 

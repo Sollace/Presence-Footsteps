@@ -1,14 +1,13 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gson.JsonObject;
-
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.LivingEntity;
+
+import java.util.Map;
 
 /**
  * An acoustic that can play different acoustics depending on a specific event type.
@@ -16,7 +15,7 @@ import net.minecraft.entity.LivingEntity;
  * @author Hurry
  */
 class EventSelectorAcoustics implements Acoustic {
-    private final Map<State, Acoustic> pairs = new HashMap<>();
+    private final Map<State, Acoustic> pairs = new Object2ObjectOpenHashMap<>();
 
     public EventSelectorAcoustics(JsonObject json, AcousticsJsonParser context) {
         for (State i : State.values()) {

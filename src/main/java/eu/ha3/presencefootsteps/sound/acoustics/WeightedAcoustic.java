@@ -1,6 +1,5 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import com.google.gson.JsonParseException;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.LivingEntity;
 
 /**
@@ -29,7 +29,7 @@ class WeightedAcoustic implements Acoustic {
     protected final float[] probabilityThresholds;
 
     public WeightedAcoustic(List<Acoustic> acoustics, List<Integer> weights) {
-        theAcoustics = new ArrayList<>(acoustics);
+        theAcoustics = new ObjectArrayList<>(acoustics);
         probabilityThresholds = new float[acoustics.size() - 1];
 
         float total = 0;
@@ -58,8 +58,8 @@ class WeightedAcoustic implements Acoustic {
     }
 
     public static Acoustic fromJson(JsonObject json, AcousticsJsonParser context) {
-        List<Integer> weights = new ArrayList<>();
-        List<Acoustic> acoustics = new ArrayList<>();
+        List<Integer> weights = new ObjectArrayList<>();
+        List<Acoustic> acoustics = new ObjectArrayList<>();
 
         JsonArray sim = json.getAsJsonArray("array");
         Iterator<JsonElement> iter = sim.iterator();

@@ -1,7 +1,6 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.Map;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,6 +9,7 @@ import com.google.gson.JsonParser;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.util.Range;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * A JSON parser that creates a Library of Acoustics.
@@ -21,7 +21,7 @@ public class AcousticsJsonParser {
 
     private String soundRoot = "";
 
-    private static final Map<String, AcousticFactory> factories = new HashMap<>();
+    private static final Map<String, AcousticFactory> factories = new Object2ObjectOpenHashMap<>(6);
 
     private final Range defaultVolume = new Range(1);
     private final Range defaultPitch = new Range(1);

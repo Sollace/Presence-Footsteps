@@ -1,8 +1,6 @@
 package eu.ha3.presencefootsteps.world;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -11,6 +9,8 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Lists;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.Property;
 import net.minecraft.registry.*;
@@ -24,7 +24,7 @@ import net.minecraft.util.Identifier;
  */
 public class StateLookup implements Lookup<BlockState> {
 
-    private final Map<String, Bucket> substrates = new LinkedHashMap<>();
+    private final Map<String, Bucket> substrates = new Object2ObjectLinkedOpenHashMap<>();
 
     @Override
     public String getAssociation(BlockState state, String substrate) {
@@ -73,8 +73,8 @@ public class StateLookup implements Lookup<BlockState> {
 
         final class Substrate implements Bucket {
             private final KeyList wildcards = new KeyList();
-            private final Map<Identifier, Bucket> blocks = new LinkedHashMap<>();
-            private final Map<Identifier, Bucket> tags = new LinkedHashMap<>();
+            private final Map<Identifier, Bucket> blocks = new Object2ObjectLinkedOpenHashMap<>();
+            private final Map<Identifier, Bucket> tags = new Object2ObjectLinkedOpenHashMap<>();
 
             Substrate(String substrate) { }
 
@@ -116,7 +116,7 @@ public class StateLookup implements Lookup<BlockState> {
         }
 
         final class Tile implements Bucket {
-            private final Map<BlockState, Key> cache = new LinkedHashMap<>();
+            private final Map<BlockState, Key> cache = new Object2ObjectLinkedOpenHashMap<>();
             private final KeyList keys = new KeyList();
 
             Tile(Identifier id) { }
@@ -139,8 +139,8 @@ public class StateLookup implements Lookup<BlockState> {
     }
 
     private static final class KeyList {
-        private final Set<Key> priorityKeys = new LinkedHashSet<>();
-        private final Set<Key> keys = new LinkedHashSet<>();
+        private final Set<Key> priorityKeys = new ObjectOpenHashSet<>();
+        private final Set<Key> keys = new ObjectOpenHashSet<>();
 
         void add(Key key) {
             Set<Key> keys = getSetFor(key);
@@ -302,7 +302,7 @@ public class StateLookup implements Lookup<BlockState> {
                     && Objects.equals(properties, other.properties);
         }
 
-        private static record Attribute (String name, String value) {
+        private record Attribute (String name, String value) {
             Attribute(String prop) {
                 this(prop.split("="));
             }

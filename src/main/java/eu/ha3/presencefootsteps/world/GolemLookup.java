@@ -1,15 +1,15 @@
 package eu.ha3.presencefootsteps.world;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
 
+import java.util.Map;
+import java.util.Set;
+
 public class GolemLookup implements Lookup<EntityType<?>> {
 
-    private final Map<String, Map<Identifier, String>> substrates = new LinkedHashMap<>();
+    private final Map<String, Map<Identifier, String>> substrates = new Object2ObjectLinkedOpenHashMap<>();
 
     @Override
     public String getAssociation(EntityType<?> key, String substrate) {
@@ -41,7 +41,7 @@ public class GolemLookup implements Lookup<EntityType<?>> {
         String substrate = split.length > 1 ? split[1] : EMPTY_SUBSTRATE;
 
         substrates
-            .computeIfAbsent(substrate, s -> new LinkedHashMap<>())
+            .computeIfAbsent(substrate, s -> new Object2ObjectLinkedOpenHashMap<>())
             .put(new Identifier(primitive), value);
     }
 

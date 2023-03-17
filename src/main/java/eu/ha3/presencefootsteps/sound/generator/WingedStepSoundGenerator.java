@@ -57,6 +57,16 @@ class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
     }
 
     protected int getWingSpeed() {
+        return switch (state) {
+            case COASTING -> flapMod == 0
+                    ? variator.WING_SPEED_COAST
+                    : variator.WING_SPEED_NORMAL * flapMod;
+            case COASTING_STRAFING -> variator.WING_SPEED_NORMAL * (1 + flapMod);
+            case DASHING -> variator.WING_SPEED_RAPID;
+            case ASCENDING, FLYING -> variator.WING_SPEED_NORMAL;
+            default -> variator.WING_SPEED_IDLE;
+        };
+        /*
         switch (state) {
         case COASTING:
             if (flapMod == 0)
@@ -72,6 +82,7 @@ class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
         default:
             return variator.WING_SPEED_IDLE;
         }
+        */
     }
 
     @Override

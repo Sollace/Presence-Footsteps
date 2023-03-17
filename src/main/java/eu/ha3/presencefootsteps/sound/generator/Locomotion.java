@@ -1,10 +1,10 @@
 package eu.ha3.presencefootsteps.sound.generator;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.Entity;
@@ -18,7 +18,7 @@ public enum Locomotion {
     FLYING(() -> new WingedStepSoundGenerator(new QuadrupedModifier())),
     FLYING_BIPED(() -> new WingedStepSoundGenerator(new Modifier<>()));
 
-    private static final Map<String, Locomotion> registry = new HashMap<>();
+    private static final Map<String, Locomotion> registry = new Object2ObjectOpenHashMap<>();
 
     static {
         for (Locomotion i : values()) {

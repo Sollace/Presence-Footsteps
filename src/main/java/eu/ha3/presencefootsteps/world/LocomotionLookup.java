@@ -1,19 +1,19 @@
 package eu.ha3.presencefootsteps.world;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.generator.Locomotion;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
+import java.util.Map;
+
 public class LocomotionLookup implements Index<Entity, Locomotion> {
 
-    private final Map<Identifier, Locomotion> values = new LinkedHashMap<>();
+    private final Map<Identifier, Locomotion> values = new Object2ObjectLinkedOpenHashMap<>();
 
     @Override
     public Locomotion lookup(Entity key) {
