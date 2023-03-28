@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import eu.ha3.presencefootsteps.sound.Isolator;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
+import eu.ha3.presencefootsteps.util.PlayerUtil;
 
 public class PFSolver implements Solver {
 
@@ -59,7 +60,9 @@ public class PFSolver implements Solver {
 
         Vec3d pos = ply.getPos();
 
-        float feetDistanceToCenter = 0.2f * (isRightFoot ? -1 : 1);
+        float feetDistanceToCenter = 0.2f * (isRightFoot ? -1 : 1)
+                * PlayerUtil.getScale(ply) // scale foot offset by the player's scale
+        ;
 
         return findAssociation(ply, BlockPos.ofFloored(
             pos.x + Math.cos(rot) * feetDistanceToCenter,
