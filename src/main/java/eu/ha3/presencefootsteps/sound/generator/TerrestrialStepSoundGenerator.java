@@ -286,7 +286,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
             return;
         }
 
-        Association assos = solver.findAssociation(ply.world, new BlockPos(
+        Association assos = solver.findAssociation(ply.world, BlockPos.ofFloored(
             ply.getX(),
             ply.getY() - 0.1D - (ply.hasVehicle() ? ply.getHeightOffset() : 0) - (ply.isOnGround() ? 0 : 0.25D),
             ply.getZ()

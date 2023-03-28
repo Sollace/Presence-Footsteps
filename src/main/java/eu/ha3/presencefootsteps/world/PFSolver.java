@@ -61,7 +61,7 @@ public class PFSolver implements Solver {
 
         float feetDistanceToCenter = 0.2f * (isRightFoot ? -1 : 1);
 
-        return findAssociation(ply, new BlockPos(
+        return findAssociation(ply, BlockPos.ofFloored(
             pos.x + Math.cos(rot) * feetDistanceToCenter,
             ply.getBoundingBox().getMin(Axis.Y) - TRAP_DOOR_OFFSET - verticalOffsetAsMinus,
             pos.z + Math.sin(rot) * feetDistanceToCenter
