@@ -174,7 +174,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
             }
             distance = modifier.reevaluateDistance(event, distance);
             // if the player is larger than normal, slow down footsteps further
-            distance *= Math.max(1, 1 / PlayerUtil.getScale(ply));
+            distance *= Math.min(1, 1 / PlayerUtil.getScale(ply));
 
             if (dwm > distance) {
                 produceStep(ply, event, verticalOffsetAsMinus);
