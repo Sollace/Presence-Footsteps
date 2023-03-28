@@ -11,6 +11,7 @@ import eu.ha3.presencefootsteps.config.Variator;
 import eu.ha3.presencefootsteps.mixins.ILivingEntity;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.acoustics.AcousticLibrary;
+import eu.ha3.presencefootsteps.util.PlayerUtil;
 import eu.ha3.presencefootsteps.sound.Isolator;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.world.Association;
@@ -172,6 +173,8 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
                 event = motionTracker.pickState(ply, State.WALK, State.RUN);
             }
             distance = modifier.reevaluateDistance(event, distance);
+            // if the player is larger than normal, slow down footsteps further
+            distance *= Math.max(1, 1 / PlayerUtil.getScale(ply));
 
             if (dwm > distance) {
                 produceStep(ply, event, verticalOffsetAsMinus);
