@@ -6,6 +6,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.util.Range;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import java.io.Reader;
@@ -40,14 +42,13 @@ public class AcousticsJsonParser {
                 ChanceAcoustic::fromJson          // chance
         };
 
-        factories = new Object2ObjectOpenHashMap<>(keys, values);
+        factories = Object2ObjectMaps.unmodifiable(new Object2ObjectOpenHashMap<>(keys, values));
     }
 
     private final Range defaultVolume = new Range(1);
     private final Range defaultPitch = new Range(1);
-    private String soundRoot = "";
-
     private final AcousticLibrary lib;
+    private String soundRoot = "";
 
     public AcousticsJsonParser(AcousticLibrary lib) {
         this.lib = lib;

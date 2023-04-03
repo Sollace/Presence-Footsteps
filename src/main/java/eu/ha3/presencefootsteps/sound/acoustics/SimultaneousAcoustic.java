@@ -7,6 +7,7 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectImmutableList;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +44,7 @@ record SimultaneousAcoustic(@NotNull List<Acoustic> acoustics) implements Acoust
     }
 
     public SimultaneousAcoustic {
-        acoustics = new ObjectArrayList<>(acoustics);
+        acoustics = new ObjectImmutableList<>(acoustics);
     }
 
     @Override

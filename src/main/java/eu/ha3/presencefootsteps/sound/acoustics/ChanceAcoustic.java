@@ -19,15 +19,15 @@ record ChanceAcoustic(
             final @NotNull JsonObject json,
             final @NotNull AcousticsJsonParser context)
     {
-        Acoustic acoustic = context.solveAcoustic(json.get("acoustic"));
-        float probability = json.get("probability").getAsFloat();
+        final Acoustic acoustic = context.solveAcoustic(json.get("acoustic"));
+        final float probability = json.get("probability").getAsFloat();
 
         return new ChanceAcoustic(acoustic, probability);
     }
 
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
-        float rand = player.getRNG().nextFloat();
+        final float rand = player.getRNG().nextFloat();
 
         if (rand * 100 <= probability) {
             acoustic.playSound(player, location, event, inputOptions);

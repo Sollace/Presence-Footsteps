@@ -1,10 +1,7 @@
 package eu.ha3.presencefootsteps.world;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
-import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSets;
+import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -75,7 +72,11 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
             return false;
         }
 
-        record Substrate(KeyList wildcards, Map<Identifier, Bucket> blocks, Map<Identifier, Bucket> tags) implements Bucket {
+        record Substrate(
+                KeyList wildcards,
+                Map<Identifier, Bucket> blocks,
+                Map<Identifier, Bucket> tags) implements Bucket
+        {
 
             Substrate(String substrate) {
                 this(new KeyList(), new Object2ObjectLinkedOpenHashMap<>(), new Object2ObjectLinkedOpenHashMap<>());
@@ -92,12 +93,11 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
 
             @Override
             public Key get(BlockState state) {
-                Key association = getTile(state).get(state);
+                final Key association = getTile(state).get(state);
 
-                if (association == Key.NULL) {
-                    return wildcards.findMatch(state);
-                }
-                return association;
+                return association == Key.NULL
+                        ? wildcards.findMatch(state)
+                        : association;
             }
 
             @Override
@@ -143,30 +143,6 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
                 return get(state) != Key.NULL;
             }
         }
-
-        /*
-        final class Tile implements Bucket {
-            private final Map<BlockState, Key> cache = new Object2ObjectLinkedOpenHashMap<>();
-            private final KeyList keys = new KeyList();
-
-            Tile(Identifier id) { }
-
-            @Override
-            public void add(Key key) {
-                keys.add(key);
-            }
-
-            @Override
-            public Key get(BlockState state) {
-                return cache.computeIfAbsent(state, keys::findMatch);
-            }
-
-            @Override
-            public boolean contains(BlockState state) {
-                return get(state) != Key.NULL;
-            }
-        }
-        */
     }
 
     private record KeyList(Set<Key> priorityKeys, Set<Key> keys) {
@@ -220,7 +196,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
                 key = key.replaceFirst("#", "");
             }
 
-            String id = key.split("[\\.\\[]")[0];
+            final String id = key.split("[\\.\\[]")[0];
             final boolean isWildcard = id.indexOf('*') == 0;
             Identifier identifier = new Identifier("air");
 
@@ -246,28 +222,16 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
                 key = key.replace(substrate, "");
             }
 
-            Set<Key.Attribute> properties = ObjectArrayList.of(
+            final Set<Key.Attribute> properties = ObjectArrayList.of(
                          key.replace("[", "")
                             .replace("]", "")
                             .split(","))
                     .stream()
                     .filter(line -> line.indexOf('=') > -1)
                     .map(Key.Attribute::new)
-                    .collect(Collectors.toSet());
+                    .collect(ObjectOpenHashSet.toSet());
 
-            /*
-            Set<Key.Attribute> properties = Lists.newArrayList(
-                    key.replace("[", "")
-                       .replace("]", "")
-                       .split(",")
-                    )
-                    .stream()
-                    .filter(line -> line.indexOf('=') > -1)
-                    .map(Key.Attribute::new)
-                    .collect(Collectors.toSet());
-            */
-
-            boolean empty = properties.isEmpty();
+            final boolean empty = properties.isEmpty();
 
             return new Key(identifier, finalSubstrate, properties, value, empty, isTag, isWildcard);
         }

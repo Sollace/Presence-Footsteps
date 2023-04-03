@@ -61,15 +61,13 @@ record VaryingAcoustic(
             return;
         }
 
-        float volume = this.volume.random(player.getRNG());
-        float pitch = this.pitch.random(player.getRNG());
+        final float volume = inputOptions.containsKey("gliding_volume")
+                ? this.volume.on(inputOptions.get("gliding_volume"))
+                : this.volume.random(player.getRNG());
 
-        if (inputOptions.containsKey("gliding_volume")) {
-            volume = this.volume.on(inputOptions.get("gliding_volume"));
-        }
-        if (inputOptions.containsKey("gliding_pitch")) {
-            pitch = this.pitch.on(inputOptions.get("gliding_pitch"));
-        }
+        final float pitch = inputOptions.containsKey("gliding_pitch")
+                ? this.pitch.on(inputOptions.get("gliding_pitch"))
+                : this.pitch.random(player.getRNG());
 
         player.playSound(location, soundName, volume, pitch, Options.EMPTY);
     }

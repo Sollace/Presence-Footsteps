@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 public class PlayerUtil {
     public static boolean isClientPlayer(Entity entity) {
         PlayerEntity client = MinecraftClient.getInstance().player;
+
         return entity instanceof PlayerEntity
                 && !(entity instanceof OtherClientPlayerEntity)
                 && client != null

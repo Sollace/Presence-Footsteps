@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.Contract;
@@ -37,7 +39,7 @@ record EventSelectorAcoustics(@NotNull Map<State, Acoustic> pairs) implements Ac
     }
 
     public EventSelectorAcoustics {
-        pairs = Map.copyOf(pairs);
+        pairs = Object2ObjectMaps.unmodifiable(new Object2ObjectOpenHashMap<>(pairs));
     }
 
     @Override

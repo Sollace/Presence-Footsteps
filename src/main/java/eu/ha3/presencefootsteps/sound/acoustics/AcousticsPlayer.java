@@ -9,6 +9,7 @@ import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +18,10 @@ public record AcousticsPlayer(
         @NotNull SoundPlayer player,
         @NotNull Map<String, Acoustic> acoustics
 ) implements AcousticLibrary {
+
+    public AcousticsPlayer {
+        acoustics = Object2ObjectMaps.unmodifiable(new Object2ObjectOpenHashMap<>(acoustics));
+    }
 
     public AcousticsPlayer(SoundPlayer player) {
         this(player, new Object2ObjectOpenHashMap<>());

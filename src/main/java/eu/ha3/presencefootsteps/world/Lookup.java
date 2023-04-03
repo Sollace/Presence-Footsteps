@@ -1,5 +1,9 @@
 package eu.ha3.presencefootsteps.world;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +34,7 @@ public interface Lookup<T> extends Loadable {
      * Gets all the associations for the given state.
      */
     default Map<String, String> getAssociations(T state) {
-        Map<String, String> result = new HashMap<>();
+        final Map<String, String> result = new Object2ObjectOpenHashMap<>();
 
         for (String substrate : getSubstrates()) {
             String association = getAssociation(state, substrate);
@@ -40,7 +44,7 @@ public interface Lookup<T> extends Loadable {
             }
         }
 
-        return result;
+        return Object2ObjectMaps.unmodifiable(new Object2ObjectOpenHashMap<>(result));
     }
 
     /**

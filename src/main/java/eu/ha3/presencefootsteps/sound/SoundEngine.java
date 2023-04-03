@@ -93,21 +93,20 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     private Stream<? extends Entity> getTargets(Entity cameraEntity) {
-        return cameraEntity.world.getOtherEntities(null, cameraEntity.getBoundingBox().expand(16), e -> {
-            return e instanceof LivingEntity
-                    && !(e instanceof WaterCreatureEntity)
-                    && !(e instanceof FlyingEntity)
-                    && !(e instanceof ShulkerEntity
+        return cameraEntity.world.getOtherEntities(null, cameraEntity.getBoundingBox().expand(16), e ->
+                e instanceof LivingEntity
+                        && !(e instanceof WaterCreatureEntity)
+                        && !(e instanceof FlyingEntity)
+                        && !(e instanceof ShulkerEntity
                             || e instanceof ArmorStandEntity
                             || e instanceof BoatEntity
                             || e instanceof AbstractMinecartEntity)
-                    && !isolator.getGolemMap().contains(e.getType())
-                    && !e.hasVehicle()
-                    && !((LivingEntity)e).isSleeping()
-                    && (!(e instanceof PlayerEntity) || !((PlayerEntity)e).isSpectator())
-                    && e.distanceTo(cameraEntity) <= 16
-                    && config.getEntitySelector().test(e);
-        }).stream();
+                        && !isolator.getGolemMap().contains(e.getType())
+                        && !e.hasVehicle()
+                        && !((LivingEntity)e).isSleeping()
+                        && (!(e instanceof PlayerEntity) || !e.isSpectator())
+                        && e.distanceTo(cameraEntity) <= 16
+                        && config.getEntitySelector().test(e)).stream();
     }
 
     public void onFrame(MinecraftClient client, Entity cameraEntity) {

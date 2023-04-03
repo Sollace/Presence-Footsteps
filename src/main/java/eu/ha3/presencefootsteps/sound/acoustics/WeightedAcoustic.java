@@ -8,6 +8,8 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectImmutableList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -33,10 +35,10 @@ record WeightedAcoustic(
             final @NotNull List<Acoustic> acoustics,
             final @NotNull List<Integer> weights)
     {
-        List<Acoustic> theAcoustics = new ObjectArrayList<>(acoustics);
-        float[] probabilityThresholds = new float[acoustics.size() - 1];
-        float total = 0;
+        final List<Acoustic> theAcoustics = new ObjectArrayList<>(acoustics);
+        final float[] probabilityThresholds = new float[acoustics.size() - 1];
 
+        float total = 0;
         for (int i = 0; i < weights.size(); i++) {
             if (weights.get(i) < 0) {
                 throw new IllegalArgumentException("A probability weight can't be negative");
@@ -57,11 +59,11 @@ record WeightedAcoustic(
             final @NotNull JsonObject json,
             final @NotNull AcousticsJsonParser context)
     {
-        List<Integer> weights = new ObjectArrayList<>();
-        List<Acoustic> acoustics = new ObjectArrayList<>();
+        final List<Integer> weights = new ObjectArrayList<>();
+        final List<Acoustic> acoustics = new ObjectArrayList<>();
 
-        JsonArray sim = json.getAsJsonArray("array");
-        Iterator<JsonElement> iter = sim.iterator();
+        final JsonArray sim = json.getAsJsonArray("array");
+        final Iterator<JsonElement> iter = sim.iterator();
 
         while (iter.hasNext()) {
             JsonElement subElement = iter.next();
@@ -79,17 +81,18 @@ record WeightedAcoustic(
     }
 
     public WeightedAcoustic {
-        theAcoustics = new ObjectArrayList<>(theAcoustics);
+        theAcoustics = new ObjectImmutableList<>(theAcoustics);
     }
 
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
-        float rand = player.getRNG().nextFloat();
-        int marker = 0;
+        final float rand = player.getRNG().nextFloat();
 
+        int marker = 0;
         while (marker < probabilityThresholds.length && probabilityThresholds[marker] < rand) {
             marker++;
         }
+
         theAcoustics.get(marker).playSound(player, location, event, inputOptions);
     }
 

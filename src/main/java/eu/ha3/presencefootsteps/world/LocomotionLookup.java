@@ -17,8 +17,8 @@ public class LocomotionLookup implements Index<Entity, Locomotion> {
 
     @Override
     public Locomotion lookup(Entity key) {
-        if (key instanceof PlayerEntity) {
-            return Locomotion.forPlayer((PlayerEntity)key, Locomotion.NONE);
+        if (key instanceof PlayerEntity player) {
+            return Locomotion.forPlayer(player, Locomotion.NONE);
         }
         return Locomotion.forLiving(key, values.getOrDefault(EntityType.getId(key.getType()), Locomotion.BIPED));
     }
