@@ -36,6 +36,8 @@ public class MineLP {
     }
 
     public static Locomotion getLocomotion(PlayerEntity ply) {
-        return MineLittlePony.getInstance().getManager().getPony(ply).race().hasWings() ? Locomotion.FLYING : Locomotion.QUADRUPED;
+        return MineLittlePony.getInstance().getManager().getPony(ply).race().hasWings()
+                ? Locomotion.FLYING
+                : Locomotion.QUADRUPED;
     }
 }

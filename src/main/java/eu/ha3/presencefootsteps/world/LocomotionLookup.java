@@ -11,16 +11,17 @@ import net.minecraft.util.Identifier;
 
 import java.util.Map;
 
-public class LocomotionLookup implements Index<Entity, Locomotion> {
+public record LocomotionLookup(Map<Identifier, Locomotion> values) implements Index<Entity, Locomotion> {
 
-    private final Map<Identifier, Locomotion> values = new Object2ObjectLinkedOpenHashMap<>();
+    public LocomotionLookup() {
+        this(new Object2ObjectLinkedOpenHashMap<>());
+    }
 
     @Override
     public Locomotion lookup(Entity key) {
-        if (key instanceof PlayerEntity player) {
-            return Locomotion.forPlayer(player, Locomotion.NONE);
-        }
-        return Locomotion.forLiving(key, values.getOrDefault(EntityType.getId(key.getType()), Locomotion.BIPED));
+        return key instanceof PlayerEntity player
+                ? Locomotion.forPlayer(player, Locomotion.NONE)
+                : Locomotion.forLiving(key, values.getOrDefault(EntityType.getId(key.getType()), Locomotion.BIPED));
     }
 
     @Override

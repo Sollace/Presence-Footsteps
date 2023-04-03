@@ -3,10 +3,12 @@ package eu.ha3.presencefootsteps.util;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.stream.JsonWriter;
@@ -71,7 +73,7 @@ public class BlockReport {
             writer.name("blocks");
             writer.beginObject();
 
-            Map<String, BlockSoundGroup> groups = new HashMap<>();
+            Map<String, BlockSoundGroup> groups = new Object2ObjectOpenHashMap<>();
 
             Registries.BLOCK.forEach(block -> {
                 BlockState state = block.getDefaultState();
