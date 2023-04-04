@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -64,11 +65,22 @@ public class PFSolver implements Solver {
                 * PlayerUtil.getScale(ply) // scale foot offset by the player's scale
         ;
 
-        return findAssociation(ply, BlockPos.ofFloored(
+        BlockPos footPos = BlockPos.ofFloored(
             pos.x + Math.cos(rot) * feetDistanceToCenter,
             ply.getBoundingBox().getMin(Axis.Y) - TRAP_DOOR_OFFSET - verticalOffsetAsMinus,
             pos.z + Math.sin(rot) * feetDistanceToCenter
-        ));
+        );
+
+        if (feetDistanceToCenter > 1) {
+            for (BlockPos underfootPos : BlockPos.iterateOutwards(footPos, (int)feetDistanceToCenter, 2, (int)feetDistanceToCenter)) {
+                Association assos = findAssociation(ply, underfootPos);
+                if (assos.hasAssociation()) {
+                    return assos;
+                }
+            }
+        }
+
+        return findAssociation(ply, footPos);
     }
 
     private Association findAssociation(Entity player, BlockPos pos) {

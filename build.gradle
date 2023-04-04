@@ -25,18 +25,10 @@ reckon {
 }
 
 repositories {
-    maven {
-        name = 'modmenu'
-        url = 'https://maven.terraformersmc.com/releases'
-    }
-    maven {
-        name = 'minelp'
-        url = 'https://repo.minelittlepony-mod.com/maven/snapshot'
-    }
-    maven {
-        name = 'minelp-release'
-        url = 'https://repo.minelittlepony-mod.com/maven/release'
-    }
+    maven { name 'pehkui'; url 'https://jitpack.io' }
+    maven { name 'modmenu'; url 'https://maven.terraformersmc.com/releases' }
+    maven { name 'minelp'; url 'https://repo.minelittlepony-mod.com/maven/snapshot' }
+    maven { name 'minelp-release'; url 'https://repo.minelittlepony-mod.com/maven/release' }
 }
 
 dependencies {
@@ -54,6 +46,8 @@ dependencies {
 
     modImplementation "com.minelittlepony:minelittlepony:${project.minelp_version}"
     modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
+
+    modImplementation "com.github.Virtuoel:Pehkui:${project.pehkui_version}"
 }
 
 processResources {
