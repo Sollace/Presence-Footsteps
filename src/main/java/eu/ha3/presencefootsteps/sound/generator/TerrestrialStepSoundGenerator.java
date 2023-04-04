@@ -217,7 +217,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     }
 
     protected boolean hasStoppingConditions(Entity ply) {
-        return ply.isSubmergedInWater();
+        return ply.isTouchingWater();
     }
 
     protected void simulateAirborne(LivingEntity ply) {
