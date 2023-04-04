@@ -6,6 +6,7 @@ import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import eu.ha3.presencefootsteps.util.Range;
 import net.minecraft.entity.LivingEntity;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,20 +57,28 @@ record VaryingAcoustic(
 
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
+        playSound(this.soundName, this.volume, this.pitch, Options.EMPTY, player, location, inputOptions);
+    }
+
+    // shared code between VaryingAcoustic & DelayedAcoustic since
+    // in the old implementation DelayedAcoustic extended VaryingAcoustic
+    @ApiStatus.Internal
+    static void playSound(@NotNull String soundName, Range volume, Range pitch, Options delay,
+                          SoundPlayer player, LivingEntity location, Options inputOptions)
+    {
         if (soundName.isEmpty()) {
             // Special case for intentionally empty sounds (as opposed to fall back sounds)
             return;
         }
 
-        final float volume = inputOptions.containsKey("gliding_volume")
-                ? this.volume.on(inputOptions.get("gliding_volume"))
-                : this.volume.random(player.getRNG());
+        final float finalVolume = inputOptions.containsKey("gliding_volume")
+                ? volume.on(inputOptions.get("gliding_volume"))
+                : volume.random(player.getRNG());
 
-        final float pitch = inputOptions.containsKey("gliding_pitch")
-                ? this.pitch.on(inputOptions.get("gliding_pitch"))
-                : this.pitch.random(player.getRNG());
+        final float finalPitch = inputOptions.containsKey("gliding_pitch")
+                ? pitch.on(inputOptions.get("gliding_pitch"))
+                : pitch.random(player.getRNG());
 
-        player.playSound(location, soundName, volume, pitch, Options.EMPTY);
+        player.playSound(location, soundName, finalVolume, finalPitch, delay);
     }
-
 }

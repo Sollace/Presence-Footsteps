@@ -10,7 +10,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.LivingEntity;
 
 class DelayedSoundPlayer implements SoundPlayer {
-
     private static final boolean USING_LATENESS = true;
     private static final boolean USING_EARLYNESS = true;
 

@@ -22,7 +22,6 @@ import eu.ha3.presencefootsteps.world.Association;
  * @author Hurry
  */
 public class ImmediateSoundPlayer implements SoundPlayer, StepSoundPlayer {
-
     private final Random random = new Random();
 
     private final DelayedSoundPlayer delayedPlayer = new DelayedSoundPlayer(this);

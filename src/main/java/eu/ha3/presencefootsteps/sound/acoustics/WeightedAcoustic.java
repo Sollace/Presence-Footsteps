@@ -95,5 +95,4 @@ record WeightedAcoustic(
 
         theAcoustics.get(marker).playSound(player, location, event, inputOptions);
     }
-
 }

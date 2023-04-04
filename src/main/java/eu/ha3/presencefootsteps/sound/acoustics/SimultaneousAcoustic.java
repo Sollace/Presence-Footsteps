@@ -51,5 +51,4 @@ record SimultaneousAcoustic(@NotNull List<Acoustic> acoustics) implements Acoust
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
         acoustics.forEach(acoustic -> acoustic.playSound(player, location, event, inputOptions));
     }
-
 }

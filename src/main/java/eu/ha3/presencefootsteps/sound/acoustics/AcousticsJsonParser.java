@@ -19,7 +19,6 @@ import java.util.Map;
  * @author Hurry
  */
 public class AcousticsJsonParser {
-
     private static final int ENGINEVERSION = 1;
     private static final Map<String, AcousticFactory> factories;
 

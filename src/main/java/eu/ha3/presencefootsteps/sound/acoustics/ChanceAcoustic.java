@@ -7,11 +7,10 @@ import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Range;
 
 record ChanceAcoustic(
         @NotNull Acoustic acoustic,
-        @Range(from = 1, to = Integer.MAX_VALUE) float probability
+        float probability
 ) implements Acoustic {
 
     @Contract(value = "_, _ -> new", pure = true)
@@ -33,5 +32,4 @@ record ChanceAcoustic(
             acoustic.playSound(player, location, event, inputOptions);
         }
     }
-
 }

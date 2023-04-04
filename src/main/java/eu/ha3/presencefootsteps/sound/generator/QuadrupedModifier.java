@@ -6,7 +6,6 @@ import eu.ha3.presencefootsteps.sound.State;
 import net.minecraft.entity.LivingEntity;
 
 public class QuadrupedModifier extends Modifier<TerrestrialStepSoundGenerator> {
-
     //private static final int STEPPING_FUNCTION = 2;
 
     private int hoof = 0;

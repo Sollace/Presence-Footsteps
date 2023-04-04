@@ -63,20 +63,6 @@ record DelayedAcoustic(
 
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
-        if (soundName.isEmpty()) {
-            // Special case for intentionally empty sounds (as opposed to fall back sounds)
-            return;
-        }
-
-        final float volume = inputOptions.containsKey("gliding_volume")
-                ? this.volume.on(inputOptions.get("gliding_volume"))
-                : this.volume.random(player.getRNG());
-
-        final float pitch = inputOptions.containsKey("gliding_pitch")
-                ? this.pitch.on(inputOptions.get("gliding_pitch"))
-                : this.pitch.random(player.getRNG());
-
-        player.playSound(location, this.soundName, volume, pitch, this.delay);
+        VaryingAcoustic.playSound(this.soundName, this.volume, this.pitch, this.delay, player, location, inputOptions);
     }
-
 }

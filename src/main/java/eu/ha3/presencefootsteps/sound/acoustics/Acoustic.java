@@ -15,5 +15,4 @@ public interface Acoustic {
      * Plays a sound.
      */
     void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions);
-
 }

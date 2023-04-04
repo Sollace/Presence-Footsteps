@@ -1,7 +1,6 @@
 package eu.ha3.presencefootsteps.sound;
 
 public interface Options {
-
     Options EMPTY = new Options() {
         @Override
         public boolean containsKey(String option) {
@@ -31,5 +30,4 @@ public interface Options {
     boolean containsKey(String option);
 
     float get(String option);
-
 }

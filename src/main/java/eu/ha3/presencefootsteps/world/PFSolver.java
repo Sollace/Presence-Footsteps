@@ -1,13 +1,10 @@
 package eu.ha3.presencefootsteps.world;
 
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import eu.ha3.presencefootsteps.sound.Isolator;
+import eu.ha3.presencefootsteps.sound.Options;
+import eu.ha3.presencefootsteps.sound.State;
+import eu.ha3.presencefootsteps.util.PlayerUtil;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -22,13 +19,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import eu.ha3.presencefootsteps.sound.Isolator;
-import eu.ha3.presencefootsteps.sound.Options;
-import eu.ha3.presencefootsteps.sound.State;
-import eu.ha3.presencefootsteps.util.PlayerUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.List;
+import java.util.Locale;
 
 public class PFSolver implements Solver {
-
     private static final Logger logger = LogManager.getLogger("PFSolver");
 
     private static final double TRAP_DOOR_OFFSET = 0.1;

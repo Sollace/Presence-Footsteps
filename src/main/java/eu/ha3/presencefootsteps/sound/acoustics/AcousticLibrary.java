@@ -6,7 +6,6 @@ import eu.ha3.presencefootsteps.world.Association;
 import net.minecraft.entity.LivingEntity;
 
 public interface AcousticLibrary {
-
     /**
      * Adds an acoustic to the library.
      */
@@ -20,5 +19,4 @@ public interface AcousticLibrary {
     }
 
     void playAcoustic(LivingEntity location, String acousticName, State event, Options options);
-
 }
