@@ -70,6 +70,7 @@ public class ImmediateSoundPlayer implements SoundPlayer, StepSoundPlayer {
         double distance = mc.gameRenderer.getCamera().getPos().squaredDistanceTo(location.getPos());
 
         volume *= engine.getVolumeForSource(location);
+        pitch /= ((PlayerUtil.getScale(location) - 1) * 0.6F) + 1;
 
         PositionedSoundInstance sound = new UncappedSoundInstance(soundName, volume, pitch, location);
 
