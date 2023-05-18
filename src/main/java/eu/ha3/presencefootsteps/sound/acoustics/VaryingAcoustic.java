@@ -55,6 +55,6 @@ class VaryingAcoustic implements Acoustic {
             pitch = this.pitch.on(inputOptions.get("gliding_pitch"));
         }
 
-        player.playSound(location, soundName, volume, pitch, getOptions());
+        player.playSound(location, soundName, volume, pitch, getOptions().and(inputOptions));
     }
 }

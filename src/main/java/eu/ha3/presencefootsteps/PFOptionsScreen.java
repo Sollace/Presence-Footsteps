@@ -69,11 +69,17 @@ class PFOptionsScreen extends GameGui {
         slider.setBounds(new Bounds(row, wideRight, 150, 20));
         slider.getStyle().setTooltip(Tooltip.of("menu.pf.volume.other_players.tooltip", 210)).setTooltipOffset(0, 25);
 
-        slider = addButton(new Slider(wideLeft, row += 24, 0, 100, config.getRunningVolumeIncrease()))
+        slider = addButton(new Slider(wideLeft, row += 24, -100, 100, config.getRunningVolumeIncrease()))
             .onChange(config::setRunningVolumeIncrease)
             .setTextFormat(formatVolume("menu.pf.volume.running"));
         slider.setBounds(new Bounds(row, wideLeft, 310, 20));
         slider.getStyle().setTooltip(Tooltip.of("menu.pf.volume.running.tooltip", 210)).setTooltipOffset(0, 25);
+
+        slider = addButton(new Slider(wideLeft, row += 24, 0, 100, config.getWetSoundsVolume()))
+                .onChange(config::setWetSoundsVolume)
+                .setTextFormat(formatVolume("menu.pf.volume.wet"));
+            slider.setBounds(new Bounds(row, wideLeft, 310, 20));
+            slider.getStyle().setTooltip(Tooltip.of("menu.pf.volume.wet.tooltip", 210)).setTooltipOffset(0, 25);
 
         addButton(new EnumSlider<>(left, row += 24, config.getLocomotion())
                 .onChange(config::setLocomotion)

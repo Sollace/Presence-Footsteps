@@ -20,6 +20,7 @@ public class Association {
     private final BlockPos pos;
 
     private String data = Emitter.NOT_EMITTER;
+    private String wetData = Emitter.NOT_EMITTER;
 
     private LivingEntity source;
 
@@ -41,10 +42,19 @@ public class Association {
         return this;
     }
 
-    public Association with(@Nullable String data) {
+    public Association withDry(@Nullable String data) {
 
         if (!isNull() && data != null) {
             this.data = data;
+        }
+
+        return this;
+    }
+
+    public Association withWet(@Nullable String data) {
+
+        if (!isNull() && data != null) {
+            this.wetData = data;
         }
 
         return this;
@@ -55,15 +65,19 @@ public class Association {
     }
 
     public boolean isNotEmitter() {
-        return isNull() || Emitter.isNonEmitter(data);
+        return isNull() || Emitter.isNonEmitter(data) || Emitter.isNonEmitter(wetData);
     }
 
     public boolean hasAssociation() {
-        return !isNotEmitter() && Emitter.isResult(data);
+        return !isNotEmitter() && Emitter.isResult(data) || Emitter.isNonEmitter(wetData);
     }
 
     public String getAcousticName() {
         return data;
+    }
+
+    public String getWetAcousticName() {
+        return wetData;
     }
 
     public LivingEntity getSource() {

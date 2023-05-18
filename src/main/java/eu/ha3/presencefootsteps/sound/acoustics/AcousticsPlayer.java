@@ -8,6 +8,7 @@ import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
+import eu.ha3.presencefootsteps.world.Emitter;
 import net.minecraft.entity.LivingEntity;
 
 public class AcousticsPlayer implements AcousticLibrary {
@@ -27,6 +28,10 @@ public class AcousticsPlayer implements AcousticLibrary {
 
     @Override
     public void playAcoustic(LivingEntity location, String acousticName, State event, Options inputOptions) {
+        if (!Emitter.isEmitter(acousticName)) {
+            return;
+        }
+
         if (acousticName.contains(",")) {
             List.of(acousticName.split(","))
                 .stream()

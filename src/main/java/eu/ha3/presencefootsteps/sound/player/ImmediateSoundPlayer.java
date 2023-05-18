@@ -62,6 +62,7 @@ public class ImmediateSoundPlayer implements SoundPlayer, StepSoundPlayer {
             return;
         }
 
+        volume *= options.getOrDefault("volume_percentage", 1F);
         playAttenuatedSound(location, soundName, volume, pitch);
     }
 
