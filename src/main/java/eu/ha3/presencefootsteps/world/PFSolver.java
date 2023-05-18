@@ -64,7 +64,7 @@ public class PFSolver implements Solver {
                 * PlayerUtil.getScale(ply) // scale foot offset by the player's scale
         ;
 
-        BlockPos footPos = BlockPos.ofFloored(
+        BlockPos footPos = new BlockPos(
             pos.x + Math.cos(rot) * feetDistanceToCenter,
             ply.getBoundingBox().getMin(Axis.Y) - TRAP_DOOR_OFFSET - verticalOffsetAsMinus,
             pos.z + Math.sin(rot) * feetDistanceToCenter
