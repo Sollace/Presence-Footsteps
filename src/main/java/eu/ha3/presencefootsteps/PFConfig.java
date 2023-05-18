@@ -113,15 +113,18 @@ public class PFConfig extends JsonFile {
 
     public float setClientPlayerVolume(float volume) {
         clientPlayerVolume = volumeScaleToInt(volume);
+        save();
         return getClientPlayerVolume();
     }
 
     public float setOtherPlayerVolume(float volume) {
         otherPlayerVolume = volumeScaleToInt(volume);
+        save();
         return getOtherPlayerVolume();
     }
     public float setRunningVolumeIncrease(float volume) {
         runningVolumeIncrease = volumeScaleToInt(volume);
+        save();
         return getRunningVolumeIncrease();
     }
 
