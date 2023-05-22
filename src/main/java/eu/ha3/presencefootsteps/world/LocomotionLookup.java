@@ -19,9 +19,10 @@ public record LocomotionLookup(Map<Identifier, Locomotion> values) implements In
 
     @Override
     public Locomotion lookup(Entity key) {
-        return key instanceof PlayerEntity player
-                ? Locomotion.forPlayer(player, Locomotion.NONE)
-                : Locomotion.forLiving(key, values.getOrDefault(EntityType.getId(key.getType()), Locomotion.BIPED));
+        if (key instanceof PlayerEntity) {
+            return Locomotion.forPlayer((PlayerEntity)key, Locomotion.NONE);
+        }
+        return Locomotion.forLiving(key, values.getOrDefault(EntityType.getId(key.getType()), Locomotion.BIPED));
     }
 
     @Override

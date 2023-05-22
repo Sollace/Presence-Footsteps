@@ -7,11 +7,9 @@ import net.minecraft.util.Identifier;
 import java.util.Map;
 import java.util.Set;
 
-public record GolemLookup(Map<String, Map<Identifier, String>> substrates) implements Lookup<EntityType<?>> {
+public class GolemLookup implements Lookup<EntityType<?>> {
 
-    public GolemLookup() {
-        this(new Object2ObjectLinkedOpenHashMap<>());
-    }
+    private final Map<String, Map<Identifier, String>> substrates = new Object2ObjectLinkedOpenHashMap<>();
 
     @Override
     public String getAssociation(EntityType<?> key, String substrate) {

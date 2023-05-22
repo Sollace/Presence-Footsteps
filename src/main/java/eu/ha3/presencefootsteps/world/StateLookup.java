@@ -249,7 +249,6 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
         }
 
         boolean matches(BlockState state) {
-
             if (empty) {
                 return true;
             }
