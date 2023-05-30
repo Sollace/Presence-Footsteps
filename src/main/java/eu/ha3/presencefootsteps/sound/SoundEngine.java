@@ -64,16 +64,10 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
         }
 
         float runningProgress = ((StepSoundSource) source).getStepGenerator(this)
-                .map(generator -> {
-                    config.getRunningVolumeIncrease();
-                    return generator.getMotionTracker().getSpeedScalingRatio(source);
-                })
+                .map(generator -> generator.getMotionTracker().getSpeedScalingRatio(source))
                 .orElse(0F);
 
-        // volume gets cut off at 1, so invert the function and lower it, so walking slower makes it quieter
-        // and running causes it to ramp up to 1.
-        float runningDecrease = Math.min((config.getRunningVolumeIncrease() / 100F) * (1F - runningProgress), 0.96F);
-        return volume * (1F - runningDecrease);
+        return volume * (1F + ((config.getRunningVolumeIncrease() / 100F) * runningProgress));
     }
 
     public Isolator getIsolator() {

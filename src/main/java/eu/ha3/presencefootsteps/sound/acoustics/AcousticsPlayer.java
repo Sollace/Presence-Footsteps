@@ -6,15 +6,15 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import eu.ha3.presencefootsteps.world.Emitter;
 import net.minecraft.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.stream.Stream;
 
 public record AcousticsPlayer(
-        @NotNull SoundPlayer player,
-        @NotNull Map<String, Acoustic> acoustics
+        SoundPlayer player,
+        Map<String, Acoustic> acoustics
 ) implements AcousticLibrary {
 
     public AcousticsPlayer(SoundPlayer player) {
@@ -28,6 +28,10 @@ public record AcousticsPlayer(
 
     @Override
     public void playAcoustic(LivingEntity location, String acousticName, State event, Options inputOptions) {
+        if (!Emitter.isEmitter(acousticName)) {
+            return;
+        }
+
         if (acousticName.contains(",")) {
             Stream.of(acousticName.split(","))
                     .map(Strings::nullToEmpty)

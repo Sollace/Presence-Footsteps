@@ -187,6 +187,7 @@ public class PFSolver implements Solver {
         // Try to see if the block above is a carpet...
 
         String association = findForGolem(world, up, Lookup.CARPET_SUBSTRATE);
+        String wetAssociation = Emitter.NOT_EMITTER;
 
         if (!Emitter.isEmitter(association)) {
             association = isolator.getBlockMap().getAssociation(above, Lookup.CARPET_SUBSTRATE);
@@ -255,17 +256,17 @@ public class PFSolver implements Solver {
 
             if (Emitter.isEmitter(wet)) {
                 logger.debug("Wet block detected: " + wet);
-                association += "," + wet;
+                wetAssociation = wet;
             }
         }
 
         // Player has stepped on a non-emitter block as defined in the blockmap
-        if (Emitter.isNonEmitter(association)) {
+        if (Emitter.isNonEmitter(association) && Emitter.isNonEmitter(wetAssociation)) {
             return Association.NOT_EMITTER;
         }
 
-        if (Emitter.isResult(association)) {
-            return new Association(in, pos).with(association);
+        if (Emitter.isResult(association) || Emitter.isResult(wetAssociation)) {
+            return new Association(in, pos).withDry(association).withWet(wetAssociation);
         }
 
         if (in.isAir()) {
@@ -282,7 +283,7 @@ public class PFSolver implements Solver {
             return Association.NOT_EMITTER;
         }
 
-        return new Association(in, pos).with(primitive);
+        return new Association(in, pos).withDry(primitive);
     }
 
     @Override
@@ -301,7 +302,7 @@ public class PFSolver implements Solver {
 
         // we discard the normal block association, and mark the foliage as detected
         if (Emitter.MESSY_GROUND.equals(isolator.getBlockMap().getAssociation(above, Lookup.MESSY_SUBSTRATE))) {
-            return new Association(above, pos.up()).with(foliage);
+            return new Association(above, pos.up()).withDry(foliage);
         }
 
         return Association.NOT_EMITTER;

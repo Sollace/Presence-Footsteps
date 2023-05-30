@@ -16,6 +16,9 @@ public interface AcousticLibrary {
      */
     default void playAcoustic(Association association, State event, Options options) {
         playAcoustic(association.getSource(), association.getAcousticName(), event, options);
+        if (Options.WET_VOLUME_OPTIONS.get("volume_percentage") > 0.1F) {
+            playAcoustic(association.getSource(), association.getWetAcousticName(), event, options.and(Options.WET_VOLUME_OPTIONS));
+        }
     }
 
     void playAcoustic(LivingEntity location, String acousticName, State event, Options options);

@@ -16,16 +16,11 @@ import org.jetbrains.annotations.NotNull;
  * @author Hurry
  */
 record VaryingAcoustic(
-        @NotNull String soundName,
-        @NotNull Range volume,
-        @NotNull Range pitch
+        String soundName,
+        Range volume,
+        Range pitch
 ) implements Acoustic {
-
-    @Contract(value = "_, _ -> new", pure = true)
-    public static @NotNull VaryingAcoustic of(
-            final @NotNull String name,
-            final @NotNull AcousticsJsonParser context)
-    {
+    public static VaryingAcoustic of(String name, AcousticsJsonParser context) {
         final Range volume = new Range(1);
         final Range pitch = new Range(1);
 
@@ -38,11 +33,7 @@ record VaryingAcoustic(
         );
     }
 
-    @Contract(value = "_, _ -> new", pure = true)
-    public static @NotNull VaryingAcoustic fromJson(
-            final @NotNull JsonObject json,
-            final @NotNull AcousticsJsonParser context)
-    {
+    public static VaryingAcoustic fromJson(JsonObject json, AcousticsJsonParser context) {
         final VaryingAcoustic acoustic = VaryingAcoustic.of(json.get("name").getAsString(), context);
 
         acoustic.volume.read("vol", json, context);
@@ -57,15 +48,12 @@ record VaryingAcoustic(
 
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
-        playSound(this.soundName, this.volume, this.pitch, Options.EMPTY, player, location, inputOptions);
+        playSound(soundName, volume, pitch, Options.EMPTY, player, location, inputOptions);
     }
 
     // shared code between VaryingAcoustic & DelayedAcoustic since
     // in the old implementation DelayedAcoustic extended VaryingAcoustic
-    @ApiStatus.Internal
-    static void playSound(@NotNull String soundName, Range volume, Range pitch, Options delay,
-                          SoundPlayer player, LivingEntity location, Options inputOptions)
-    {
+    static void playSound(String soundName, Range volume, Range pitch, Options options, SoundPlayer player, LivingEntity location, Options inputOptions) {
         if (soundName.isEmpty()) {
             // Special case for intentionally empty sounds (as opposed to fall back sounds)
             return;
@@ -79,6 +67,6 @@ record VaryingAcoustic(
                 ? pitch.on(inputOptions.get("gliding_pitch"))
                 : pitch.random(player.getRNG());
 
-        player.playSound(location, soundName, finalVolume, finalPitch, delay);
+        player.playSound(location, soundName, finalVolume, finalPitch, options.and(inputOptions));
     }
 }

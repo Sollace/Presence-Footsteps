@@ -851,9 +851,9 @@
 	"minecraft:kelp": "leaves,mud",
 	"minecraft:kelp_plant": "leaves,mud",
 	"minecraft:bamboo": "squeakywood",
-	"minecraft:bamboo.foliage": "squeakywood",
+	"minecraft:bamboo[leaves=small].foliage": "straw",
+	"minecraft:bamboo[leaves=large].foliage": "straw",
 	"minecraft:bamboo_sapling": "NOT_EMITTER",
-	"minecraft:bamboo_sapling.foliage": "squeakywood",
 	"minecraft:cocoa": "organic_dry",
 	
 	"minecraft:bamboo_mosaic": "squeakywood",
