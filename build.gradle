@@ -88,7 +88,7 @@ modrinth {
     //featured = true
     versionNumber = version.toString()
     versionName = archivesBaseName + '-' + version
-    changelog = "[Changelog](https://github.com/Sollace/PresenceFootsteps/releases/tag/${version.toString()})"
+    changelog = "[Changelog](https://github.com/Sollace/Presence-Footsteps/releases/tag/${version.toString()})"
     uploadFile = remapJar
     outlet.mcVersions().each{ver ->
       gameVersions.add ver
