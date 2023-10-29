@@ -1,5 +1,6 @@
 {
 	"key.presencefootsteps.settings": "Presence Footsteps",
+	"pf.default_sounds.name": "Набор стандартных звуков",
 	"menu.pf.title": "Настройки Presence Footsteps",
 	"menu.pf.multiplayer.true": "В сетевой игре: Вкл",
 	"menu.pf.multiplayer.false": "В сетевой игре: Выкл",
