@@ -1,5 +1,6 @@
 {
 	"key.presencefootsteps.settings": "脚步声",
+	"pf.default_sounds.name": "默认音效包",
 	"menu.pf.title": "脚步声设置",
 	"menu.pf.multiplayer.true": "模式：多人游戏",
 	"menu.pf.multiplayer.false": "模式：单人游戏",
