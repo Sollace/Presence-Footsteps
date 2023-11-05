@@ -1,15 +1,9 @@
 package eu.ha3.presencefootsteps.sound.generator;
 
-import org.jetbrains.annotations.Nullable;
-
-import com.minelittlepony.api.pony.meta.Race;
-import com.minelittlepony.client.MineLittlePony;
-
+import com.minelittlepony.api.pony.Pony;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
 
 public class MineLP {
     private static boolean checkCompleted = false;
@@ -25,27 +19,14 @@ public class MineLP {
     }
 
     public static Locomotion getLocomotion(Entity entity, Locomotion fallback) {
-
-        @Nullable
-        Identifier texture = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(entity).getTexture(entity);
-
-        if (texture == null) {
-            // Bad modder. /slap
-            return fallback;
-        }
-
-        Race race = MineLittlePony.getInstance().getManager().getPony(texture).race();
-
-        if (race.isHuman()) {
-            return fallback;
-        }
-
-        return race.hasWings() ? Locomotion.FLYING : Locomotion.QUADRUPED;
+        return Pony.getManager().getPony(entity)
+                .map(Pony::race)
+                .filter(race -> !race.isHuman())
+                .map(race -> race.hasWings() ? Locomotion.FLYING : Locomotion.QUADRUPED)
+                .orElse(fallback);
     }
 
     public static Locomotion getLocomotion(PlayerEntity ply) {
-        return MineLittlePony.getInstance().getManager().getPony(ply).race().hasWings()
-                ? Locomotion.FLYING
-                : Locomotion.QUADRUPED;
+        return getLocomotion(ply, Locomotion.BIPED);
     }
 }
