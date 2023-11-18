@@ -224,7 +224,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
             acoustics.playAcoustic(ply, "_SWIM", state, options);
 
-            playedSound |= solver.playAssociation(ply, solver.findAssociation(ply.getWorld(), ply.getBlockPos().down(), Solver.MESSY_FOLIAGE_STRATEGY), event);
+            playedSound |= solver.playAssociation(ply, solver.findAssociation(ply, ply.getBlockPos().down(), Solver.MESSY_FOLIAGE_STRATEGY), event);
         } else {
             if (!ply.isSneaky() || event.isExtraLoud()) {
                 playedSound |= solver.playAssociation(ply, solver.findAssociation(ply, verticalOffsetAsMinus, isRightFoot), event);
@@ -285,15 +285,17 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     }
 
     protected void simulateLanding(LivingEntity ply) {
-        if (ply.fallDistance > variator.LAND_HARD_DISTANCE_MIN) {
-            playMultifoot(ply, getOffsetMinus(ply), State.LAND);
-            // Always assume the player lands on their two feet
-            // Do not toggle foot:
-            // After landing sounds, the first foot will be same as the one used to jump.
-        } else if (/* !this.stepThisFrame &&*/ !ply.isSneaking()) {
-            playSinglefoot(ply, getOffsetMinus(ply), motionTracker.pickState(ply, State.CLIMB, State.CLIMB_RUN), isRightFoot);
-            if (!this.stepThisFrame)
-                isRightFoot = !isRightFoot;
+        if (ply.fallDistance > 0) {
+            if (ply.fallDistance > variator.LAND_HARD_DISTANCE_MIN) {
+                playMultifoot(ply, getOffsetMinus(ply), State.LAND);
+                // Always assume the player lands on their two feet
+                // Do not toggle foot:
+                // After landing sounds, the first foot will be same as the one used to jump.
+            } else if (/* !this.stepThisFrame &&*/ !ply.isSneaking()) {
+                playSinglefoot(ply, getOffsetMinus(ply), motionTracker.pickState(ply, State.CLIMB, State.CLIMB_RUN), isRightFoot);
+                if (!this.stepThisFrame)
+                    isRightFoot = !isRightFoot;
+            }
         }
     }
 
@@ -308,7 +310,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
             return;
         }
 
-        Association assos = solver.findAssociation(ply.getWorld(), BlockPos.ofFloored(
+        Association assos = solver.findAssociation(ply, BlockPos.ofFloored(
             ply.getX(),
             ply.getY() - 0.1D - (ply.hasVehicle() ? ply.getHeightOffset() : 0) - (ply.isOnGround() ? 0 : 0.25D),
             ply.getZ()

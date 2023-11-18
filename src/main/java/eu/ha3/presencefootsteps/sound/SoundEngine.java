@@ -53,6 +53,8 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
 
     private final PFConfig config;
 
+    private boolean hasConfigurations;
+
     public SoundEngine(PFConfig config) {
         this.config = config;
     }
@@ -88,7 +90,7 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     public boolean isRunning(MinecraftClient client) {
-        return config.getEnabled() && (client.isInSingleplayer() || config.getEnabledMP());
+        return hasConfigurations && config.getEnabled() && (client.isInSingleplayer() || config.getEnabledMP());
     }
 
     private Stream<? extends Entity> getTargets(final Entity cameraEntity) {
@@ -199,17 +201,19 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
 
     public void reloadEverything(ResourceManager manager) {
         isolator = new PFIsolator(this);
+        hasConfigurations = false;
 
-        ResourceUtils.forEachReverse(BLOCK_MAP, manager, isolator.getBlockMap()::load);
-        ResourceUtils.forEach(GOLEM_MAP, manager, isolator.getGolemMap()::load);
-        ResourceUtils.forEach(PRIMITIVE_MAP, manager, isolator.getPrimitiveMap()::load);
-        ResourceUtils.forEach(LOCOMOTION_MAP, manager, isolator.getLocomotionMap()::load);
-        ResourceUtils.forEach(ACOUSTICS, manager, new AcousticsJsonParser(isolator.getAcoustics())::parse);
-        ResourceUtils.forEach(VARIATOR, manager, isolator.getVariator()::load);
+        hasConfigurations |= ResourceUtils.forEachReverse(BLOCK_MAP, manager, isolator.getBlockMap()::load);
+        hasConfigurations |= ResourceUtils.forEach(GOLEM_MAP, manager, isolator.getGolemMap()::load);
+        hasConfigurations |= ResourceUtils.forEach(PRIMITIVE_MAP, manager, isolator.getPrimitiveMap()::load);
+        hasConfigurations |= ResourceUtils.forEach(LOCOMOTION_MAP, manager, isolator.getLocomotionMap()::load);
+        hasConfigurations |= ResourceUtils.forEach(ACOUSTICS, manager, new AcousticsJsonParser(isolator.getAcoustics())::parse);
+        hasConfigurations |= ResourceUtils.forEach(VARIATOR, manager, isolator.getVariator()::load);
     }
 
     public void shutdown() {
         isolator = new PFIsolator(this);
+        hasConfigurations = false;
 
         PlayerEntity player = MinecraftClient.getInstance().player;
 

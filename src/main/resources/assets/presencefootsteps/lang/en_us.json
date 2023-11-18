@@ -1,5 +1,6 @@
 {
 	"key.presencefootsteps.settings": "Presence Footsteps",
+	"pf.default_sounds.name": "Default Sound Pack",
 	"menu.pf.title": "Presence Footsteps Options",
 	"menu.pf.multiplayer.true": "Single + Multiplayer",
 	"menu.pf.multiplayer.false": "Singleplayer Only",

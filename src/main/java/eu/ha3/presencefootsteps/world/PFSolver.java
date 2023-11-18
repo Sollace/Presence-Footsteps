@@ -1,5 +1,6 @@
 package eu.ha3.presencefootsteps.world;
 
+import eu.ha3.presencefootsteps.compat.ContraptionCollidable;
 import eu.ha3.presencefootsteps.sound.Isolator;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
@@ -106,7 +107,7 @@ public class PFSolver implements Solver {
             collider = collider.expand(0.3, 0.5, 0.3);
         }
 
-        Association worked = findAssociation(player.getWorld(), pos, collider);
+        Association worked = findAssociation(player, pos, collider);
 
         // If it didn't work, the player has walked over the air on the border of a block.
         // ------ ------ --> z
@@ -146,9 +147,9 @@ public class PFSolver implements Solver {
         // < maxofX- maxofX+ >
         // Take the maximum border to produce the sound
         if (isXdangMax) { // If we are in the positive border, add 1, else subtract 1
-            worked = findAssociation(player.getWorld(), pos.east(xdang > 0 ? 1 : -1), collider);
+            worked = findAssociation(player, pos.east(xdang > 0 ? 1 : -1), collider);
         } else {
-            worked = findAssociation(player.getWorld(), pos.south(zdang > 0 ? 1 : -1), collider);
+            worked = findAssociation(player, pos.south(zdang > 0 ? 1 : -1), collider);
         }
 
         // If that didn't work, then maybe the footstep hit in the
@@ -160,14 +161,14 @@ public class PFSolver implements Solver {
 
         // Take the maximum direction and try with the orthogonal direction of it
         if (isXdangMax) {
-            return findAssociation(player.getWorld(), pos.south(zdang > 0 ? 1 : -1), collider);
+            return findAssociation(player, pos.south(zdang > 0 ? 1 : -1), collider);
         }
 
-        return findAssociation(player.getWorld(), pos.east(xdang > 0 ? 1 : -1), collider);
+        return findAssociation(player, pos.east(xdang > 0 ? 1 : -1), collider);
     }
 
     private String findForGolem(World world, BlockPos pos, String substrate) {
-        List<Entity> golems = world.getEntitiesByClass(Entity.class, new Box(pos), e -> !(e instanceof PlayerEntity));
+        List<Entity> golems = world.getEntitiesByClass(Entity.class, new Box(pos).expand(0.5, 0, 0.5), e -> !(e instanceof PlayerEntity));
 
         if (!golems.isEmpty()) {
             String golem = isolator.getGolemMap().getAssociation(golems.get(0).getType(), substrate);
@@ -182,18 +183,31 @@ public class PFSolver implements Solver {
         return Emitter.UNASSIGNED;
     }
 
-    private Association findAssociation(World world, BlockPos pos, Box collider) {
-        BlockState in = world.getBlockState(pos);
+    private BlockState getBlockStateAt(Entity entity, BlockPos pos) {
+        World world = entity.getWorld();
+        BlockState state = world.getBlockState(pos);
+
+        if (state.isAir() && (entity instanceof ContraptionCollidable collidable)) {
+            state = collidable.getCollidedStateAt(pos);
+        }
+        return state;
+    }
+
+    private Association findAssociation(Entity entity, BlockPos pos, Box collider) {
+        BlockState in = getBlockStateAt(entity, pos);
 
         BlockPos up = pos.up();
-        BlockState above = world.getBlockState(up);
+        BlockState above = getBlockStateAt(entity, up);
         // Try to see if the block above is a carpet...
 
-        String association = findForGolem(world, up, Lookup.CARPET_SUBSTRATE);
+        String association = findForGolem(entity.getWorld(), up, Lookup.CARPET_SUBSTRATE);
+        boolean wasGolem = false;
         String wetAssociation = Emitter.NOT_EMITTER;
 
         if (!Emitter.isEmitter(association)) {
             association = isolator.getBlockMap().getAssociation(above, Lookup.CARPET_SUBSTRATE);
+        } else {
+            wasGolem = true;
         }
 
         if (Emitter.isEmitter(association)) {
@@ -204,9 +218,9 @@ public class PFSolver implements Solver {
             // This condition implies that if the carpet is NOT_EMITTER, solving will
             // CONTINUE with the actual block surface the player is walking on
                               // check the height of the block. If it's something very short, like a carpet, also look through it
-            if (in.isAir() || in.getCollisionShape(world, pos).getMax(Axis.Y) < 0.3F) {
+            if (in.isAir() || in.getCollisionShape(entity.getWorld(), pos).getMax(Axis.Y) < 0.3F) {
                 BlockPos down = pos.down();
-                BlockState below = world.getBlockState(down);
+                BlockState below = getBlockStateAt(entity, down);
 
                 association = isolator.getBlockMap().getAssociation(below, Lookup.FENCE_SUBSTRATE);
 
@@ -217,9 +231,9 @@ public class PFSolver implements Solver {
                 }
             }
 
-            VoxelShape shape = in.getCollisionShape(world, pos);
+            VoxelShape shape = in.getCollisionShape(entity.getWorld(), pos);
             if (shape.isEmpty()) {
-                shape = in.getOutlineShape(world, pos);
+                shape = in.getOutlineShape(entity.getWorld(), pos);
             }
             if (!shape.isEmpty() && !shape.getBoundingBox().offset(pos).intersects(collider)) {
                 logger.debug("Skipping due to hitbox miss");
@@ -227,10 +241,12 @@ public class PFSolver implements Solver {
             }
 
             if (!Emitter.isResult(association)) {
-                association = findForGolem(world, pos, Lookup.EMPTY_SUBSTRATE);
+                association = findForGolem(entity.getWorld(), pos, Lookup.EMPTY_SUBSTRATE);
 
                 if (!Emitter.isEmitter(association)) {
                     association = isolator.getBlockMap().getAssociation(in, Lookup.EMPTY_SUBSTRATE);
+                } else {
+                    wasGolem = true;
                 }
             }
 
@@ -246,10 +262,7 @@ public class PFSolver implements Solver {
             }
         }
 
-        if (Emitter.isEmitter(association) && (
-                world.hasRain(up)
-                || in.getFluidState().isIn(FluidTags.WATER)
-                || above.getFluidState().isIn(FluidTags.WATER))) {
+        if (Emitter.isEmitter(association) && (entity.getWorld().hasRain(up) || (!wasGolem && (in.getFluidState().isIn(FluidTags.WATER) || above.getFluidState().isIn(FluidTags.WATER))))) {
             // Only if the block is open to the sky during rain
             // or the block is submerged
             // or the block is waterlogged
@@ -275,10 +288,9 @@ public class PFSolver implements Solver {
             return Association.NOT_EMITTER;
         }
 
+        // Check for primitive in register
         BlockSoundGroup sounds = in.getSoundGroup();
         String substrate = String.format(Locale.ENGLISH, "%.2f_%.2f", sounds.volume, sounds.pitch);
-
-        // Check for primitive in register
         String primitive = isolator.getPrimitiveMap().getAssociation(sounds, substrate);
 
         if (Emitter.isResult(primitive)) {
@@ -289,12 +301,12 @@ public class PFSolver implements Solver {
     }
 
     @Override
-    public Association findAssociation(World world, BlockPos pos, String strategy) {
+    public Association findAssociation(LivingEntity ply, BlockPos pos, String strategy) {
         if (!MESSY_FOLIAGE_STRATEGY.equals(strategy)) {
             return Association.NOT_EMITTER;
         }
 
-        BlockState above = world.getBlockState(pos.up());
+        BlockState above = getBlockStateAt(ply, pos.up());
 
         String foliage = isolator.getBlockMap().getAssociation(above, Lookup.FOLIAGE_SUBSTRATE);
 

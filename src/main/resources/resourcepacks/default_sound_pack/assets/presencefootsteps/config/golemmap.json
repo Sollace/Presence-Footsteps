@@ -6,6 +6,7 @@
 	"minecraft:armor_stand@carpet": "marble",
 
 	"minecraft:boat": "wood",
+	"minecraft:chest_boat": "wood",
 	"minecraft:minecart": "metalbar",
 	"minecraft:chest_minecart": "squeakywood",
 	"minecraft:furnace_minecart": "stonemachine",

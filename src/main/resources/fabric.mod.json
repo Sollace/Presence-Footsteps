@@ -8,7 +8,6 @@
     "Hurricaaane (Ha3)", "Sollace"
   ],
   "contact": {
-    "homepage": "https://minecraft.ha3.eu/presencefootsteps",
     "sources": "https://github.com/Sollace/Presence-Footsteps",
     "issues": "https://github.com/Sollace/Presence-Footsteps/issues"
   },
@@ -36,5 +35,15 @@
   },
   "suggests": {
     "minelp": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/zKSZ8Mg",
+        "modmenu.github_releases": "https://github.com/Sollace/Presence-Footsteps/releases",
+        "modmenu.modrinth": "https://modrinth.com/mod/presence-footsteps"
+      },
+      "update_checker": true
+    }
   }
 }

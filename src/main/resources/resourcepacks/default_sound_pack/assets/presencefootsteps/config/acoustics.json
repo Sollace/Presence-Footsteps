@@ -239,7 +239,7 @@
         "array": [
           {
             "name": "grass.grass_walk",
-            "vol_min": 60,
+            "vol_min": 20,
             "vol_max": 60
           },
           {
@@ -254,7 +254,7 @@
         "array": [
           {
             "name": "grass.grass_run",
-            "vol_min": 60,
+            "vol_min": 20,
             "vol_max": 60
           },
           {

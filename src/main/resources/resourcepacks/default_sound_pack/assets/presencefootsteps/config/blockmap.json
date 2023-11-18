@@ -411,8 +411,8 @@
 	"minecraft:big_dripleaf_stem.messy": "MESSY_GROUND",
 	"minecraft:big_dripleaf_stem.foliage": "straw",
 	
-	"minecraft:moss_block": "rug,grass",
-	"minecraft:moss_carpet": "rug,grass",
+	"minecraft:moss_block": "rug",
+	"minecraft:moss_carpet": "rug",
 	"minecraft:moss_carpet.carpet": "rug,grass",
 	
 	"minecraft:azalea": "leaves",

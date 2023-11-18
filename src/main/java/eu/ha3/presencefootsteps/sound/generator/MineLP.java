@@ -1,5 +1,7 @@
 package eu.ha3.presencefootsteps.sound.generator;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.minelittlepony.api.pony.meta.Race;
 import com.minelittlepony.client.MineLittlePony;
 
@@ -24,7 +26,13 @@ public class MineLP {
 
     public static Locomotion getLocomotion(Entity entity, Locomotion fallback) {
 
+        @Nullable
         Identifier texture = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(entity).getTexture(entity);
+
+        if (texture == null) {
+            // Bad modder. /slap
+            return fallback;
+        }
 
         Race race = MineLittlePony.getInstance().getManager().getPony(texture).race();
 

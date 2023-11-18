@@ -2,6 +2,7 @@
     "required": true,
     "minVersion": "0.7",
     "package": "eu.ha3.presencefootsteps.mixins",
+    "plugin" : "eu.ha3.presencefootsteps.compat.PFMixinPlugin",
     "refmap": "presencefootsteps.mixin.refmap.json",
     "compatibilityLevel": "JAVA_17",
     "client": [
@@ -10,6 +11,7 @@
       "MClientPlayNetworkHandler",
       "MDebugHud",
       "MLivingEntity",
-      "MSoundSystem"
+      "MSoundSystem",
+      "compat.create.MEntity"
     ]
 }
