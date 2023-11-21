@@ -16,7 +16,6 @@ import com.minelittlepony.common.client.gui.element.Slider;
 
 import eu.ha3.mc.quick.update.Versions;
 import eu.ha3.presencefootsteps.util.BlockReport;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
@@ -120,12 +119,6 @@ class PFOptionsScreen extends GameGui {
         addButton(new Button(left, row += 34)
             .onClick(sender -> finish())).getStyle()
             .setText("gui.done");
-    }
-
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(context);
-        super.render(context, mouseX, mouseY, partialTicks);
     }
 
     private void redrawUpdateButton(Button button) {
