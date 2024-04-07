@@ -1,8 +1,9 @@
 {
+	"modmenu.descriptionTranslation.presencefootsteps": "足音MOD",
 	"key.presencefootsteps.settings": "設定を開く",
 	"key.presencefootsteps.toggle": "Modのオン/オフ切り替え",
 	"key.presencefootsteps.toggle.enabled": "オンになりました",
-	"key.presencefootsteps.toggle.disabled": "無効オフになりました",
+	"key.presencefootsteps.toggle.disabled": "オフになりました",
 	"pf.default_sounds.name": "デフォルトのサウンドパック",
 	"pf.default_sounds.missing": "サウンドパックが検出されませんでした。 リソースパックに移動し、%sを有効にしてください。",
 	"menu.pf.title": "Presence Footsteps 設定",
@@ -13,6 +14,7 @@
 	"menu.pf.global.players_only": "エンティティ: プレイヤーのみ",
 	"menu.pf.volume.min": "主音量: OFF",
 	"menu.pf.volume": "主音量: %d%%",
+	"menu.pf.disable_mod": "全ての音を無効化",
 	"menu.pf.volume.tooltip": "足音の主音量。足音を完全に無効にする場合は 0% に設定します。",
 	"menu.pf.volume.hostile_entities": "敵Mob: %d%%",
 	"menu.pf.volume.hostile_entities.tooltip": "敵の足音の音量を変更します。",
