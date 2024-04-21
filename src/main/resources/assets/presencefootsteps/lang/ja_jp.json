@@ -1,7 +1,7 @@
 {
-	"modmenu.descriptionTranslation.presencefootsteps": "足音MOD",
+	"modmenu.descriptionTranslation.presencefootsteps": "Presence Footsteps",
 	"key.presencefootsteps.settings": "設定を開く",
-	"key.presencefootsteps.toggle": "Modのオン/オフ切り替え",
+	"key.presencefootsteps.toggle": "オン/オフ切り替え",
 	"key.presencefootsteps.toggle.enabled": "オンになりました",
 	"key.presencefootsteps.toggle.disabled": "オフになりました",
 	"pf.default_sounds.name": "デフォルトのサウンドパック",
@@ -25,7 +25,7 @@
 	"menu.pf.volume.player": "プレイヤー: %d%%",
 	"menu.pf.volume.player.tooltip": "自分の足音の音量を変更します",
 	"menu.pf.volume.other_players": "他のプレイヤー: %d%%",
-	"menu.pf.volume.other_players.tooltip": "マルチプレイヤーでの他のプレイヤーの足音の音量を変更します。",
+	"menu.pf.volume.other_players.tooltip": "他のプレイヤーの足音の音量を変更します。",
 	"menu.pf.volume.running": "走っている時の足音の音量の増加率: %d%%",
 	"menu.pf.volume.running.tooltip": "走っているときに足音の音量をどれだけ大きくするかを調整します。\n\nこの値は合計音量に加算され、速度に応じてスケーリングされるため、速く走るほど足音が大きくなります。\n\nこれを小さい値に設定することをお勧めします。最初に、必要に応じて調整を行います。値が高いほど、効果がより顕著になります。",
 	"menu.pf.volume.wet": "濡れたブロック: %s%%",
