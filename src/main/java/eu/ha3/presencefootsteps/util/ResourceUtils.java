@@ -17,7 +17,7 @@ public interface ResourceUtils {
                 consumer.accept(stream);
                 return 1;
             } catch (Exception e) {
-                PresenceFootsteps.logger.error("Error encountered loading resource " + id + " from pack" + res.getResourcePackName(), e);
+                PresenceFootsteps.logger.error("Error encountered loading resource " + id + " from pack" + res.getPackId(), e);
                 return 0;
             }
         }).sum() > 0;
@@ -30,7 +30,7 @@ public interface ResourceUtils {
             try (Reader stream = new InputStreamReader(res.getInputStream())) {
                 consumer.accept(stream);
             } catch (Exception e) {
-                PresenceFootsteps.logger.error("Error encountered loading resource " + id + " from pack" + res.getResourcePackName(), e);
+                PresenceFootsteps.logger.error("Error encountered loading resource " + id + " from pack" + res.getPackId(), e);
             }
         }
         return !resources.isEmpty();

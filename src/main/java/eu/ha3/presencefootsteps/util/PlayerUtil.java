@@ -18,6 +18,6 @@ public interface PlayerUtil {
     }
 
     static float getScale(LivingEntity entity) {
-        return MathHelper.clamp(entity.getWidth() / entity.getType().getDimensions().width, 0.01F, 200F);
+        return MathHelper.clamp(entity.getWidth() / entity.getType().getDimensions().width(), 0.01F, 200F);
     }
 }

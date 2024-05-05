@@ -5,7 +5,7 @@ buildscript {
 }
 plugins {
     id 'java-library'
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
     id 'com.modrinth.minotaur' version '2.+'
     id 'org.ajoberstar.reckon' version '0.13.0'
@@ -14,7 +14,7 @@ apply plugin: 'dex.plugins.outlet'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
     withSourcesJar()
 }
@@ -57,7 +57,7 @@ dependencies {
     modApi "com.minelittlepony:kirin:${project.kirin_version}"
     include "com.minelittlepony:kirin:${project.kirin_version}"
 
-    modImplementation "com.minelittlepony:minelittlepony:${project.minelp_version}"
+    modCompileOnly "com.minelittlepony:minelittlepony:${project.minelp_version}"
     modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
     // modImplementation "com.github.Virtuoel:Pehkui:${project.pehkui_version}"

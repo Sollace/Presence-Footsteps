@@ -310,7 +310,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
         Association assos = associations.findAssociation(BlockPos.ofFloored(
             entity.getX(),
-            entity.getY() - 0.1D - (entity.hasVehicle() ? entity.getRidingOffset(entity.getVehicle()) : 0) - (entity.isOnGround() ? 0 : 0.25D),
+            entity.getY() - 0.1D - (entity.hasVehicle() ? entity.getVehicleAttachmentPos(entity.getVehicle()).y : 0) - (entity.isOnGround() ? 0 : 0.25D),
             entity.getZ()
         ), Solver.MESSY_FOLIAGE_STRATEGY);
 
@@ -327,7 +327,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     protected void playStep(Association association, State eventType) {
         if (engine.getConfig().getEnabledFootwear()) {
             if (entity.getEquippedStack(EquipmentSlot.FEET).getItem() instanceof ArmorItem bootItem) {
-                SoundsKey bootSound = engine.getIsolator().primitives().getAssociation(bootItem.getEquipSound(), Substrates.DEFAULT);
+                SoundsKey bootSound = engine.getIsolator().primitives().getAssociation(bootItem.getEquipSound().value(), Substrates.DEFAULT);
                 if (bootSound.isEmitter()) {
                     engine.getIsolator().acoustics().playStep(association, eventType, Options.singular("volume_percentage", 0.5F));
                     engine.getIsolator().acoustics().playAcoustic(entity, bootSound, eventType, Options.EMPTY);

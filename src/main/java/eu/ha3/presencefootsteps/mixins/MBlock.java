@@ -2,7 +2,6 @@ package eu.ha3.presencefootsteps.mixins;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -60,21 +59,5 @@ abstract class MBlockSettings implements DerivedBlock.Settings {
         if (block instanceof Block b) {
             ((DerivedBlock.Settings)info.getReturnValue()).setBaseBlock(b);
         }
-    }
-}
-
-@Pseudo
-@Mixin(targets = "net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings")
-abstract class MFabricBlockSettings {
-    @Inject(method = "copyOf(Lnet/minecraft/block/AbstractBlock;)Lnet/fabricmc/fabric/api/object/builder/v1/block/FabricBlockSettings;", at = @At("RETURN"), require = 0)
-    private static void onCopyOf(AbstractBlock block, CallbackInfoReturnable<?> info) {
-        if (block instanceof Block b) {
-            ((DerivedBlock.Settings)info.getReturnValue()).setBaseBlock(b);
-        }
-    }
-
-    @Inject(method = "copyOf(Lnet/minecraft/block/AbstractBlock$Settings;)Lnet/fabricmc/fabric/api/object/builder/v1/block/FabricBlockSettings;", at = @At("RETURN"), require = 0)
-    private static void onCopyOf(AbstractBlock.Settings settings, CallbackInfoReturnable<?> info) {
-        ((DerivedBlock.Settings)info.getReturnValue()).setBaseBlock(((DerivedBlock.Settings)settings).getBaseBlock());
     }
 }
