@@ -27,7 +27,7 @@ public class HeuristicStateLookup {
 
     @Nullable
     public Block getMostSimilar(Block block) {
-        if (block.getSoundGroup(block.getDefaultState()).getStepSound() == SoundEvents.BLOCK_GRASS_STEP) {
+        if (block.getDefaultState().getSoundGroup().getStepSound() == SoundEvents.BLOCK_GRASS_STEP) {
             return leafBlockCache.apply(block).orElse(null);
         }
         return null;

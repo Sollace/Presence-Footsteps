@@ -62,19 +62,3 @@ abstract class MBlockSettings implements DerivedBlock.Settings {
         }
     }
 }
-
-@Pseudo
-@Mixin(targets = "net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings")
-abstract class MFabricBlockSettings {
-    @Inject(method = "copyOf(Lnet/minecraft/block/AbstractBlock;)Lnet/fabricmc/fabric/api/object/builder/v1/block/FabricBlockSettings;", at = @At("RETURN"), require = 0)
-    private static void onCopyOf(AbstractBlock block, CallbackInfoReturnable<?> info) {
-        if (block instanceof Block b) {
-            ((DerivedBlock.Settings)info.getReturnValue()).setBaseBlock(b);
-        }
-    }
-
-    @Inject(method = "copyOf(Lnet/minecraft/block/AbstractBlock$Settings;)Lnet/fabricmc/fabric/api/object/builder/v1/block/FabricBlockSettings;", at = @At("RETURN"), require = 0)
-    private static void onCopyOf(AbstractBlock.Settings settings, CallbackInfoReturnable<?> info) {
-        ((DerivedBlock.Settings)info.getReturnValue()).setBaseBlock(((DerivedBlock.Settings)settings).getBaseBlock());
-    }
-}

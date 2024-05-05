@@ -15,7 +15,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 public abstract class MClientPlayNetworkHandler implements ClientPlayPacketListener {
 
     @Inject(method = "onPlaySound(Lnet/minecraft/network/packet/s2c/play/PlaySoundS2CPacket;)V",
-            at = @At(value = "INVOKE", target = "net/minectaft/client/ClientWorld.playSound("
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;playSound("
                         + "Lnet/minecraft/entity/player/PlayerEntity;"
                         + "DDD"
                         + "Lnet/minecraft/registry/entry/RegistryEntry;"

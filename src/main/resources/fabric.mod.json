@@ -28,7 +28,7 @@
   "depends": {
     "minecraft": "${minecraftVersion}",
     "fabricloader": "${loaderVersion}",
-    "java": ">=17",
+    "java": ">=21",
     "fabric-api": "${fabricVersion}",
     "kirin": "${kirinVersion}"
   },
