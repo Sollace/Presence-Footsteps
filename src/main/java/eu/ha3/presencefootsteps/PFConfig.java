@@ -29,6 +29,7 @@ public class PFConfig extends JsonFile {
     private boolean global = true;
     private boolean footwear = true;
     private boolean visualiser = false;
+    private boolean exclusive = false;
 
     private Locomotion stance = Locomotion.NONE;
     private EntitySelector targetEntities = EntitySelector.ALL;
@@ -95,6 +96,16 @@ public class PFConfig extends JsonFile {
         footwear = !footwear;
         save();
         return footwear;
+    }
+
+    public boolean isExclusiveMode() {
+        return exclusive;
+    }
+
+    public boolean toggleExclusiveMode() {
+        exclusive = !exclusive;
+        save();
+        return exclusive;
     }
 
     public boolean getEnabledMP() {
