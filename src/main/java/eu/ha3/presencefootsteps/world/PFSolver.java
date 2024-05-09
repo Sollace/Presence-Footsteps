@@ -1,5 +1,6 @@
 package eu.ha3.presencefootsteps.world;
 
+import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.compat.ContraptionCollidable;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
@@ -9,6 +10,7 @@ import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -143,59 +145,35 @@ public class PFSolver implements Solver {
     private Association findAssociation(AssociationPool associations, LivingEntity player, Box collider, BlockPos originalFootPos, BlockPos.Mutable pos) {
         Association association;
 
-        // If it didn't work, the player has walked over the air on the border of a block.
-        // ------ ------ --> z
-        // | o | < player is here
-        // wool | air |
-        // ------ ------
-        // |
-        // V z
         if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
             return association;
         }
 
-        pos.set(originalFootPos);
-        // Create a trigo. mark contained inside the block the player is over
-        double xdang = (player.getX() - pos.getX()) * 2 - 1;
-        double zdang = (player.getZ() - pos.getZ()) * 2 - 1;
-        // -1 0 1
-        // ------- -1
-        // | o |
-        // | + | 0 --> x
-        // | |
-        // ------- 1
-        // |
-        // V z
+        double radius = 0.4;
+        int[] xValues = new int[] {
+                MathHelper.floor(collider.getMin(Axis.X) - radius),
+                pos.getX(),
+                MathHelper.floor(collider.getMax(Axis.X) + radius)
+        };
+        int[] zValues = new int[] {
+                MathHelper.floor(collider.getMin(Axis.Z) - radius),
+                pos.getZ(),
+                MathHelper.floor(collider.getMax(Axis.Z) + radius)
+        };
 
-        // If the player is at the edge of that
-        if (Math.max(Math.abs(xdang), Math.abs(zdang)) <= 0.2f) {
-            return association;
+        for (int x : xValues) {
+            for (int z : zValues) {
+                if (x != originalFootPos.getX() || z != originalFootPos.getZ()) {
+                    pos.set(x, originalFootPos.getY(), z);
+                    if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
+                        return association;
+                    }
+                }
+            }
         }
-        // Find the maximum absolute value of X or Z
-        boolean isXdangMax = Math.abs(xdang) > Math.abs(zdang);
-        // --------------------- ^ maxofZ-
-        // | . . |
-        // | . . |
-        // | o . . |
-        // | . . |
-        // | . |
-        // < maxofX- maxofX+ >
-        // Take the maximum border to produce the sound
-            // If we are in the positive border, add 1, else subtract 1
-        if ((association = findAssociation(associations, player, isXdangMax
-                ? pos.move(Direction.EAST, xdang > 0 ? 1 : -1)
-                : pos.move(Direction.SOUTH, zdang > 0 ? 1 : -1), collider)).isResult()) {
-            return association;
-        }
-
-        // If that didn't work, then maybe the footstep hit in the
-        // direction of walking
-        // Try with the other closest block
         pos.set(originalFootPos);
-        // Take the maximum direction and try with the orthogonal direction of it
-        return findAssociation(associations, player, isXdangMax
-                ? pos.move(Direction.SOUTH, zdang > 0 ? 1 : -1)
-                : pos.move(Direction.EAST, xdang > 0 ? 1 : -1), collider);
+
+        return Association.NOT_EMITTER;
     }
 
     private Association findAssociation(AssociationPool associations, LivingEntity entity, BlockPos.Mutable pos, Box collider) {
@@ -223,12 +201,15 @@ public class PFSolver implements Solver {
                 pos.move(Direction.DOWN);
                 BlockState fence = getBlockStateAt(entity, pos);
 
-                if ((association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
-                    carpet = target;
-                    target = fence;
-                    // reference frame moved down by 1
-                } else {
-                    pos.move(Direction.UP);
+                // Only check fences if we're actually touching them
+                if (checkCollision(entity.getWorld(), fence, pos, collider)) {
+                    if ((association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
+                        carpet = target;
+                        target = fence;
+                        // reference frame moved down by 1
+                    } else {
+                        pos.move(Direction.UP);
+                    }
                 }
             }
 
@@ -251,7 +232,7 @@ public class PFSolver implements Solver {
 
         // Check collision against small blocks
         if (association.isResult() && !checkCollision(entity.getWorld(), target, pos, collider)) {
-            association = SoundsKey.NON_EMITTER;
+            association = SoundsKey.UNASSIGNED;
         }
 
         if (association.isEmitter() && (hasRain
