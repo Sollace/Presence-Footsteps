@@ -218,10 +218,11 @@ public class PFSolver implements Solver {
         SoundsKey foliage = SoundsKey.UNASSIGNED;
         SoundsKey wetAssociation = SoundsKey.UNASSIGNED;
 
-        if (isValidCarpet && (association = associations.get(pos, carpet, Substrates.CARPET)).isEmitter()) {
+        if (isValidCarpet && (association = associations.get(pos, carpet, Substrates.CARPET)).isEmitter() && !association.isSilent()) {
             target = carpet;
             // reference frame moved up by 1
         } else {
+            association = SoundsKey.UNASSIGNED;
             pos.move(Direction.DOWN);
             // This condition implies that if the carpet is NOT_EMITTER, solving will
             // CONTINUE with the actual block surface the player is walking on
