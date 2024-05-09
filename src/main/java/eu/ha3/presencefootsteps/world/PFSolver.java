@@ -1,6 +1,5 @@
 package eu.ha3.presencefootsteps.world;
 
-import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.compat.ContraptionCollidable;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
@@ -145,7 +144,22 @@ public class PFSolver implements Solver {
     private Association findAssociation(AssociationPool associations, LivingEntity player, Box collider, BlockPos originalFootPos, BlockPos.Mutable pos) {
         Association association;
 
+        if (engine.getConfig().isVisualiserRunning()) {
+            for (int i = 0; i < 10; i++) {
+                player.getWorld().addParticle(ParticleTypes.DOLPHIN,
+                    pos.getX() + 0.5,
+                    pos.getY() + 1,
+                    pos.getZ() + 0.5, 0, 0, 0);
+            }
+        }
+
         if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
+            if (engine.getConfig().isVisualiserRunning()) {
+                player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                        association.pos().getX() + 0.5,
+                        association.pos().getY() + 0.9,
+                        association.pos().getZ() + 0.5, 0, 0, 0);
+            }
             return association;
         }
 
@@ -165,7 +179,21 @@ public class PFSolver implements Solver {
             for (int z : zValues) {
                 if (x != originalFootPos.getX() || z != originalFootPos.getZ()) {
                     pos.set(x, originalFootPos.getY(), z);
+                    if (engine.getConfig().isVisualiserRunning()) {
+                        for (int i = 0; i < 10; i++) {
+                            player.getWorld().addParticle(ParticleTypes.DOLPHIN,
+                                pos.getX() + 0.5,
+                                pos.getY() + 1,
+                                pos.getZ() + 0.5, 0, 0, 0);
+                        }
+                    }
                     if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
+                        if (engine.getConfig().isVisualiserRunning()) {
+                            player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                                    association.pos().getX() + 0.5,
+                                    association.pos().getY() + 0.9,
+                                    association.pos().getZ() + 0.5, 0, 0, 0);
+                        }
                         return association;
                     }
                 }
