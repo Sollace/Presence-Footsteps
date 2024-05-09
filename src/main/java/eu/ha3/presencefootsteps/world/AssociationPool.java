@@ -74,15 +74,19 @@ public final class AssociationPool {
         }
 
         BlockState baseState = DerivedBlock.getBaseOf(state);
-        if (!state.isAir() && (
-            getForState(state, substrate)
+
+        if (state.isAir()) {
+            return SoundsKey.NON_EMITTER;
+        }
+
+        if (getForState(state, substrate)
             || (!baseState.isAir() && (
                     getForState(baseState, substrate)
                 || (!Substrates.isDefault(substrate) && getForState(baseState, Substrates.DEFAULT))
                 || (getForPrimitive(baseState, substrate))
             ))
             || getForPrimitive(state, substrate)
-        )) {
+        ) {
             return association;
         }
 
