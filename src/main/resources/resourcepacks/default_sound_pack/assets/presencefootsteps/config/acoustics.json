@@ -189,7 +189,7 @@
                 }
             ]
         },
-        "_SWIM": {
+        "_SWIM_WATER": {
             "type": "events",
             "swim": {
                 "type": "basic",
@@ -213,6 +213,33 @@
                 "pitch": {
                     "min": 90.0,
                     "max": 110.0
+                }
+            }
+        },
+        "_SWIM_LAVA": {
+            "type": "events",
+            "swim": {
+                "type": "basic",
+                "name": "@minecraft:entity.player.swim",
+                "volume": {
+                    "min": 10.0,
+                    "max": 100.0
+                },
+                "pitch": {
+                    "min": 9.0,
+                    "max": 11.0
+                }
+            },
+            "walk": {
+                "type": "basic",
+                "name": "@minecraft:entity.player.swim",
+                "volume": {
+                    "min": 10.0,
+                    "max": 100.0
+                },
+                "pitch": {
+                    "min": 9.0,
+                    "max": 11.0
                 }
             }
         },
@@ -573,6 +600,49 @@
             "land": [
                 "water.water_through",
                 "water_stereofix.water_through"
+            ]
+        },
+        "lavafine": {
+            "type": "events",
+            "walk": {
+                "type": "probability",
+                "entries": [
+                    1,
+                    {
+                      "name": "water.water_through",
+                      "pitch": 0.25
+                    },
+                    1,
+                    {
+                      "name": "water_stereofix.water_through",
+                      "pitch": 0.25
+                    }
+                ]
+            },
+            "wander": {
+                "type": "probability",
+                "entries": [
+                    1,
+                    {
+                      "name": "water.water_wander",
+                      "pitch": 0.25
+                    },
+                    1,
+                    {
+                      "name": "water_stereofix.water_wander",
+                      "pitch": 0.25
+                    }
+                ]
+            },
+            "land": [
+                {
+                  "name": "water.water_through",
+                  "pitch": 0.25
+                },
+                {
+                  "name": "water_stereofix.water_through",
+                  "pitch": 0.25
+                }
             ]
         },
         "composite": {

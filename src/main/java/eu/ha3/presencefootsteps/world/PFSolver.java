@@ -72,6 +72,7 @@ public class PFSolver implements Solver {
         if (!MESSY_FOLIAGE_STRATEGY.equals(strategy)) {
             return Association.NOT_EMITTER;
         }
+
         pos = pos.up();
         BlockState above = getBlockStateAt(ply, pos);
 
@@ -141,6 +142,7 @@ public class PFSolver implements Solver {
         return assos;
     }
 
+    @SuppressWarnings("deprecation")
     private Association findAssociation(AssociationPool associations, LivingEntity player, Box collider, BlockPos originalFootPos, BlockPos.Mutable pos) {
         Association association;
 
@@ -154,13 +156,15 @@ public class PFSolver implements Solver {
         }
 
         if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
-            if (engine.getConfig().isVisualiserRunning()) {
-                player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
-                        association.pos().getX() + 0.5,
-                        association.pos().getY() + 0.9,
-                        association.pos().getZ() + 0.5, 0, 0, 0);
+            if (!association.state().isLiquid()) {
+                if (engine.getConfig().isVisualiserRunning()) {
+                    player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                            association.pos().getX() + 0.5,
+                            association.pos().getY() + 0.9,
+                            association.pos().getZ() + 0.5, 0, 0, 0);
+                }
+                return association;
             }
-            return association;
         }
 
         double radius = 0.4;
@@ -188,18 +192,29 @@ public class PFSolver implements Solver {
                         }
                     }
                     if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
-                        if (engine.getConfig().isVisualiserRunning()) {
-                            player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
-                                    association.pos().getX() + 0.5,
-                                    association.pos().getY() + 0.9,
-                                    association.pos().getZ() + 0.5, 0, 0, 0);
+                        if (!association.state().isLiquid()) {
+                            if (engine.getConfig().isVisualiserRunning()) {
+                                player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                                        association.pos().getX() + 0.5,
+                                        association.pos().getY() + 0.9,
+                                        association.pos().getZ() + 0.5, 0, 0, 0);
+                            }
+                            return association;
                         }
-                        return association;
                     }
                 }
             }
         }
         pos.set(originalFootPos);
+
+        BlockState state = getBlockStateAt(player, pos);
+
+        if (state.isLiquid()) {
+            if (state.getFluidState().isIn(FluidTags.LAVA)) {
+                return Association.of(state, pos.down(), player, SoundsKey.LAVAFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
+            }
+            return Association.of(state, pos.down(), player, SoundsKey.WATERFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
+        }
 
         return Association.NOT_EMITTER;
     }
