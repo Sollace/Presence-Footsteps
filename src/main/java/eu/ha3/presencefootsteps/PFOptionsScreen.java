@@ -130,6 +130,11 @@ class PFOptionsScreen extends GameGui {
         })).getStyle()
             .setText("menu.pf.footwear." + (config.getEnabledFootwear() ? "on" : "off"));
 
+        content.addButton(new Button(wideRight, row, 150, 20).onClick(sender -> {
+            sender.getStyle().setText("menu.pf.exclusive_mode." + (config.toggleExclusiveMode() ? "on" : "off"));
+        })).getStyle()
+            .setText("menu.pf.exclusive_mode." + (config.isExclusiveMode() ? "on" : "off"));
+
         content.addButton(new Label(wideLeft, row += 25)).getStyle().setText("menu.pf.group.sound_packs");
 
         content.addButton(new Button(wideLeft, row += 25, 150, 20).onClick(sender -> {
