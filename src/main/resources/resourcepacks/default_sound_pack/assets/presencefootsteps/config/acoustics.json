@@ -593,7 +593,7 @@
             "type": "events",
             "walk": {
                 "type": "basic",
-                "name": "brush.brush_through",
+                "name": "fire_flames",
                 "pitch": {
                     "min": 70.0,
                     "max": 80.0
@@ -601,7 +601,7 @@
             },
             "jump": {
                 "type": "basic",
-                "name": "brush.brush_through",
+                "name": "fire.flames",
                 "pitch": {
                     "min": 70.0,
                     "max": 80.0
@@ -609,7 +609,7 @@
             },
             "land": {
                 "type": "basic",
-                "name": "brush.brush_through",
+                "name": "fire.flames",
                 "pitch": {
                     "min": 70.0,
                     "max": 80.0

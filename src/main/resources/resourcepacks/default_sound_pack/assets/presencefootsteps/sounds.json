@@ -43,6 +43,23 @@
       "presencefootsteps:bluntwood/bluntwood_wander5"
     ]
   },
+  "pf_presence.fire.flames": {
+    "category": "master",
+    "subtitle": "subtitles.pf.fire_flames",
+    "sounds": [
+      "presencefootsteps:brush/brush_through1",
+      "presencefootsteps:brush/brush_through10",
+      "presencefootsteps:brush/brush_through11",
+      "presencefootsteps:brush/brush_through2",
+      "presencefootsteps:brush/brush_through3",
+      "presencefootsteps:brush/brush_through4",
+      "presencefootsteps:brush/brush_through5",
+      "presencefootsteps:brush/brush_through6",
+      "presencefootsteps:brush/brush_through7",
+      "presencefootsteps:brush/brush_through8",
+      "presencefootsteps:brush/brush_through9"
+    ]
+  },
   "pf_presence.brush.brush_through": {
     "category": "master",
     "subtitle": "subtitles.pf.grass_rustles",

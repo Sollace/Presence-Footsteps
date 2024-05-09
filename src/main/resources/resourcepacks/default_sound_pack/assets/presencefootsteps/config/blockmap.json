@@ -138,10 +138,9 @@
 
 	"minecraft:cobweb": "NOT_EMITTER",
 	"minecraft:redstone_wire": "NOT_EMITTER",
-	"minecraft:fire": "NOT_EMITTER",
-	"minecraft:fire.foliage": "fire",
-	"minecraft:soul_fire": "NOT_EMITTER",
-	"minecraft:soul_fire.foliage": "fire",
+	"#minecraft:fire": "NOT_EMITTER",
+	"#minecraft:fire.carpet": "NOT_EMITTER",
+	"#minecraft:fire.foliage": "fire",
 	"minecraft:spawner": "metalbar",
 
 	"minecraft:short_grass": "NOT_EMITTER",
