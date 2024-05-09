@@ -2,7 +2,7 @@ package eu.ha3.mc.quick.update;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
+import java.net.URI;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -67,12 +67,8 @@ public class UpdateChecker {
 
     public CompletableFuture<Optional<Versions>> checkNow() {
         return cachedResult = CompletableFuture.supplyAsync(() -> {
-            try {
-                URL url = new URL(server + "?t=" + System.currentTimeMillis());
-
-                try (Reader reader = new InputStreamReader(url.openStream())) {
-                    return Optional.of(new Versions(GSON.fromJson(reader, JsonObject.class)));
-                }
+            try (Reader reader = new InputStreamReader(URI.create(server + "?t=" + System.currentTimeMillis()).toURL().openStream())) {
+                return Optional.of(new Versions(GSON.fromJson(reader, JsonObject.class)));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
