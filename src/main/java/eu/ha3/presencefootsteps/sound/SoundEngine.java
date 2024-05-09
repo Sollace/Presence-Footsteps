@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 import eu.ha3.presencefootsteps.PFConfig;
-import eu.ha3.presencefootsteps.config.EntitySelector;
 import eu.ha3.presencefootsteps.sound.player.ImmediateSoundPlayer;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
 import eu.ha3.presencefootsteps.world.Solver;
@@ -169,34 +168,11 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     public boolean onSoundRecieved(@Nullable RegistryEntry<SoundEvent> event, SoundCategory category) {
-        if (event == null || !isRunning(MinecraftClient.getInstance())) {
-            return false;
-        }
-
-        if (config.getEntitySelector() == EntitySelector.PLAYERS_ONLY && category != SoundCategory.PLAYERS) {
-            return false;
-        }
-
-        if (config.getEntitySelector() == EntitySelector.PLAYERS_AND_HOSTILES && category != SoundCategory.PLAYERS && category != SoundCategory.HOSTILE) {
-            return false;
-        }
-
-        if (config.getEntitySelector() == EntitySelector.ALL && category != SoundCategory.PLAYERS && category != SoundCategory.HOSTILE && category != SoundCategory.NEUTRAL) {
-            return false;
-        }
-
-        return event.getKeyOrValue().right().filter(sound -> {
-            if (event == SoundEvents.ENTITY_PLAYER_SWIM
+        return event != null && isRunning(MinecraftClient.getInstance()) && event.getKeyOrValue().right().filter(sound -> {
+            return event == SoundEvents.ENTITY_PLAYER_SWIM
                 || event == SoundEvents.ENTITY_PLAYER_SPLASH
                 || event == SoundEvents.ENTITY_PLAYER_BIG_FALL
-                || event == SoundEvents.ENTITY_PLAYER_SMALL_FALL) {
-                return true;
-            }
-
-            String[] name = sound.getId().getPath().split("\\.");
-            return name.length > 0
-                    && "block".contentEquals(name[0])
-                    && "step".contentEquals(name[name.length - 1]);
+                || event == SoundEvents.ENTITY_PLAYER_SMALL_FALL;
         }).isPresent();
     }
 
