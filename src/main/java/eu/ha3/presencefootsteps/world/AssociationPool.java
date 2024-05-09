@@ -76,7 +76,7 @@ public final class AssociationPool {
         BlockState baseState = DerivedBlock.getBaseOf(state);
 
         if (state.isAir()) {
-            return SoundsKey.NON_EMITTER;
+            return SoundsKey.UNASSIGNED;
         }
 
         if (getForState(state, substrate)
