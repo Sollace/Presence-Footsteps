@@ -6,8 +6,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
+import com.google.common.base.MoreObjects;
 
 import eu.ha3.presencefootsteps.config.Variator;
 import eu.ha3.presencefootsteps.mixins.ILivingEntity;
@@ -213,11 +215,12 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
         if (hasStoppingConditions()) {
             float volume = Math.min(1, (float) entity.getVelocity().length() * 0.35F);
-            Options options = Options.singular("gliding_volume", volume);
-            State state = entity.isSubmergedInWater() ? State.SWIM : event;
 
-            engine.getIsolator().acoustics().playAcoustic(entity, SoundsKey.SWIM, state, options);
-
+            engine.getIsolator().acoustics().playAcoustic(entity,
+                    entity.isTouchingWater() ? SoundsKey.SWIM_WATER : SoundsKey.SWIM_LAVA,
+                    (entity.isSubmergedInWater() || entity.isSubmergedIn(FluidTags.LAVA)) ? State.SWIM : event,
+                    Options.singular("gliding_volume", volume)
+            );
             playStep(associations.findAssociation(entity.getBlockPos().down(), Solver.MESSY_FOLIAGE_STRATEGY), event);
         } else {
             if (!entity.isSneaky() || event.isExtraLoud()) {
@@ -230,7 +233,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     }
 
     protected boolean hasStoppingConditions() {
-        return entity.isTouchingWater();
+        return entity.isTouchingWater() || entity.isInLava();
     }
 
     protected void simulateAirborne() {
@@ -310,7 +313,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
         Association assos = associations.findAssociation(BlockPos.ofFloored(
             entity.getX(),
-            entity.getY() - 0.1D - (entity.hasVehicle() ? entity.getHeightOffset() : 0) - (entity.isOnGround() ? 0 : 0.25D),
+            MoreObjects.firstNonNull(entity.getRootVehicle(), entity).getY() - 0.1D - (entity.isOnGround() ? 0 : 0.25D),
             entity.getZ()
         ), Solver.MESSY_FOLIAGE_STRATEGY);
 
