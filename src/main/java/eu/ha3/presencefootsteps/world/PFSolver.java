@@ -158,7 +158,7 @@ public class PFSolver implements Solver {
         if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
             if (!association.state().isLiquid()) {
                 if (engine.getConfig().isVisualiserRunning()) {
-                    player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                    player.getWorld().addParticle(ParticleTypes.CLOUD,
                             association.pos().getX() + 0.5,
                             association.pos().getY() + 0.9,
                             association.pos().getZ() + 0.5, 0, 0, 0);
@@ -194,7 +194,7 @@ public class PFSolver implements Solver {
                     if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
                         if (!association.state().isLiquid()) {
                             if (engine.getConfig().isVisualiserRunning()) {
-                                player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                                player.getWorld().addParticle(ParticleTypes.CLOUD,
                                         association.pos().getX() + 0.5,
                                         association.pos().getY() + 0.9,
                                         association.pos().getZ() + 0.5, 0, 0, 0);
