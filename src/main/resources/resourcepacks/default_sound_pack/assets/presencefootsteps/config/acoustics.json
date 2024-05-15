@@ -276,8 +276,8 @@
                 "type": "basic",
                 "name": "@minecraft:block.fire.extinguish",
                 "volume": {
-                    "min": 90.0,
-                    "max": 20.0
+                    "min": 20.0,
+                    "max": 80.0
                 },
                 "pitch": {
                     "min": 70.0,
@@ -288,8 +288,8 @@
                 "type": "basic",
                 "name": "@minecraft:block.fire.extinguish",
                 "volume": {
-                    "min": 8.0,
-                    "max": 10.0
+                    "min": 1.0,
+                    "max": 5.0
                 },
                 "pitch": {
                     "min": 60.000004,
@@ -299,6 +299,10 @@
             "land": {
                 "type": "basic",
                 "name": "@minecraft:block.fire.extinguish",
+                "volume": {
+                    "min": 20.0,
+                    "max": 80.0
+                },
                 "pitch": {
                     "min": 70.0,
                     "max": 80.0
@@ -307,9 +311,13 @@
             "jump": {
                 "type": "basic",
                 "name": "mud.mud_walk",
+                "volume": {
+                    "min": 1.0,
+                    "max": 5.0
+                },
                 "pitch": {
-                    "min": 60.000004,
-                    "max": 80.0
+                    "min": 30.0,
+                    "max": 60.0
                 }
             },
             "walk": [
@@ -317,6 +325,10 @@
                 {
                     "type": "basic",
                     "name": "@minecraft:block.fire.extinguish",
+                    "volume": {
+                        "min": 8.0,
+                        "max": 15.0
+                    },
                     "pitch": {
                         "min": 70.0,
                         "max": 80.0
