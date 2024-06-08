@@ -38,6 +38,10 @@ public class PresenceFootsteps implements ClientModInitializer {
     public static final Text MOD_NAME = Text.translatable("mod.presencefootsteps.name");
     private static final Text SOUND_PACK_NAME = Text.translatable("pf.default_sounds.name");
 
+    public static Identifier id(String name) {
+        return Identifier.of(MODID, name);
+    }
+
     private static PresenceFootsteps instance;
 
     public static PresenceFootsteps getInstance() {
@@ -99,7 +103,7 @@ public class PresenceFootsteps implements ClientModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(engine);
 
         FabricLoader.getInstance().getModContainer("presencefootsteps").ifPresent(container -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(new Identifier("presencefootsteps", "default_sound_pack"), container, SOUND_PACK_NAME, ResourcePackActivationType.DEFAULT_ENABLED);
+            ResourceManagerHelper.registerBuiltinResourcePack(id("default_sound_pack"), container, SOUND_PACK_NAME, ResourcePackActivationType.DEFAULT_ENABLED);
         });
     }
 

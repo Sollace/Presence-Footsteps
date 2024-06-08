@@ -68,7 +68,7 @@ public final class ImmediateSoundPlayer implements SoundPlayer {
 
         private static Identifier getSoundId(String name, Entity location) {
             if (name.indexOf(':') >= 0) {
-                return new Identifier(name);
+                return Identifier.of(name);
             }
 
             String domain = "presencefootsteps";
@@ -77,7 +77,7 @@ public final class ImmediateSoundPlayer implements SoundPlayer {
                 domain += "mono"; // Switch to mono if playing another player
             }
 
-            return new Identifier(domain, name);
+            return Identifier.of(domain, name);
         }
     }
 }

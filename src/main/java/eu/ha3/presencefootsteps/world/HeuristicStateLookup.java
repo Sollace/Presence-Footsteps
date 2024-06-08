@@ -16,7 +16,7 @@ public class HeuristicStateLookup {
         String id = Registries.BLOCK.getId(block).getPath();
 
         for (String part : id.split("_")) {
-            Optional<Block> leavesBlock = Registries.BLOCK.getOrEmpty(new Identifier(part + "_leaves"));
+            Optional<Block> leavesBlock = Registries.BLOCK.getOrEmpty(Identifier.of(part + "_leaves"));
             if (leavesBlock.isPresent()) {
                 return leavesBlock;
             }

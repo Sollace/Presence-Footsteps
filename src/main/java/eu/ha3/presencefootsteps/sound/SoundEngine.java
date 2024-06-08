@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 import eu.ha3.presencefootsteps.PFConfig;
+import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.player.ImmediateSoundPlayer;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
 import eu.ha3.presencefootsteps.world.Solver;
@@ -40,7 +41,7 @@ import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.profiler.Profiler;
 
 public class SoundEngine implements IdentifiableResourceReloadListener {
-    private static final Identifier ID = new Identifier("presencefootsteps", "sounds");
+    private static final Identifier ID = PresenceFootsteps.id("sounds");
 
     private Isolator isolator = new Isolator(this);
     private final Solver solver = new PFSolver(this);

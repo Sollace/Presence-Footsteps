@@ -3,6 +3,7 @@ package eu.ha3.presencefootsteps.sound;
 import java.io.IOException;
 import java.util.Map;
 
+import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.config.Variator;
 import eu.ha3.presencefootsteps.sound.acoustics.AcousticLibrary;
 import eu.ha3.presencefootsteps.sound.acoustics.AcousticsFile;
@@ -36,12 +37,12 @@ public record Isolator (
         Lookup<SoundEvent> primitives,
         AcousticLibrary acoustics
     ) implements Reportable {
-    private static final Identifier BLOCK_MAP = new Identifier("presencefootsteps", "config/blockmap.json");
-    private static final Identifier GOLEM_MAP = new Identifier("presencefootsteps", "config/golemmap.json");
-    private static final Identifier LOCOMOTION_MAP = new Identifier("presencefootsteps", "config/locomotionmap.json");
-    private static final Identifier PRIMITIVE_MAP = new Identifier("presencefootsteps", "config/primitivemap.json");
-    public static final Identifier ACOUSTICS = new Identifier("presencefootsteps", "config/acoustics.json");
-    private static final Identifier VARIATOR = new Identifier("presencefootsteps", "config/variator.json");
+    private static final Identifier BLOCK_MAP = PresenceFootsteps.id("config/blockmap.json");
+    private static final Identifier GOLEM_MAP = PresenceFootsteps.id("config/golemmap.json");
+    private static final Identifier LOCOMOTION_MAP = PresenceFootsteps.id("config/locomotionmap.json");
+    private static final Identifier PRIMITIVE_MAP = PresenceFootsteps.id("config/primitivemap.json");
+    public static final Identifier ACOUSTICS = PresenceFootsteps.id("config/acoustics.json");
+    private static final Identifier VARIATOR = PresenceFootsteps.id("config/variator.json");
 
     public Isolator(SoundEngine engine) {
         this(new Variator(),
