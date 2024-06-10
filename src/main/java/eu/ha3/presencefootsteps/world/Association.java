@@ -32,7 +32,7 @@ public record Association (
     }
 
     public boolean isSilent() {
-        return this == NOT_EMITTER;
+        return this == NOT_EMITTER || state.isAir();
     }
 
     public boolean dataEquals(Association other) {
