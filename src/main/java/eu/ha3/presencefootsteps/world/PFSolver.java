@@ -216,7 +216,7 @@ public class PFSolver implements Solver {
             return Association.of(state, pos.down(), player, SoundsKey.WATERFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
         }
 
-        return Association.NOT_EMITTER;
+        return association;
     }
 
     private Association findAssociation(AssociationPool associations, LivingEntity entity, BlockPos.Mutable pos, Box collider) {

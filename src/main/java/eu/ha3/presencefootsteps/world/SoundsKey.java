@@ -41,6 +41,6 @@ public record SoundsKey(String raw, String[] names) {
     }
 
     public boolean isEmitter() {
-        return isResult() && !isSilent();
+        return !isSilent();
     }
 }
