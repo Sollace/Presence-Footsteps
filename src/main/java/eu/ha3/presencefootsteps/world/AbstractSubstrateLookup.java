@@ -14,7 +14,10 @@ abstract class AbstractSubstrateLookup<T> implements Lookup<T> {
     protected abstract Identifier getId(T key);
 
     @Override
-    public SoundsKey getAssociation(T key, String substrate) {
+    public SoundsKey getAssociation(@Nullable T key, String substrate) {
+        if (key == null) {
+            return SoundsKey.UNASSIGNED;
+        }
         final Identifier id = getId(key);
         return getSubstrateMap(id, substrate).getOrDefault(id, SoundsKey.UNASSIGNED);
     }

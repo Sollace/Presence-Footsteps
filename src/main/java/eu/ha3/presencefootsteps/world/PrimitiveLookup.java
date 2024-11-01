@@ -18,7 +18,7 @@ public class PrimitiveLookup extends AbstractSubstrateLookup<SoundEvent> {
     public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
         writer.each(groups.values(), group -> {
             SoundEvent event = group.getStepSound();
-            if (full || !contains(event)) {
+            if (event != null && (full || !contains(event))) {
                 writer.field(getKey(group), getAssociation(event, getSubstrate(group)).raw());
             }
         });
