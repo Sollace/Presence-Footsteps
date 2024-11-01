@@ -17,7 +17,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -36,7 +35,6 @@ public class PresenceFootsteps implements ClientModInitializer {
     private static final String UPDATER_ENDPOINT = "https://raw.githubusercontent.com/Sollace/Presence-Footsteps/master/version/latest.json";
 
     public static final Text MOD_NAME = Text.translatable("mod.presencefootsteps.name");
-    private static final Text SOUND_PACK_NAME = Text.translatable("pf.default_sounds.name");
 
     public static Identifier id(String name) {
         return Identifier.of(MODID, name);
@@ -101,10 +99,6 @@ public class PresenceFootsteps implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(engine);
-
-        FabricLoader.getInstance().getModContainer("presencefootsteps").ifPresent(container -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(id("default_sound_pack"), container, SOUND_PACK_NAME, ResourcePackActivationType.DEFAULT_ENABLED);
-        });
     }
 
     private void onTick(MinecraftClient client) {
@@ -127,14 +121,6 @@ public class PresenceFootsteps implements ClientModInitializer {
 
             if (!FabricLoader.getInstance().isModLoaded("modmenu")) {
                 updater.attempt();
-            }
-
-            if (config.getEnabled() && !engine.hasData() && config.isFirstRun()) {
-                config.setNotFirstRun();
-                showSystemToast(
-                    Text.translatable("key.presencefootsteps.settings"),
-                    Text.translatable("pf.default_sounds.missing", SOUND_PACK_NAME)
-                );
             }
         });
     }
