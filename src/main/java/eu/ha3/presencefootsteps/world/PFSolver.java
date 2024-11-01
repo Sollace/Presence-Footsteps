@@ -281,8 +281,8 @@ public class PFSolver implements Solver {
 
         if (association.isEmitter() && (hasRain
                 || (!associations.wasLastMatchGolem() && (
-                   target.getFluidState().isIn(FluidTags.WATER)
-                || carpet.getFluidState().isIn(FluidTags.WATER)
+                   (target.getFluidState().isIn(FluidTags.WATER) && !target.isSideSolidFullSquare(entity.getWorld(), pos, Direction.UP))
+                || (carpet.getFluidState().isIn(FluidTags.WATER) && !carpet.isSideSolidFullSquare(entity.getWorld(), pos, Direction.UP))
         )))) {
             // Only if the block is open to the sky during rain
             // or the block is submerged
