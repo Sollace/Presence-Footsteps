@@ -24,7 +24,6 @@ public class PFConfig extends JsonFile {
     private int maxSteppingEntities = 50;
 
     private boolean disabled = false;
-    private boolean firstRun = true;
     private boolean multiplayer = true;
     private boolean global = true;
     private boolean footwear = true;
@@ -69,15 +68,6 @@ public class PFConfig extends JsonFile {
 
     public boolean isVisualiserRunning() {
         return visualiser;
-    }
-
-    public boolean isFirstRun() {
-        return firstRun;
-    }
-
-    public void setNotFirstRun() {
-        firstRun = false;
-        save();
     }
 
     public Locomotion getLocomotion() {

@@ -8,7 +8,7 @@ plugins {
     id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
     id 'com.modrinth.minotaur' version '2.+'
-    id 'org.ajoberstar.reckon' version '0.13.0'
+    id 'org.ajoberstar.reckon' version '0.13.1'
 }
 apply plugin: 'dex.plugins.outlet'
 
