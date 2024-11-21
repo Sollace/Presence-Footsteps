@@ -12,7 +12,7 @@
     "issues": "https://github.com/Sollace/Presence-Footsteps/issues"
   },
   "license": "MIT",
-  "icon": "resourcepacks/default_sound_pack/pack.png",
+  "icon": "logo.png",
   "environment": "client",
   "entrypoints": {
     "client": [
