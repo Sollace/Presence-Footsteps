@@ -1,15 +1,19 @@
 {
 	"latest": {
-		"minecraft": "1.21.1",
-		"version": "1.10.1"
+		"minecraft": "1.21.3",
+		"version": "1.10.2"
 	},
 	"previous": [
-		{ "minecraft": "1.20.1", "version": "1.10.0" },
-		{ "minecraft": "1.20.2", "version": "1.10.0" },
-		{ "minecraft": "1.20.3", "version": "1.10.0" },
-		{ "minecraft": "1.20.4", "version": "1.10.0" },
-		{ "minecraft": "1.20.5", "version": "1.10.0" },
-		{ "minecraft": "1.20.6", "version": "1.10.0" },
+		{ "minecraft": "1.21.1", "version": "1.10.2" },
+		{ "minecraft": "1.21.0", "version": "1.10.2" },
+		{ "minecraft": "1.21.3", "version": "1.10.1" },
+		{ "minecraft": "1.21.0", "version": "1.10.1" },
+		{ "minecraft": "1.20.1", "version": "1.10.1" },
+		{ "minecraft": "1.20.2", "version": "1.10.1" },
+		{ "minecraft": "1.20.3", "version": "1.10.1" },
+		{ "minecraft": "1.20.4", "version": "1.10.1" },
+		{ "minecraft": "1.20.5", "version": "1.10.1" },
+		{ "minecraft": "1.20.6", "version": "1.10.1" },
 		{ "minecraft": "1.20.1", "version": "1.9.2" },
 		{ "minecraft": "1.20.0", "version": "1.9.1" },
 		{ "minecraft": "1.20.0", "version": "1.9.0" },
