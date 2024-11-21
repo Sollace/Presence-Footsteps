@@ -1,7 +1,9 @@
 package eu.ha3.presencefootsteps.world;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -13,16 +15,10 @@ import net.minecraft.util.Util;
 
 public class HeuristicStateLookup {
     private final Function<Block, Optional<Block>> leafBlockCache = Util.memoize(block -> {
-        String id = Registries.BLOCK.getId(block).getPath();
-
-        for (String part : id.split("_")) {
-            Optional<Block> leavesBlock = Registries.BLOCK.getOrEmpty(Identifier.of(part + "_leaves"));
-            if (leavesBlock.isPresent()) {
-                return leavesBlock;
-            }
-        }
-
-        return Optional.empty();
+        return Stream.of(Registries.BLOCK.getId(block).getPath())
+            .flatMap(id -> Arrays.stream(id.split("_")))
+            .flatMap(part -> Registries.BLOCK.getOptionalValue(Identifier.of(part + "_leaves")).stream())
+            .findFirst();
     });
 
     @Nullable

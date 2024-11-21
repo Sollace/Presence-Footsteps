@@ -73,7 +73,7 @@ public class PFDebugHud {
             }
             list.add(String.format(Locale.ENGLISH, "Primitive Key: %s", PrimitiveLookup.getKey(state.getSoundGroup())));
             BlockPos above = pos.up();
-            boolean hasRain = client.world.isRaining() && client.world.getBiome(above).value().getPrecipitation(above) == Biome.Precipitation.RAIN;
+            boolean hasRain = client.world.isRaining() && client.world.getBiome(above).value().getPrecipitation(above, client.world.getSeaLevel()) == Biome.Precipitation.RAIN;
             boolean hasLava = client.world.getBlockState(above).getFluidState().isIn(FluidTags.LAVA);
             boolean hasWater = client.world.hasRain(above)
                     || state.getFluidState().isIn(FluidTags.WATER)

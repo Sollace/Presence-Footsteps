@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.datafixers.util.Unit;
+
 import eu.ha3.presencefootsteps.PFConfig;
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.player.ImmediateSoundPlayer;
@@ -39,6 +41,7 @@ import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.profiler.Profilers;
 
 public class SoundEngine implements IdentifiableResourceReloadListener {
     private static final Identifier ID = PresenceFootsteps.id("sounds");
@@ -170,10 +173,10 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
 
     public boolean onSoundRecieved(@Nullable RegistryEntry<SoundEvent> event, SoundCategory category) {
         return event != null && isRunning(MinecraftClient.getInstance()) && event.getKeyOrValue().right().filter(sound -> {
-            return event == SoundEvents.ENTITY_PLAYER_SWIM
-                || event == SoundEvents.ENTITY_PLAYER_SPLASH
-                || event == SoundEvents.ENTITY_PLAYER_BIG_FALL
-                || event == SoundEvents.ENTITY_PLAYER_SMALL_FALL;
+            return sound == SoundEvents.ENTITY_PLAYER_SWIM
+                || sound == SoundEvents.ENTITY_PLAYER_SPLASH
+                || sound == SoundEvents.ENTITY_PLAYER_BIG_FALL
+                || sound == SoundEvents.ENTITY_PLAYER_SMALL_FALL;
         }).isPresent();
     }
 
@@ -183,15 +186,12 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     @Override
-    public CompletableFuture<Void> reload(Synchronizer sync, ResourceManager sender,
-                                          Profiler serverProfiler, Profiler clientProfiler,
-                                          Executor serverExecutor, Executor clientExecutor) {
-        return sync.whenPrepared(null).thenRunAsync(() -> {
-            clientProfiler.startTick();
-            clientProfiler.push("Reloading PF Sounds");
+    public CompletableFuture<Void> reload(Synchronizer sync, ResourceManager sender, Executor serverExecutor, Executor clientExecutor) {
+        return sync.whenPrepared(Unit.INSTANCE).thenRunAsync(() -> {
+            Profiler profiler = Profilers.get();
+            profiler.push("Reloading PF Sounds");
             reloadEverything(sender);
-            clientProfiler.pop();
-            clientProfiler.endTick();
+            profiler.pop();
         }, clientExecutor);
     }
 

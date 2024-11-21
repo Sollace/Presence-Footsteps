@@ -74,7 +74,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
             var group = block.getDefaultState().getSoundGroup();
             if (group != null && group.getStepSound() != null) {
                 String substrate = String.format(Locale.ENGLISH, "%.2f_%.2f", group.volume, group.pitch);
-                groups.put(group.getStepSound().getId().toString() + "@" + substrate, group);
+                groups.put(group.getStepSound().id().toString() + "@" + substrate, group);
             }
 
             if (full || !contains(state)) {
@@ -104,7 +104,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
         if (group.getStepSound() == null) {
             return "NO_SOUND";
         }
-        return group.getStepSound().getId().getPath();
+        return group.getStepSound().id().getPath();
     }
 
     private String getClassData(BlockState state) {
@@ -123,7 +123,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
     }
 
     private String getTagData(BlockState state) {
-        return Registries.BLOCK.streamTags().filter(state::isIn).map(TagKey::id).map(Identifier::toString).collect(Collectors.joining(","));
+        return state.getRegistryEntry().streamTags().map(TagKey::id).map(Identifier::toString).collect(Collectors.joining(","));
     }
 
     private interface Bucket {

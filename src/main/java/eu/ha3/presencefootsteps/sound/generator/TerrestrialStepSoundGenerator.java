@@ -1,11 +1,12 @@
 package eu.ha3.presencefootsteps.sound.generator;
 
 import net.minecraft.client.network.OtherClientPlayerEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.EquippableComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
@@ -329,8 +330,10 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
     protected void playStep(Association association, State eventType) {
         if (engine.getConfig().getEnabledFootwear()) {
-            if (entity.getEquippedStack(EquipmentSlot.FEET).getItem() instanceof ArmorItem bootItem) {
-                SoundsKey bootSound = engine.getIsolator().primitives().getAssociation(bootItem.getEquipSound().value(), Substrates.DEFAULT);
+
+            EquippableComponent equipable = entity.getEquippedStack(EquipmentSlot.FEET).get(DataComponentTypes.EQUIPPABLE);
+            if (equipable != null) {
+                SoundsKey bootSound = engine.getIsolator().primitives().getAssociation(equipable.equipSound().value(), Substrates.DEFAULT);
                 if (bootSound.isEmitter()) {
                     engine.getIsolator().acoustics().playStep(association, eventType, Options.singular("volume_percentage", 0.5F));
                     engine.getIsolator().acoustics().playAcoustic(entity, bootSound, eventType, Options.EMPTY);

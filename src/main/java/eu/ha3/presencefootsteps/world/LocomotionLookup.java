@@ -9,6 +9,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.sound.BlockSoundGroup;
@@ -55,7 +56,7 @@ public class LocomotionLookup implements Index<Entity, Locomotion> {
         writer.each(Registries.ENTITY_TYPE, type -> {
             Identifier id = EntityType.getId(type);
             if (full || !contains(id)) {
-                if (type.create(MinecraftClient.getInstance().world) instanceof LivingEntity) {
+                if (type.create(MinecraftClient.getInstance().world, SpawnReason.CHUNK_GENERATION) instanceof LivingEntity) {
                     writer.field(id.toString(), values.getOrDefault(id, Locomotion.NONE).name());
                 }
             }

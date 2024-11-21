@@ -36,6 +36,7 @@ reckon {
 }
 
 repositories {
+    flatDir { dirs 'lib' }
     maven { name 'pehkui'; url 'https://jitpack.io' }
     maven { name 'modmenu'; url 'https://maven.terraformersmc.com/releases' }
     maven { name 'minelp'; url 'https://repo.minelittlepony-mod.com/maven/snapshot' }
@@ -57,7 +58,11 @@ dependencies {
     modApi "com.minelittlepony:kirin:${project.kirin_version}"
     include "com.minelittlepony:kirin:${project.kirin_version}"
 
-    modCompileOnly "com.minelittlepony:minelittlepony:${project.minelp_version}"
+    if (project.use_minelp == '1') {
+      modCompileOnly "com.minelittlepony:minelittlepony:${project.minelp_version}"
+    } else {
+      modCompileOnly "com.minelittlepony:minelittlepony-dummy:${project.minelp_version}"
+    }
     modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
     // modImplementation "com.github.Virtuoel:Pehkui:${project.pehkui_version}"

@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 public class PrimitiveLookup extends AbstractSubstrateLookup<SoundEvent> {
     @Override
     protected Identifier getId(SoundEvent key) {
-        return key.getId();
+        return key.id();
     }
 
     @Override
@@ -29,6 +29,6 @@ public class PrimitiveLookup extends AbstractSubstrateLookup<SoundEvent> {
     }
 
     public static String getKey(BlockSoundGroup group) {
-        return group.getStepSound().getId().toString() + "@" + getSubstrate(group);
+        return group.getStepSound().id().toString() + "@" + getSubstrate(group);
     }
 }
