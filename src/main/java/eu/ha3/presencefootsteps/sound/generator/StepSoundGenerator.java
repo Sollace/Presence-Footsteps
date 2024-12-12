@@ -6,6 +6,11 @@ package eu.ha3.presencefootsteps.sound.generator;
  * @author Hurry
  */
 public interface StepSoundGenerator {
+
+    float getLocalPitch(float tickDelta);
+
+    float getLocalVolume(float tickDelta);
+
     /**
      * Gets the motion tracker used to determine the direction and speed for an entity during simulation.
      */

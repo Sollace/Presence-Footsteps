@@ -59,10 +59,12 @@
 	"minecraft:cracked_deepslate_tiles": "brickstone",
 
 	"#minecraft:planks": "wood",
+	"minecraft:pale_oak_planks": "softwood",
 
 	"minecraft:bedrock": "bedrock",
 	"#minecraft:sand": "sand",
 	"minecraft:gravel": "gravel",
+	"minecraft:suspicious_gravel": "gravel",
 
 	"minecraft:diamond_ore": "ore",
 	"minecraft:copper_ore": "ore",
@@ -90,6 +92,10 @@
 	"minecraft:acacia_log": "wood",
 	"minecraft:dark_oak_log": "wood",
 	"minecraft:mangrove_log": "wood",
+	"minecraft:cherry_log": "wood",
+	"minecraft:pale_oak_log": "softwood",
+
+	"minecraft:creaking_heart": "softwood,creaking",
 
 	"minecraft:stripped_oak_log": "wood,stone",
 	"minecraft:stripped_spruce_log": "wood,stone",
@@ -98,6 +104,8 @@
 	"minecraft:stripped_acacia_log": "wood,stone",
 	"minecraft:stripped_dark_oak_log": "wood,stone",
 	"minecraft:stripped_mangrove_log": "wood,stone",
+	"minecraft:stripped_cherry_log": "wood,stone",
+	"minecraft:stripped_pale_oak_log": "softwood,stone",
 
 	"minecraft:stripped_oak_wood": "wood,stone",
 	"minecraft:stripped_spruce_wood": "wood,stone",
@@ -106,6 +114,8 @@
 	"minecraft:stripped_acacia_wood": "wood,stone",
 	"minecraft:stripped_dark_oak_wood": "wood,stone",
 	"minecraft:stripped_mangrove_wood": "wood,stone",
+	"minecraft:stripped_cherry_wood": "wood,stone",
+	"minecraft:stripped_pale_oak_wood": "softwood,stone",
 
 	"minecraft:oak_wood": "wood",
 	"minecraft:spruce_wood": "wood",
@@ -114,8 +124,11 @@
 	"minecraft:acacia_wood": "wood",
 	"minecraft:dark_oak_wood": "wood",
 	"minecraft:mangrove_wood": "wood",
+	"minecraft:cherry_wood": "wood",
+	"minecraft:pale_oak_wood": "softwood",
 
 	"#minecraft:leaves": "leaves",
+	"minecraft:pale_oak_leaves": "softleaves",
 
 	"minecraft:sponge": "organic",
 	"minecraft:wet_sponge": "mud",
@@ -171,24 +184,10 @@
 	"#minecraft:wool": "rug",
 
 	"minecraft:dandelion": "NOT_EMITTER",
-	"minecraft:poppy": "NOT_EMITTER",
-	"minecraft:blue_orchid": "NOT_EMITTER",
-	"minecraft:allium": "NOT_EMITTER",
-	"minecraft:azure_bluet": "NOT_EMITTER",
 
-	"minecraft:red_tulip": "NOT_EMITTER",
-	"minecraft:orange_tulip": "NOT_EMITTER",
-	"minecraft:white_tulip": "NOT_EMITTER",
-	"minecraft:pink_tulip": "NOT_EMITTER",
-
-	"minecraft:oxeye_daisy": "NOT_EMITTER",
-	"minecraft:oxeye_daisy.foliage": "brush",
-	"minecraft:cornflower": "NOT_EMITTER",
-	"minecraft:lily_of_the_valley": "NOT_EMITTER",
-
-	"minecraft:wither_rose": "NOT_EMITTER",
+	"#minecraft:small_flowers": "NOT_EMITTER",
+	"#minecraft:small_flowers.foliage": "brush",
 	"minecraft:wither_rose.messy": "straw",
-	"minecraft:wither_rose.foliage": "brush",
 
 	"minecraft:brown_mushroom": "NOT_EMITTER",
 	"minecraft:red_mushroom": "NOT_EMITTER",
@@ -204,6 +203,8 @@
 	"minecraft:acacia_slab": "wood",
 	"minecraft:dark_oak_slab": "wood",
 	"minecraft:mangrove_slab": "wood",
+	"minecraft:cherry_slab": "wood",
+	"minecraft:pale_oak_slab": "softwood",
 
 	"minecraft:stone_slab": "stone",
 	"minecraft:smooth_stone_slab": "marble",
@@ -242,6 +243,7 @@
 	"minecraft:soul_torch": "NOT_EMITTER",
 	"minecraft:soul_wall_torch": "NOT_EMITTER",
 	"minecraft:end_rod": "metalbar",
+	"minecraft:heavy_core": "heavymetal",
 
 	"minecraft:chorus_flower": "organic_solid",
 	"minecraft:chorus_plant": "squeakywood,organic_dry",
@@ -265,6 +267,7 @@
 	"minecraft:stone_pressure_plate": "stone",
 	"minecraft:stone_pressure_plate.carpet": "stone",
 	"#minecraft:wooden_pressure_plates": "wood",
+	"minecraft:pale_oak_pressure_plate.foliage": "softwood",
 	"#minecraft:wooden_pressure_plates.carpet": "wood",
 
 	"minecraft:lightning_rod": "copper",
@@ -376,6 +379,7 @@
 	"minecraft:mossy_stone_bricks": "brickstone",
 	"minecraft:cracked_stone_bricks": "brickstone",
 	"minecraft:chiseled_stone_bricks": "brickstone",
+	"minecraft:decorated_pot": "stone",
 
 	"minecraft:brown_mushroom_block": "mushroom",
 	"minecraft:red_mushroom_block": "mushroom",
@@ -413,7 +417,11 @@
 	"minecraft:moss_block": "rug",
 	"minecraft:moss_carpet": "rug",
 	"minecraft:moss_carpet.carpet": "rug,grass",
-	
+
+	"minecraft:pale_moss_block": "softrug",
+	"minecraft:pale_moss_carpet": "softrug",
+	"minecraft:pale_moss_carpet.carpet": "softrug,softgrass",
+
 	"minecraft:azalea": "leaves",
 	"minecraft:flowering_azalea": "leaves",
 	"minecraft:mangrove_roots": "rug,leaves",
@@ -429,15 +437,14 @@
 
 	"minecraft:spore_blossom": "NOT_EMITTER",
 	"minecraft:hanging_roots": "NOT_EMITTER",
+	"minecraft:hanging_roots.messy": "softgrass",
+	"minecraft:hanging_roots.foliage": "softgrass",
 
-	"minecraft:oak_fence_gate.bigger": "bluntwood",
-	"minecraft:spruce_fence_gate.bigger": "bluntwood",
-	"minecraft:birch_fence_gate.bigger": "bluntwood",
-	"minecraft:jungle_fence_gate.bigger": "bluntwood",
-	"minecraft:acacia_fence_gate.bigger": "bluntwood",
-	"minecraft:dark_oak_fence_gate.bigger": "bluntwood",
-	"minecraft:mangrove_fence_gate.bigger": "bluntwood",
-	"minecraft:bamboo_fence_gate.bigger": "bluntwood",
+	"minecraft:pale_hanging_moss": "NOT_EMITTER",
+	"minecraft:pale_hanging_moss.messy": "softgrass",
+	"minecraft:pale_hanging_moss.foliage": "softgrass",
+
+	"#minecraft:fence_gates.bigger": "bluntwood",
 
 	"minecraft:brick_stairs": "brickstone",
 	"minecraft:stone_brick_stairs": "brickstone",
@@ -468,6 +475,7 @@
 
 	"minecraft:crimson_stairs": "wood,mushroom",
 	"minecraft:warped_stairs": "wood,mushroom",
+	"minecraft:pale_oak_stairs": "softwood",
 	"#minecraft:wooden_stairs": "wood",
 
 	"minecraft:beacon": "glass",
@@ -487,20 +495,9 @@
 	"minecraft:end_stone_brick_wall.bigger": "brickstone",
 	"minecraft:diorite_wall.bigger": "stone,ore",
 
-	"minecraft:oak_button[face=floor].foliage": "wood",
-	"minecraft:oak_button": "NOT_EMITTER",
-	"minecraft:spruce_button[face=floor].foliage": "wood",
-	"minecraft:spruce_button": "NOT_EMITTER",
-	"minecraft:birch_button[face=floor].foliage": "wood",
-	"minecraft:birch_button": "NOT_EMITTER",
-	"minecraft:jungle_button[face=floor].foliage": "wood",
-	"minecraft:jungle_button": "NOT_EMITTER",
-	"minecraft:acacia_button[face=floor].foliage": "wood",
-	"minecraft:acacia_button": "NOT_EMITTER",
-	"minecraft:dark_oak_button[face=floor].foliage": "wood",
-	"minecraft:dark_oak_button": "NOT_EMITTER",
-	"minecraft:mangrove_button[face=floor].foliage": "wood",
-	"minecraft:mangrove_button": "NOT_EMITTER",
+	"minecraft:pale_oak_button[face=floor].foliage": "softwood",
+	"#minecraft:wooden_buttons[face=floor].foliage": "wood",
+	"#minecraft:wooden_buttons": "NOT_EMITTER",
 
 	"#minecraft:anvil": "metalcompressed,hardmetal",
 
@@ -701,6 +698,7 @@
 	"minecraft:black_concrete_powder": "sand",
 
 	"minecraft:turtle_egg": "bone",
+	"minecraft:sniffer_egg": "bone",
 	"minecraft:dragon_egg": "obsidian",
 
 	"#minecraft:coral_blocks": "organic",
@@ -841,7 +839,16 @@
 	"minecraft:wheat[age=6].foliage": "straw",
 	"minecraft:wheat[age=7].foliage": "straw",
 
-	"#minecraft:standing_signs": "NOT_EMITTER",
+	"minecraft:pitcher_plant": "NOT_EMITTER",
+	"minecraft:pitcher_plant.foliage": "brush",
+
+	"minecraft:pitcher_crop": "NOT_EMITTER",
+	"minecraft:pitcher_crop[age=1].foliage": "brush",
+	"minecraft:pitcher_crop[age=2].foliage": "brush_straw_transition",
+	"minecraft:pitcher_crop[age=3].foliage": "brush_straw_transition",
+	"minecraft:pitcher_crop[age=4].foliage": "straw",
+
+	"#minecraft:all_signs": "NOT_EMITTER",
 	"#minecraft:all_hanging_signs": "bluntwood",
 
 	"minecraft:sugar_cane": "NOT_EMITTER",
@@ -1033,5 +1040,16 @@
 	
 	"minecraft:stripped_crimson_stem": "organic_dry,mushroom,stone",
 	"minecraft:stripped_crimson_hyphae": "organic_dry,mushroom,stone",
-	"#minecraft:crimson_stems": "organic_dry,wood_sticky,mushroom"
+	"#minecraft:crimson_stems": "organic_dry,wood_sticky,mushroom",
+
+	"minecraft:resin_clump": "NOT_EMITTER",
+	"minecraft:resin_clump.carpet": "NOT_EMITTER",
+	"minecraft:resin_clump[down=true].foliage": "slick",
+
+	"minecraft:resin_block": "resin,slick",
+	"minecraft:resin_bricks": "resin",
+	"minecraft:resin_brick_stairs": "resin",
+	"minecraft:resin_brick_slab": "resin",
+	"minecraft:resin_brick_wall": "resin",
+	"minecraft:chiseled_resin_bricks": "resin"
 }

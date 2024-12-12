@@ -80,7 +80,7 @@ public class PFSolver implements Solver {
 
         // we discard the normal block association, and mark the foliage as detected
         if (foliage.isEmitter() && engine.getIsolator().blocks().getAssociation(above, Substrates.MESSY) == SoundsKey.MESSY_GROUND) {
-            return Association.of(above, pos, ply, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER, foliage);
+            return Association.of(above, pos, ply, false, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER, foliage);
         }
 
         return Association.NOT_EMITTER;
@@ -211,9 +211,9 @@ public class PFSolver implements Solver {
 
         if (state.isLiquid()) {
             if (state.getFluidState().isIn(FluidTags.LAVA)) {
-                return Association.of(state, pos.down(), player, SoundsKey.LAVAFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
+                return Association.of(state, pos.down(), player, false, SoundsKey.LAVAFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
             }
-            return Association.of(state, pos.down(), player, SoundsKey.WATERFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
+            return Association.of(state, pos.down(), player, false, SoundsKey.WATERFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
         }
 
         return association;
@@ -237,28 +237,24 @@ public class PFSolver implements Solver {
             target = carpet;
             // reference frame moved up by 1
         } else {
-            association = SoundsKey.UNASSIGNED;
-            pos.move(Direction.DOWN);
             // This condition implies that if the carpet is NOT_EMITTER, solving will
             // CONTINUE with the actual block surface the player is walking on
-            if (target.isAir()) {
+            pos.move(Direction.DOWN);
+            association = associations.get(pos, target, Substrates.DEFAULT);
+
+            // If the block surface we're on is not an emitter, check for fences below us
+            if (!association.isEmitter() || !association.isResult()) {
                 pos.move(Direction.DOWN);
                 BlockState fence = getBlockStateAt(entity, pos);
 
                 // Only check fences if we're actually touching them
-                if (checkCollision(entity.getWorld(), fence, pos, collider)) {
-                    if ((association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
-                        carpet = target;
-                        target = fence;
-                        // reference frame moved down by 1
-                    } else {
-                        pos.move(Direction.UP);
-                    }
+                if (checkCollision(entity.getWorld(), fence, pos, collider) && (association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
+                    carpet = target;
+                    target = fence;
+                    // reference frame moved down by 1
+                } else {
+                    pos.move(Direction.UP);
                 }
-            }
-
-            if (!association.isResult()) {
-                association = associations.get(pos, target, Substrates.DEFAULT);
             }
 
             if (engine.getConfig().foliageSoundsVolume.get() > 0) {
@@ -291,6 +287,6 @@ public class PFSolver implements Solver {
             wetAssociation = associations.get(pos, target, Substrates.WET);
         }
 
-        return Association.of(target, pos, entity, association, wetAssociation, foliage);
+        return Association.of(target, pos, entity, associations.wasLastMatchGolem() && entity.isOnGround(), association, wetAssociation, foliage);
     }
 }

@@ -69,6 +69,7 @@ public final class AssociationPool {
             return !e.isCollidable() || e.getBoundingBox().maxY < entity.getY() + 0.2F;
         })) {
             if ((association = engine.getIsolator().golems().getAssociation(golem.getType(), substrate)).isEmitter()) {
+                wasGolem = true;
                 return association;
             }
         }

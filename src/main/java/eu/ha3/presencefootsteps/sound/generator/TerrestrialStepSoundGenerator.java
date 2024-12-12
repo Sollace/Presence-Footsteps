@@ -7,6 +7,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
@@ -15,11 +16,13 @@ import com.google.common.base.MoreObjects;
 import eu.ha3.presencefootsteps.config.Variator;
 import eu.ha3.presencefootsteps.mixins.ILivingEntity;
 import eu.ha3.presencefootsteps.sound.State;
+import eu.ha3.presencefootsteps.util.Lerp;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import eu.ha3.presencefootsteps.world.Association;
 import eu.ha3.presencefootsteps.world.AssociationPool;
+import eu.ha3.presencefootsteps.world.BiomeVarianceLookup;
 import eu.ha3.presencefootsteps.world.Solver;
 import eu.ha3.presencefootsteps.world.SoundsKey;
 import eu.ha3.presencefootsteps.world.Substrates;
@@ -58,11 +61,24 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     protected final MotionTracker motionTracker = new MotionTracker(this);
     protected final AssociationPool associations;
 
+    private final Lerp biomePitch = new Lerp();
+    private final Lerp biomeVolume = new Lerp();
+
     public TerrestrialStepSoundGenerator(LivingEntity entity, SoundEngine engine, Modifier<TerrestrialStepSoundGenerator> modifier) {
         this.entity = entity;
         this.engine = engine;
         this.modifier = modifier;
         this.associations = new AssociationPool(entity, engine);
+    }
+
+    @Override
+    public float getLocalPitch(float tickDelta) {
+        return biomePitch.get(tickDelta);
+    }
+
+    @Override
+    public float getLocalVolume(float tickDelta) {
+        return biomeVolume.get(tickDelta);
     }
 
     @Override
@@ -72,6 +88,13 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
     @Override
     public void generateFootsteps() {
+        BiomeVarianceLookup.BiomeVariance variance = entity.getWorld().getBiome(entity.getBlockPos()).getKey().map(RegistryKey::getValue).map(key -> {
+            return engine.getIsolator().biomes().lookup(key);
+        }).orElse(BiomeVarianceLookup.BiomeVariance.DEFAULT);
+
+        biomePitch.update(variance.pitch(), 0.01F);
+        biomeVolume.update(variance.volume(), 0.01F);
+
         motionTracker.simulateMotionData(entity);
         simulateFootsteps();
         simulateAirborne();

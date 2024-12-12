@@ -78,5 +78,9 @@
 	"minecraft:allay": "NONE",
 	"minecraft:frog": "BIPED",
 	"minecraft:tadpole": "NONE",
-	"minecraft:warden": "BIPED"
+	"minecraft:warden": "BIPED",
+	"minecraft:armadillo": "QUADRUPED",
+	"minecraft:bogged": "BIPED",
+	"minecraft:breeze": "NONE",
+	"minecraft:creaking": "BIPED"
 }

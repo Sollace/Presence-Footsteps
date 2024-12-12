@@ -11,6 +11,8 @@ import net.minecraft.util.Identifier;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
+import eu.ha3.presencefootsteps.sound.StepSoundSource;
+import eu.ha3.presencefootsteps.sound.generator.StepSoundGenerator;
 
 /**
  * A Library that can also play sounds and default footsteps.
@@ -40,6 +42,13 @@ public final class ImmediateSoundPlayer implements SoundPlayer {
 
         volume *= engine.getVolumeForSource(location);
         pitch /= ((PlayerUtil.getScale(location) - 1) * 0.6F) + 1;
+
+        StepSoundGenerator generator = ((StepSoundSource) location).getStepGenerator(engine).orElse(null);
+        if (generator != null) {
+            float tickDelta = mc.getRenderTickCounter().getTickDelta(false);
+            volume *= generator.getLocalVolume(tickDelta);
+            pitch *= generator.getLocalPitch(tickDelta);
+        }
 
         PositionedSoundInstance sound = new UncappedSoundInstance(soundName, volume, pitch, location);
 

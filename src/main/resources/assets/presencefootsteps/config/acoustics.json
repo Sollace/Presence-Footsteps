@@ -88,6 +88,62 @@
                 }
             ]
         },
+        "softrug": {
+            "type": "events",
+            "walk": {
+                "name": "rug.rug_walk",
+                "volume": 30.0
+            },
+            "wander": {
+              "name": "grass.grass_wander",
+              "volume": 30
+            },
+            "land": [
+                "rug.rug_walk",
+                {
+                    "type": "delayed",
+                    "delay": 20,
+                    "acoustic": "rug.rug_walk"
+                }
+            ]
+        },
+        "heavymetal": {
+            "type": "events",
+            "walk": "@minecraft:block.heavy_core.step",
+            "run": "@minecraft:block.heavy_core.step",
+            "wander": [
+                "@minecraft:block.heavy_core.step",
+                {
+                    "type": "probability",
+                    "entries": [
+                        4,
+                        {
+                            "type": "basic",
+                            "name": "metalbox.metalbox_wander",
+                            "volume": {
+                                "min": 10.0,
+                                "max": 50.0
+                            }
+                        },
+                        7,
+                        "@"
+                    ]
+                }
+            ],
+            "land": [
+                "@minecraft:block.heavy_core.step",
+                {
+                    "type": "basic",
+                    "name": "@minecraft:block.heavy_core.step",
+                    "volume": 50.0
+                },
+                {
+                    "type": "delayed",
+                    "delay": 50,
+                    "acoustic": "metalbox.metalbox_run"
+                }
+            ]
+        },
         "hardmetal": {
             "type": "events",
             "walk": "metalbox.metalbox_walk",
@@ -505,6 +561,64 @@
                 }
             ]
         },
+        "softleaves": {
+            "type": "events",
+            "walk": [
+                {
+                  "name": "dirt.dirt_walk",
+                  "volume": 20
+                },
+                {
+                  "name": "leaves.leaves_through",
+                  "volume": 30,
+                  "pitch": 80
+                }
+            ],
+            "run": [
+              {
+                "name": "dirt.dirt_run",
+                "volume": 20
+              },
+              {
+                "name": "leaves.leaves_through",
+                "volume": 30
+              }
+            ],
+            "jump": [
+              {
+                "name": "dirt.dirt_wander",
+                "volume": 40
+              },
+              {
+                "name": "leaves.leaves_through",
+                "volume": 40
+              }
+            ],
+            "wander": {
+              "name": "dirt.dirt_wander",
+              "volume": 40
+            },
+            "land": [
+                {
+                  "name": "dirt.dirt_land",
+                  "volume": 40
+                },
+                {
+                  "name": "leaves.leaves_through",
+                  "volume": 40
+                },
+                {
+                    "type": "basic",
+                    "name": "dirt.dirt_walk",
+                    "volume": 50.0
+                },
+                {
+                    "type": "delayed",
+                    "delay": 50,
+                    "acoustic": "dirt.dirt_run"
+                }
+            ]
+        },
         "hardsteel": {
             "type": "events",
             "walk": "marble.marble_walk",
@@ -708,6 +822,45 @@
                     "type": "delayed",
                     "delay": 30,
                     "acoustic": "wood.wood_walk"
+                }
+            ]
+        },
+        "softwood": {
+            "type": "events",
+            "walk": [
+              {
+                "type": "basic",
+                "name": "wood.wood_walk",
+                "volume": 40
+              },
+              {
+                "pitch": 20,
+                "delay": 50,
+                "volume": 10,
+                "name": "squeakywood.squeakywood_walk"
+              }
+            ],
+            "wander": [
+              "dirt.dirt_wander",
+              {
+                "type": "delayed",
+                "delay": 50,
+                "pitch": 30,
+                "volume": 10,
+                "acoustic": "squeakywood.squeakywood_wander"
+              }
+            ],
+            "land": [
+                {
+                  "type": "basic",
+                  "name": "wood.wood_walk",
+                  "volume": 30
+                },
+                {
+                    "type": "delayed",
+                    "delay": 30,
+                    "acoustic": "wood.wood_walk",
+                    "volume": 30
                 }
             ]
         },
@@ -1597,6 +1750,12 @@
             "wander": "@minecraft:block.honey_block.step",
             "land": "@minecraft:block.honey_block.break"
         },
+        "creaking": {
+            "type": "events",
+            "walk": "@minecraft:block.creaking_heart.step",
+            "wander": "@minecraft:block.creaking_heart.step",
+            "land": "@minecraft:block.creaking_heart.break"
+        },
         "grass": {
             "type": "events",
             "walk": [
@@ -1641,6 +1800,61 @@
                         "volume": {
                             "min": 60.000004,
                             "max": 70.0
+                        }
+                    }
+                }
+            ]
+        },
+        "softgrass": {
+            "type": "events",
+            "walk": [
+                {
+                    "type": "basic",
+                    "name": "grass.grass_walk",
+                    "volume": {
+                        "min": 10.0,
+                        "max": 20.0
+                    }
+                },
+                {
+                    "type": "basic",
+                    "name": "brush.brush_through",
+                    "volume": 5.0
+                }
+            ],
+            "run": [
+                {
+                    "type": "basic",
+                    "name": "grass.grass_run",
+                    "volume": {
+                        "min": 10.0,
+                        "max": 30.0
+                    }
+                },
+                {
+                    "type": "basic",
+                    "name": "brush.brush_through",
+                    "volume": 20.0
+                }
+            ],
+            "wander": {
+              "name": "grass.grass_wander",
+              "volume": 20.0
+            },
+            "land": [
+                {
+                  "name": "grass.grass_run",
+                  "volume": 20.0
+                },
+                {
+                    "type": "delayed",
+                    "delay": 50,
+                    "acoustic": {
+                        "type": "basic",
+                        "name": "grass.grass_run",
+                        "volume": {
+                            "min": 30.0,
+                            "max": 40.0
                         }
                     }
                 }
@@ -2087,6 +2301,85 @@
                 {
                     "type": "delayed",
                     "delay": 50,
+                    "acoustic": "bluntwood.bluntwood_walk"
+                }
+            ]
+        },
+        "resin": {
+            "type": "events",
+            "walk": [
+                {
+                  "name": "bluntwood.bluntwood_walk",
+                  "volume": 10,
+                  "pitch": {
+                      "min": 15.0,
+                      "max": 25.0
+                  }
+                },
+                {
+                    "type": "basic",
+                    "name": "lino.lino_walk",
+                    "volume": 30,
+                    "pitch": {
+                        "min": 75.0,
+                        "max": 85.0
+                    }
+                }
+            ],
+            "run": [
+                {
+                  "name": "bluntwood.bluntwood_walk",
+                  "volume": 30,
+                  "pitch": {
+                      "min": 15.0,
+                      "max": 25.0
+                  }
+                },
+                {
+                    "type": "basic",
+                    "name": "lino.lino_run",
+                    "volume": 30,
+                    "pitch": {
+                        "min": 75.0,
+                        "max": 85.0
+                    }
+                }
+            ],
+            "wander": [
+                {
+                  "name": "bluntwood.bluntwood_wander",
+                  "volume": 10,
+                  "pitch": {
+                      "min": 15.0,
+                      "max": 25.0
+                  }
+                },
+                {
+                  "name": "marble.marble_wander",
+                  "volume": 30,
+                  "pitch": {
+                      "min": 75.0,
+                      "max": 85.0
+                  }
+                }
+            ],
+            "land": [
+                {
+                  "name": "bluntwood.bluntwood_walk",
+                  "volume": 20,
+                  "pitch": {
+                      "min": 15.0,
+                      "max": 25.0
+                  }
+                },
+                {
+                    "type": "delayed",
+                    "delay": 50,
+                    "volume": 30,
+                    "pitch": {
+                        "min": 75.0,
+                        "max": 85.0
+                    },
                     "acoustic": "bluntwood.bluntwood_walk"
                 }
             ]

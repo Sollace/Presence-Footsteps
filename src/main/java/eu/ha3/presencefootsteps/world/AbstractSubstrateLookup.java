@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.gson.JsonElement;
+
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.util.Identifier;
 
@@ -46,14 +48,14 @@ abstract class AbstractSubstrateLookup<T> implements Lookup<T> {
     }
 
     @Override
-    public void add(String key, String value) {
+    public void add(String key, JsonElement value) {
         final String[] split = key.trim().split("@");
         final String primitive = split[0];
         final String substrate = split.length > 1 ? split[1] : Substrates.DEFAULT;
 
         substrates
             .computeIfAbsent(substrate, s -> new Object2ObjectLinkedOpenHashMap<>())
-            .put(Identifier.of(primitive), SoundsKey.of(value));
+            .put(Identifier.of(primitive), SoundsKey.of(value.getAsString()));
     }
 
     @Override
