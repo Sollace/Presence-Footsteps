@@ -99,6 +99,13 @@
     "minecraft:block.copper_bulb.step": "glass",
     "minecraft:block.polished_tuff.step": "marble",
     "minecraft:block.tuff_bricks.step": "brickstone",
+    "minecraft:block.vault.step": "metalbar",
+    "minecraft:block.resin.step": "resin,slick",
+    "minecraft:block.resin_bricks.step": "resin",
+    "minecraft:block.cobweb.step": "NOT_EMITTER",
+    "minecraft:block.heavy_core.step": "heavymetal",
+    "minecraft:block.spawner.step": "metalbar",
+    "minecraft:block.creaking_heart.step": "softwood,creaking",
 
     "item.armor.equip_generic": "boots",
     "item.armor.equip_chain": "chainmail",
