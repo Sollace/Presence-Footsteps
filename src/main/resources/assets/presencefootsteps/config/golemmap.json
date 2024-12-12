@@ -11,7 +11,7 @@
 	"minecraft:dark_oak_boat": "wood",
 	"minecraft:mangrove_boat": "wood",
 	"minecraft:cherry_boat": "wood",
-	"minecraft:pale_oak_boat": "wood",
+	"minecraft:pale_oak_boat": "softwood",
 	"minecraft:bamboo_raft": "squeakywood",
 
 	"minecraft:oak_chest_boat": "wood",

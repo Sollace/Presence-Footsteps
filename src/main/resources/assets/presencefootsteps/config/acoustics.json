@@ -561,6 +561,64 @@
                 }
             ]
         },
+        "softleaves": {
+            "type": "events",
+            "walk": [
+                {
+                  "name": "dirt.dirt_walk",
+                  "volume": 20
+                },
+                {
+                  "name": "leaves.leaves_through",
+                  "volume": 30,
+                  "pitch": 80
+                }
+            ],
+            "run": [
+              {
+                "name": "dirt.dirt_run",
+                "volume": 20
+              },
+              {
+                "name": "leaves.leaves_through",
+                "volume": 30
+              }
+            ],
+            "jump": [
+              {
+                "name": "dirt.dirt_wander",
+                "volume": 40
+              },
+              {
+                "name": "leaves.leaves_through",
+                "volume": 40
+              }
+            ],
+            "wander": {
+              "name": "dirt.dirt_wander",
+              "volume": 40
+            },
+            "land": [
+                {
+                  "name": "dirt.dirt_land",
+                  "volume": 40
+                },
+                {
+                  "name": "leaves.leaves_through",
+                  "volume": 40
+                },
+                {
+                    "type": "basic",
+                    "name": "dirt.dirt_walk",
+                    "volume": 50.0
+                },
+                {
+                    "type": "delayed",
+                    "delay": 50,
+                    "acoustic": "dirt.dirt_run"
+                }
+            ]
+        },
         "hardsteel": {
             "type": "events",
             "walk": "marble.marble_walk",
@@ -773,12 +831,12 @@
               {
                 "type": "basic",
                 "name": "wood.wood_walk",
-                "volume": 80
+                "volume": 40
               },
               {
                 "pitch": 20,
                 "delay": 50,
-                "volume": 20,
+                "volume": 10,
                 "name": "squeakywood.squeakywood_walk"
               }
             ],
@@ -788,6 +846,7 @@
                 "type": "delayed",
                 "delay": 50,
                 "pitch": 30,
+                "volume": 10,
                 "acoustic": "squeakywood.squeakywood_wander"
               }
             ],
@@ -795,13 +854,13 @@
                 {
                   "type": "basic",
                   "name": "wood.wood_walk",
-                  "volume": 30.000002
+                  "volume": 30
                 },
                 {
                     "type": "delayed",
                     "delay": 30,
                     "acoustic": "wood.wood_walk",
-                    "volume": 30.000002
+                    "volume": 30
                 }
             ]
         },
