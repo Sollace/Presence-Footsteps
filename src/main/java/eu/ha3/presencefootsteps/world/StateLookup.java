@@ -77,7 +77,19 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
                 groups.put(group.getStepSound().id().toString() + "@" + substrate, group);
             }
 
-            if (full || !contains(state)) {
+            boolean excludeFromExport = false;
+            if (!full) {
+                for (String substrate : substrates.keySet()) {
+                    if (!Substrates.WET.equals(substrate)) {
+                        excludeFromExport |= substrates.get(substrate).contains(state);
+                        if (excludeFromExport) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!excludeFromExport) {
                 writer.object(Registries.BLOCK.getId(block).toString(), () -> {
                     writer.field("class", getClassData(state));
                     writer.field("tags", getTagData(state));
