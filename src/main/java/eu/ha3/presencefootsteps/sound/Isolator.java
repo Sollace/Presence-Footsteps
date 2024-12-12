@@ -57,7 +57,7 @@ public record Isolator (
 
     public boolean load(ResourceManager manager) {
         boolean hasConfigurations = false;
-        hasConfigurations |= ResourceUtils.forEachReverse(BLOCK_MAP, manager, blocks()::load);
+        hasConfigurations |= ResourceUtils.forEach(BLOCK_MAP, manager, blocks()::load);
         hasConfigurations |= ResourceUtils.forEach(GOLEM_MAP, manager, golems()::load);
         hasConfigurations |= ResourceUtils.forEach(PRIMITIVE_MAP, manager, primitives()::load);
         hasConfigurations |= ResourceUtils.forEach(LOCOMOTION_MAP, manager, locomotions()::load);
