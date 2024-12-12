@@ -237,28 +237,24 @@ public class PFSolver implements Solver {
             target = carpet;
             // reference frame moved up by 1
         } else {
-            association = SoundsKey.UNASSIGNED;
-            pos.move(Direction.DOWN);
             // This condition implies that if the carpet is NOT_EMITTER, solving will
             // CONTINUE with the actual block surface the player is walking on
-            if (target.isAir()) {
+            pos.move(Direction.DOWN);
+            association = associations.get(pos, target, Substrates.DEFAULT);
+
+            // If the block surface we're on is not an emitter, check for fences below us
+            if (!association.isEmitter() || !association.isResult()) {
                 pos.move(Direction.DOWN);
                 BlockState fence = getBlockStateAt(entity, pos);
 
                 // Only check fences if we're actually touching them
-                if (checkCollision(entity.getWorld(), fence, pos, collider)) {
-                    if ((association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
-                        carpet = target;
-                        target = fence;
-                        // reference frame moved down by 1
-                    } else {
-                        pos.move(Direction.UP);
-                    }
+                if (checkCollision(entity.getWorld(), fence, pos, collider) && (association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
+                    carpet = target;
+                    target = fence;
+                    // reference frame moved down by 1
+                } else {
+                    pos.move(Direction.UP);
                 }
-            }
-
-            if (!association.isResult()) {
-                association = associations.get(pos, target, Substrates.DEFAULT);
             }
 
             if (engine.getConfig().foliageSoundsVolume.get() > 0) {
