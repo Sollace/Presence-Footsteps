@@ -1,9 +1,13 @@
 {
 	"latest": {
-		"minecraft": "1.21.3",
-		"version": "1.10.2"
+		"minecraft": "1.21.4",
+		"version": "1.10.3"
 	},
 	"previous": [
+		{ "minecraft": "1.21.3", "version": "1.10.3" },
+		{ "minecraft": "1.21.1", "version": "1.10.3" },
+		{ "minecraft": "1.21.0", "version": "1.10.3" },
+		{ "minecraft": "1.21.3", "version": "1.10.2" },
 		{ "minecraft": "1.21.1", "version": "1.10.2" },
 		{ "minecraft": "1.21.0", "version": "1.10.2" },
 		{ "minecraft": "1.21.3", "version": "1.10.1" },
