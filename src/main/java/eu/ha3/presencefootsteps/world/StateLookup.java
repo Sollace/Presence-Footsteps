@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.gson.JsonElement;
+
 /**
  * A state lookup that finds an association for a given block state within a specific substrate (or no substrate).
  *
@@ -39,8 +41,8 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
     }
 
     @Override
-    public void add(String key, String value) {
-        SoundsKey sound = SoundsKey.of(value);
+    public void add(String key, JsonElement value) {
+        SoundsKey sound = SoundsKey.of(value.getAsString());
         if (!sound.isResult()) {
             return;
         }
