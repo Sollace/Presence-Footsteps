@@ -80,7 +80,7 @@ public class PFSolver implements Solver {
 
         // we discard the normal block association, and mark the foliage as detected
         if (foliage.isEmitter() && engine.getIsolator().blocks().getAssociation(above, Substrates.MESSY) == SoundsKey.MESSY_GROUND) {
-            return Association.of(above, pos, ply, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER, foliage);
+            return Association.of(above, pos, ply, false, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER, foliage);
         }
 
         return Association.NOT_EMITTER;
@@ -211,9 +211,9 @@ public class PFSolver implements Solver {
 
         if (state.isLiquid()) {
             if (state.getFluidState().isIn(FluidTags.LAVA)) {
-                return Association.of(state, pos.down(), player, SoundsKey.LAVAFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
+                return Association.of(state, pos.down(), player, false, SoundsKey.LAVAFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
             }
-            return Association.of(state, pos.down(), player, SoundsKey.WATERFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
+            return Association.of(state, pos.down(), player, false, SoundsKey.WATERFINE, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER);
         }
 
         return association;
@@ -291,6 +291,6 @@ public class PFSolver implements Solver {
             wetAssociation = associations.get(pos, target, Substrates.WET);
         }
 
-        return Association.of(target, pos, entity, association, wetAssociation, foliage);
+        return Association.of(target, pos, entity, associations.wasLastMatchGolem() && entity.isOnGround(), association, wetAssociation, foliage);
     }
 }
