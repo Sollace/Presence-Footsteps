@@ -102,7 +102,8 @@ modrinth {
       gameVersions.add ver
     }
     dependencies {
-       required.project 'P7dR8mSH'
-       optional.project 'JBjInUXM'
+       required.project 'P7dR8mSH' // Fabric API
+       optional.project 'JBjInUXM' // Mine Little Pony
+       embedded.project '9aNz8Zqn' // Kirin
     }
 }
