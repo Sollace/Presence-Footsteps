@@ -106,6 +106,8 @@
     "minecraft:block.heavy_core.step": "heavymetal",
     "minecraft:block.spawner.step": "metalbar",
     "minecraft:block.creaking_heart.step": "softwood,creaking",
+    "minecraft:block.leaf_litter.step": "straw",
+    "minecraft:block.iron.step": "hardmetal",
 
     "item.armor.equip_generic": "boots",
     "item.armor.equip_chain": "chainmail",

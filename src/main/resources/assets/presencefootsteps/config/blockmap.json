@@ -58,6 +58,14 @@
 	"minecraft:deepslate_tile_slab": "brickstone",
 	"minecraft:cracked_deepslate_tiles": "brickstone",
 
+	"minecraft:chiseled_tuff": "brickstone",
+	"minecraft:chiseled_tuff_bricks": "brickstone",
+
+	"minecraft:polished_tuff": "marble",
+	"minecraft:polished_tuff_slab": "marble",
+	"minecraft:polished_tuff_stairs": "marble",
+	"minecraft:polished_tuff_wall.bigger": "marble",
+
 	"#minecraft:planks": "wood",
 	"minecraft:pale_oak_planks": "softwood",
 
@@ -155,10 +163,16 @@
 	"#minecraft:fire.carpet": "NOT_EMITTER",
 	"#minecraft:fire.foliage": "fire",
 	"minecraft:spawner": "metalbar",
+	"minecraft:trial_spawner": "metalbar",
+	"minecraft:vault": "metalbar",
 
 	"minecraft:short_grass": "NOT_EMITTER",
 	"minecraft:short_grass.messy": "MESSY_GROUND",
 	"minecraft:short_grass.foliage": "brush",
+
+	"minecraft:short_dry_grass": "NOT_EMITTER",
+	"minecraft:short_dry_grass.messy": "MESSY_GROUND",
+	"minecraft:short_dry_grass.foliage": "brush",
 
 	"minecraft:fern": "NOT_EMITTER",
 	"minecraft:fern.messy": "MESSY_GROUND",
@@ -167,6 +181,14 @@
 	"minecraft:dead_bush": "NOT_EMITTER",
 	"minecraft:dead_bush.messy": "MESSY_GROUND",
 	"minecraft:dead_bush.foliage": "straw",
+
+	"minecraft:bush": "NOT_EMITTER",
+	"minecraft:bush.messy": "MESSY_GROUND",
+	"minecraft:bush.foliage": "brush",
+
+	"minecraft:firefly_bush": "NOT_EMITTER",
+	"minecraft:firefly_bush.messy": "MESSY_GROUND",
+	"minecraft:firefly_bush.foliage": "brush",
 
 	"minecraft:seagrass": "NOT_EMITTER",
 	"minecraft:seagrass.messy": "MESSY_GROUND",
@@ -192,6 +214,15 @@
 	"minecraft:brown_mushroom": "NOT_EMITTER",
 	"minecraft:red_mushroom": "NOT_EMITTER",
 
+	"minecraft:pink_petals": "NOT_EMITTER",
+	"minecraft:pink_petals.messy": "MESSY_GROUND",
+
+	"minecraft:wildflowers": "NOT_EMITTER",
+	"minecraft:wildflowers.messy": "MESSY_GROUND",
+
+	"minecraft:leaf_litter": "NOT_EMITTER",
+	"minecraft:leaf_litter.messy": "MESSY_GROUND",
+
 	"minecraft:gold_block": "hardmetal",
 	"minecraft:iron_block": "hardmetal",
 	"minecraft:netherite_block": "hollowmetal",
@@ -215,6 +246,7 @@
 	"minecraft:brick_slab": "brickstone",
 	"minecraft:stone_brick_slab": "brickstone",
 	"minecraft:nether_brick_slab": "brickstone",
+	"minecraft:tuff_brick_slab": "brickstone",
 	"minecraft:quartz_slab": "marble",
 	"minecraft:quartz_bricks": "marble",
 	"minecraft:red_sandstone_slab": "sandstone",
@@ -256,6 +288,7 @@
 	"minecraft:crafting_table": "wood",
 	"minecraft:farmland": "dirt",
 	"minecraft:furnace": "stonemachine",
+	"minecraft:crafter": "stonemachine",
 	"minecraft:ladder": "ladder_default",
 
 	"#minecraft:rails": "NOT_EMITTER",
@@ -291,6 +324,21 @@
 	"minecraft:exposed_cut_copper_slab": "copper",
 	"minecraft:weathered_cut_copper_slab": "copper",
 
+	"minecraft:copper_trapdoor": "copper",
+	"minecraft:exposed_copper_trapdoor": "copper",
+	"minecraft:oxidized_copper_trapdoor": "copper",
+	"minecraft:weathered_copper_trapdoor": "copper",
+
+	"minecraft:copper_door": "copper",
+	"minecraft:exposed_copper_door": "copper",
+	"minecraft:oxidized_copper_door": "copper",
+	"minecraft:weathered_copper_door": "copper",
+
+	"minecraft:oxidized_chiseled_copper": "copper",
+	"minecraft:weathered_chiseled_copper": "copper",
+	"minecraft:exposed_chiseled_copper": "copper",
+	"minecraft:chiseled_copper": "copper",
+
 	"minecraft:waxed_copper_block": "squeakycopper",
 	"minecraft:waxed_oxidized_copper": "squeakycopper",
 	"minecraft:waxed_exposed_copper": "squeakycopper",
@@ -310,6 +358,21 @@
 	"minecraft:waxed_oxidized_cut_copper_slab": "squeakycopper",
 	"minecraft:waxed_exposed_cut_copper_slab": "squeakycopper",
 	"minecraft:waxed_weathered_cut_copper_slab": "squeakycopper",
+
+	"minecraft:waxed_copper_trapdoor": "squeakycopper",
+	"minecraft:waxed_exposed_copper_trapdoor": "squeakycopper",
+	"minecraft:waxed_oxidized_copper_trapdoor": "squeakycopper",
+	"minecraft:waxed_weathered_copper_trapdoor": "squeakycopper",
+
+	"minecraft:waxed_copper_door": "squeakycopper",
+	"minecraft:waxed_exposed_copper_door": "squeakycopper",
+	"minecraft:waxed_oxidized_copper_door": "squeakycopper",
+	"minecraft:waxed_weathered_copper_door": "squeakycopper",
+
+	"minecraft:waxed_oxidized_chiseled_copper": "squeakycopper",
+	"minecraft:waxed_weathered_chiseled_copper": "squeakycopper",
+	"minecraft:waxed_exposed_chiseled_copper": "squeakycopper",
+	"minecraft:waxed_chiseled_copper": "squeakycopper",
 
 	"minecraft:amethyst_block": "chimes",
 	"minecraft:budding_amethyst": "chimes",
@@ -335,6 +398,8 @@
 	"minecraft:sculk_vein.carpet": "organic_solid",
 	"minecraft:sculk_sensor": "sand,mud",
 	"minecraft:sculk_sensor.foliage": "brush",
+	"minecraft:calibrated_sculk_sensor": "sand,mud",
+	"minecraft:calibrated_sculk_sensor.foliage": "brush",
 
 	"minecraft:redstone_torch": "NOT_EMITTER",
 	"minecraft:redstone_wall_torch": "NOT_EMITTER",
@@ -350,6 +415,7 @@
 	"#minecraft:ice": "ice",
 
 	"minecraft:cactus": "grass",
+	"minecraft:cactus_flower.foliage": "glass",
 	"minecraft:clay": "dirt",
 	"minecraft:jukebox": "woodutility",
 
@@ -379,6 +445,7 @@
 	"minecraft:mossy_stone_bricks": "brickstone",
 	"minecraft:cracked_stone_bricks": "brickstone",
 	"minecraft:chiseled_stone_bricks": "brickstone",
+	"minecraft:tuff_bricks": "brickstone",
 	"minecraft:decorated_pot": "stone",
 
 	"minecraft:brown_mushroom_block": "mushroom",
@@ -448,6 +515,7 @@
 
 	"minecraft:brick_stairs": "brickstone",
 	"minecraft:stone_brick_stairs": "brickstone",
+	"minecraft:tuff_brick_stairs": "brickstone",
 	"minecraft:mycelium": "grass",
 	"minecraft:lily_pad": "waterfine",
 	"minecraft:lily_pad.carpet": "waterfine",
@@ -479,6 +547,14 @@
 	"#minecraft:wooden_stairs": "wood",
 
 	"minecraft:beacon": "glass",
+	"minecraft:waxed_oxidized_copper_bulb": "glass",
+	"minecraft:waxed_weathered_copper_bulb": "glass",
+	"minecraft:waxed_exposed_copper_bulb": "glass",
+	"minecraft:waxed_copper_bulb": "glass",
+	"minecraft:oxidized_copper_bulb": "glass",
+	"minecraft:weathered_copper_bulb": "glass",
+	"minecraft:exposed_copper_bulb": "glass",
+	"minecraft:copper_bulb": "glass",
 
 	"minecraft:cobblestone_wall.bigger": "stone",
 	"minecraft:mossy_cobblestone_wall.bigger": "stone",
@@ -486,8 +562,10 @@
 	"minecraft:prismarine_wall.bigger": "stone",
 	"minecraft:red_sandstone_wall.bigger": "sandstone",
 	"minecraft:mossy_stone_brick_wall.bigger": "brickstone",
+	"minecraft:tuff_wall.bigger": "brickstone",
 	"minecraft:granite_wall.bigger": "stone,ore",
 	"minecraft:stone_brick_wall.bigger": "brickstone",
+	"minecraft:tuff_brick_wall.bigger": "brickstone",
 	"minecraft:nether_brick_wall.bigger": "brickstone",
 	"minecraft:andesite_wall.bigger": "stone",
 	"minecraft:red_nether_brick_wall.bigger": "brickstone",
@@ -565,6 +643,10 @@
 	"minecraft:tall_grass": "NOT_EMITTER",
 	"minecraft:tall_grass.messy": "MESSY_GROUND",
 	"minecraft:tall_grass.foliage": "brush_straw_transition",
+
+	"minecraft:tall_dry_grass": "NOT_EMITTER",
+	"minecraft:tall_dry_grass.messy": "MESSY_GROUND",
+	"minecraft:tall_dry_grass.foliage": "brush_straw_transition",
 
 	"minecraft:large_fern": "NOT_EMITTER",
 	"minecraft:large_fern.messy": "MESSY_GROUND",
@@ -774,6 +856,7 @@
 	"minecraft:polished_granite_stairs": "marble",
 	"minecraft:smooth_red_sandstone_stairs": "sandstone",
 	"minecraft:mossy_stone_brick_stairs": "brickstone",
+	"minecraft:tuff_stairs": "stone",
 	"minecraft:polished_diorite_stairs": "marble,ore",
 	"minecraft:mossy_cobblestone_stairs": "stone",
 	"minecraft:end_stone_brick_stairs": "brickstone",
@@ -789,6 +872,7 @@
 	"minecraft:polished_granite_slab": "marble",
 	"minecraft:smooth_red_sandstone_slab": "sandstone",
 	"minecraft:mossy_stone_brick_slab": "brickstone",
+	"minecraft:tuff_slab": "stone",
 	"minecraft:polished_diorite_slab": "marble,ore",
 	"minecraft:mossy_cobblestone_slab": "stone",
 	"minecraft:end_stone_brick_slab": "brickstone",
@@ -843,10 +927,13 @@
 	"minecraft:pitcher_plant.foliage": "brush",
 
 	"minecraft:pitcher_crop": "NOT_EMITTER",
-	"minecraft:pitcher_crop[age=1].foliage": "brush",
-	"minecraft:pitcher_crop[age=2].foliage": "brush_straw_transition",
+	"minecraft:pitcher_crop[age=1].foliage": "brush_straw_transition",
 	"minecraft:pitcher_crop[age=3].foliage": "brush_straw_transition",
 	"minecraft:pitcher_crop[age=4].foliage": "straw",
+
+	"minecraft:torchflower_crop": "NOT_EMITTER",
+	"minecraft:torchflower_crop[age=1].messy": "MESSY_GROUND",
+	"minecraft:torchflower_crop[age=1].foliage": "brush_straw_transition",
 
 	"#minecraft:all_signs": "NOT_EMITTER",
 	"#minecraft:all_hanging_signs": "bluntwood",
@@ -945,6 +1032,8 @@
 	"minecraft:repeating_command_block": "woodutility",
 	"minecraft:structure_block": "stonemachine,organic_solid,glass",
 	"minecraft:jigsaw": "stonemachine,organic_solid,glass",
+	"minecraft:test_block": "stonemachine,organic_solid,glass",
+	"minecraft:test_instance_block": "stonemachine,organic_solid,glass",
 
 	"#minecraft:banners": "rug,straw,squeakywood",
 	"#minecraft:banners.foliage": "rug,straw,squeakywood",
