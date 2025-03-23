@@ -1,32 +1,45 @@
 package eu.ha3.presencefootsteps.world;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.util.Identifier;
 
-abstract class AbstractSubstrateLookup<T> implements Lookup<T> {
-    private final Map<String, Map<Identifier, SoundsKey>> substrates = new Object2ObjectLinkedOpenHashMap<>();
+abstract class AbstractSubstrateLookup<T> implements Lookup.DataSegment<T> {
+    private final Map<String, Map<Identifier, Optional<SoundsKey>>> substrates = new Object2ObjectLinkedOpenHashMap<>();
+
+    protected AbstractSubstrateLookup(JsonObject json) {
+        json.entrySet().forEach(entry -> {
+            final String[] split = entry.getKey().trim().split("@");
+            final String primitive = split[0];
+            final String substrate = split.length > 1 ? split[1] : Substrates.DEFAULT;
+
+            substrates
+                .computeIfAbsent(substrate, s -> new Object2ObjectLinkedOpenHashMap<>())
+                .put(Identifier.of(primitive), Optional.of(SoundsKey.of(entry.getValue().getAsString())));
+        });
+    }
 
     protected abstract Identifier getId(T key);
 
     @Override
-    public SoundsKey getAssociation(@Nullable T key, String substrate) {
+    public Optional<SoundsKey> getAssociation(@Nullable T key, String substrate) {
         if (key == null) {
-            return SoundsKey.UNASSIGNED;
+            return Optional.empty();
         }
         final Identifier id = getId(key);
-        return getSubstrateMap(id, substrate).getOrDefault(id, SoundsKey.UNASSIGNED);
+        return getSubstrateMap(id, substrate).getOrDefault(id, Optional.empty());
     }
 
     @Nullable
-    protected Map<Identifier, SoundsKey> getSubstrateMap(Identifier id, String substrate) {
-        Map<Identifier, SoundsKey> primitives = substrates.get(substrate);
+    protected Map<Identifier, Optional<SoundsKey>> getSubstrateMap(Identifier id, String substrate) {
+        Map<Identifier, Optional<SoundsKey>> primitives = substrates.get(substrate);
         if (primitives != null) {
             return primitives;
         }
@@ -48,17 +61,6 @@ abstract class AbstractSubstrateLookup<T> implements Lookup<T> {
     }
 
     @Override
-    public void add(String key, JsonElement value) {
-        final String[] split = key.trim().split("@");
-        final String primitive = split[0];
-        final String substrate = split.length > 1 ? split[1] : Substrates.DEFAULT;
-
-        substrates
-            .computeIfAbsent(substrate, s -> new Object2ObjectLinkedOpenHashMap<>())
-            .put(Identifier.of(primitive), SoundsKey.of(value.getAsString()));
-    }
-
-    @Override
     public boolean contains(T key) {
         final Identifier primitive = getId(key);
 
@@ -68,5 +70,10 @@ abstract class AbstractSubstrateLookup<T> implements Lookup<T> {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean contains(T key, String substrate) {
+        return substrates.containsKey(substrate) && substrates.get(substrate).containsKey(getId(key));
     }
 }

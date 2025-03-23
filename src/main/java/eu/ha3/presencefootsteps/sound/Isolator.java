@@ -51,20 +51,20 @@ public record Isolator (
         this(new Variator(),
                 new LocomotionLookup(engine.getConfig()),
                 new HeuristicStateLookup(),
-                new GolemLookup(),
-                new StateLookup(),
+                new Lookup<>(),
+                new Lookup<>(),
                 new BiomeVarianceLookup(),
-                new PrimitiveLookup(),
+                new Lookup<>(),
                 new AcousticsPlayer(new DelayedSoundPlayer(engine.soundPlayer))
         );
     }
 
     public boolean load(ResourceManager manager) {
         boolean hasConfigurations = false;
-        hasConfigurations |= ResourceUtils.forEach(BLOCK_MAP, manager, blocks()::load);
+        hasConfigurations |= blocks().load(ResourceUtils.load(BLOCK_MAP, manager, StateLookup::new));
         hasConfigurations |= ResourceUtils.forEach(BIOME_MAP, manager, biomes()::load);
-        hasConfigurations |= ResourceUtils.forEach(GOLEM_MAP, manager, golems()::load);
-        hasConfigurations |= ResourceUtils.forEach(PRIMITIVE_MAP, manager, primitives()::load);
+        hasConfigurations |= golems().load(ResourceUtils.load(GOLEM_MAP, manager, GolemLookup::new));
+        hasConfigurations |= primitives().load(ResourceUtils.load(PRIMITIVE_MAP, manager, PrimitiveLookup::new));
         hasConfigurations |= ResourceUtils.forEach(LOCOMOTION_MAP, manager, locomotions()::load);
         hasConfigurations |= ResourceUtils.forEach(ACOUSTICS, manager, reader -> AcousticsFile.read(reader, acoustics()::addAcoustic, false));
         hasConfigurations |= ResourceUtils.forEach(VARIATOR, manager, variator()::load);
@@ -74,9 +74,10 @@ public record Isolator (
     @Override
     public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
         writer.object(() -> {
-            writer.object("blocks", () -> blocks().writeToReport(full, writer, groups));
+            writer.object("blocks", () -> StateLookup.writeToReport(blocks(), full, writer, groups));
+            writer.object("golems", () -> GolemLookup.writeToReport(golems(), full, writer, groups));
             writer.object("entities", () -> locomotions().writeToReport(full, writer, groups));
-            writer.object("primitives", () -> primitives().writeToReport(full, writer, groups));
+            writer.object("primitives", () -> PrimitiveLookup.writeToReport(primitives(), full, writer, groups));
         });
     }
 }
