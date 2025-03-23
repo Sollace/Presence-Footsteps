@@ -17,39 +17,42 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * A state lookup that finds an association for a given block state within a specific substrate (or no substrate).
  *
  * @author Sollace
  */
-public record StateLookup(Map<String, Bucket> substrates) implements Lookup<BlockState> {
+public record StateLookup(Map<String, Bucket> substrates) implements Lookup.DataSegment<BlockState> {
 
     public StateLookup() {
         this(new Object2ObjectLinkedOpenHashMap<>());
     }
 
-    @Override
-    public SoundsKey getAssociation(BlockState state, String substrate) {
-        return substrates.getOrDefault(substrate, Bucket.EMPTY).get(state).value;
+    public StateLookup(JsonObject json) {
+        this(new Object2ObjectLinkedOpenHashMap<>());
+        json.entrySet().forEach(entry -> {
+            SoundsKey sound = SoundsKey.of(entry.getValue().getAsString());
+            if (!sound.isResult()) {
+                return;
+            }
+
+            Key k = Key.of(entry.getKey(), sound);
+
+            substrates.computeIfAbsent(k.substrate, Bucket.Substrate::new).add(k);
+        });
     }
 
     @Override
-    public void add(String key, JsonElement value) {
-        SoundsKey sound = SoundsKey.of(value.getAsString());
-        if (!sound.isResult()) {
-            return;
-        }
-
-        Key k = Key.of(key, sound);
-
-        substrates.computeIfAbsent(k.substrate, Bucket.Substrate::new).add(k);
+    public Optional<SoundsKey> getAssociation(BlockState state, String substrate) {
+        return substrates.getOrDefault(substrate, Bucket.EMPTY).get(state).value;
     }
 
     @Override
@@ -69,7 +72,11 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
     }
 
     @Override
-    public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
+    public boolean contains(BlockState state, String substrate) {
+        return substrates.getOrDefault(substrate, Bucket.EMPTY).contains(state);
+    }
+
+    public static void writeToReport(Lookup<BlockState> lookup, boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
         writer.each(Registries.BLOCK, block -> {
             BlockState state = block.getDefaultState();
 
@@ -81,9 +88,9 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
 
             boolean excludeFromExport = false;
             if (!full) {
-                for (String substrate : substrates.keySet()) {
+                for (String substrate : lookup.getSubstrates()) {
                     if (!Substrates.WET.equals(substrate)) {
-                        excludeFromExport |= substrates.get(substrate).contains(state);
+                        excludeFromExport |= lookup.contains(state, substrate);
                         if (excludeFromExport) {
                             break;
                         }
@@ -97,9 +104,9 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
                     writer.field("tags", getTagData(state));
                     writer.field("sound", getSoundData(group));
                     writer.object("associations", () -> {
-                        getSubstrates().forEach(substrate -> {
+                        lookup.getSubstrates().forEach(substrate -> {
                             try {
-                                SoundsKey association = getAssociation(state, substrate);
+                                SoundsKey association = lookup.getAssociation(state, substrate);
                                 if (association.isResult()) {
                                     writer.field(substrate, association.raw());
                                 }
@@ -111,7 +118,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
         });
     }
 
-    private String getSoundData(@Nullable BlockSoundGroup group) {
+    private static String getSoundData(@Nullable BlockSoundGroup group) {
         if (group == null) {
             return "NULL";
         }
@@ -121,7 +128,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
         return group.getStepSound().getId().getPath();
     }
 
-    private String getClassData(BlockState state) {
+    private static String getClassData(BlockState state) {
         @Nullable
         String canonicalName = state.getBlock().getClass().getCanonicalName();
         if (canonicalName == null) {
@@ -136,7 +143,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
         return canonicalName;
     }
 
-    private String getTagData(BlockState state) {
+    private static String getTagData(BlockState state) {
         return Registries.BLOCK.streamTags().filter(state::isIn).map(TagKey::id).map(Identifier::toString).collect(Collectors.joining(","));
     }
 
@@ -254,12 +261,12 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
             Identifier identifier,
             String substrate,
             Set<Attribute> properties,
-            SoundsKey value,
+            Optional<SoundsKey> value,
             boolean empty,
             boolean isTag,
             boolean isWildcard
     ) {
-        public static final Key NULL = new Key(Identifier.ofVanilla("air"), "", ObjectSets.emptySet(), SoundsKey.UNASSIGNED, true, false, false);
+        public static final Key NULL = new Key(Identifier.ofVanilla("air"), "", ObjectSets.emptySet(), Optional.empty(), true, false, false);
 
         public static Key of(String key, SoundsKey value) {
             final boolean isTag = key.indexOf('#') == 0;
@@ -305,7 +312,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup<Bloc
 
             final boolean empty = properties.isEmpty();
 
-            return new Key(identifier, finalSubstrate, properties, value, empty, isTag, isWildcard);
+            return new Key(identifier, finalSubstrate, properties, Optional.of(value), empty, isTag, isWildcard);
         }
 
         boolean matches(BlockState state) {
