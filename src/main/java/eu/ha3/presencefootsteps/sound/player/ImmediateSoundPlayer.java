@@ -45,7 +45,7 @@ public final class ImmediateSoundPlayer implements SoundPlayer {
 
         StepSoundGenerator generator = ((StepSoundSource) location).getStepGenerator(engine).orElse(null);
         if (generator != null) {
-            float tickDelta = mc.getRenderTickCounter().getTickDelta(false);
+            float tickDelta = mc.getRenderTickCounter().getTickProgress(false);
             volume *= generator.getLocalVolume(tickDelta);
             pitch *= generator.getLocalPitch(tickDelta);
         }

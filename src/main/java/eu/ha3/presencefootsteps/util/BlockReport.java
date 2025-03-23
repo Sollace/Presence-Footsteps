@@ -34,7 +34,7 @@ public interface BlockReport {
             }
         }, Util.getIoWorkerExecutor()).thenAcceptAsync(loc -> {
             hud.addMessage(Text.translatable("pf.report.save", Text.literal(loc.getFileName().toString()).styled(s -> s
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, loc.toString()))
+                    .withClickEvent(new ClickEvent.OpenFile(loc.toString()))
                     .withFormatting(Formatting.UNDERLINE)))
                 .styled(s -> s
                     .withColor(Formatting.GREEN)));

@@ -36,7 +36,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     // Airborne
     protected boolean isAirborne;
 
-    protected float lastFallDistance;
+    protected double lastFallDistance;
     protected float lastReference;
     protected boolean isImmobile;
     protected long timeImmobile;

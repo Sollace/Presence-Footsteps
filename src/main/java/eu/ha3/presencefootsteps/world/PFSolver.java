@@ -148,7 +148,7 @@ public class PFSolver implements Solver {
 
         if (engine.getConfig().isVisualiserRunning()) {
             for (int i = 0; i < 10; i++) {
-                player.getWorld().addParticle(ParticleTypes.DOLPHIN,
+                player.getWorld().addParticleClient(ParticleTypes.DOLPHIN,
                     pos.getX() + 0.5,
                     pos.getY() + 1,
                     pos.getZ() + 0.5, 0, 0, 0);
@@ -158,7 +158,7 @@ public class PFSolver implements Solver {
         if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
             if (!association.state().isLiquid()) {
                 if (engine.getConfig().isVisualiserRunning()) {
-                    player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                    player.getWorld().addParticleClient(ParticleTypes.DUST_PLUME,
                             association.pos().getX() + 0.5,
                             association.pos().getY() + 0.9,
                             association.pos().getZ() + 0.5, 0, 0, 0);
@@ -185,7 +185,7 @@ public class PFSolver implements Solver {
                     pos.set(x, originalFootPos.getY(), z);
                     if (engine.getConfig().isVisualiserRunning()) {
                         for (int i = 0; i < 10; i++) {
-                            player.getWorld().addParticle(ParticleTypes.DOLPHIN,
+                            player.getWorld().addParticleClient(ParticleTypes.DOLPHIN,
                                 pos.getX() + 0.5,
                                 pos.getY() + 1,
                                 pos.getZ() + 0.5, 0, 0, 0);
@@ -194,7 +194,7 @@ public class PFSolver implements Solver {
                     if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
                         if (!association.state().isLiquid()) {
                             if (engine.getConfig().isVisualiserRunning()) {
-                                player.getWorld().addParticle(ParticleTypes.DUST_PLUME,
+                                player.getWorld().addParticleClient(ParticleTypes.DUST_PLUME,
                                         association.pos().getX() + 0.5,
                                         association.pos().getY() + 0.9,
                                         association.pos().getZ() + 0.5, 0, 0, 0);
