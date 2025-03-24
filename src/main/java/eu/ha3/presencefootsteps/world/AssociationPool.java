@@ -95,7 +95,7 @@ public final class AssociationPool {
     }
 
     private boolean getForState(BlockState state, String substrate) {
-        return (association = engine.getIsolator().blocks().getAssociation(state, substrate)).isResult();
+        return (association = engine.getIsolator().blocks(entity.getType()).getAssociation(state, substrate)).isResult();
     }
 
     private boolean getForPrimitive(BlockState state, String substrate) {
