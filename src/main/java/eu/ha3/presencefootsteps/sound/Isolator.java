@@ -77,7 +77,7 @@ public record Isolator (
 
         blocks.clear();
         blocks.putAll(ResourceUtils.loadDir(ResourceFinder.json("config/blockmaps/entity"), manager, StateLookup::new, id -> {
-            return Registries.ENTITY_TYPE.getOptionalValue(id.withPath(p -> p.replace("config/blockmaps/entity/", "").replace(".json", ""))).orElse(null);
+            return Registries.ENTITY_TYPE.getOrEmpty(id.withPath(p -> p.replace("config/blockmaps/entity/", "").replace(".json", ""))).orElse(null);
         }, entries -> {
             Lookup<BlockState> lookup = new Lookup<>();
             return lookup.load(entries, globalBlocks()) ? lookup : null;
