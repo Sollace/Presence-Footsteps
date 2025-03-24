@@ -53,7 +53,7 @@ public class PFDebugHud {
                 ? String.format("AUTO (%sDETECTED %s%s)", Formatting.BOLD, Locomotion.forPlayer(client.player, Locomotion.NONE), Formatting.RESET)
                 : config.getLocomotion(), config.getEntitySelector(), config.getEnabledFootwear()));
         list.add(String.format("Data Loaded: B%s P%s G%s",
-                engine.getIsolator().blocks().getSubstrates().size(),
+                engine.getIsolator().globalBlocks().getSubstrates().size(),
                 engine.getIsolator().primitives().getSubstrates().size(),
                 engine.getIsolator().golems().getSubstrates().size()
         ));
@@ -83,7 +83,7 @@ public class PFDebugHud {
                             : hasWater ? Formatting.BLUE + "WET"
                             : hasRain ? Formatting.GRAY + "SHELTERED" : Formatting.GRAY + "DRY"
             ));
-            renderSoundList("Step Sounds[B]", engine.getIsolator().blocks().getAssociations(state), list);
+            renderSoundList("Step Sounds[B]", engine.getIsolator().globalBlocks().getAssociations(state), list);
             renderSoundList("Step Sounds[P]", engine.getIsolator().primitives().getAssociations(state.getSoundGroup().getStepSound()), list);
             list.add("");
 

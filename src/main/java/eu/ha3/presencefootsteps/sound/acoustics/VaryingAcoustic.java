@@ -50,9 +50,9 @@ record VaryingAcoustic(
             return;
         }
 
-        final float finalVolume = inputOptions.containsKey("gliding_volume")
+        final float finalVolume = (inputOptions.containsKey("gliding_volume")
                 ? volume.on(inputOptions.get("gliding_volume"))
-                : volume.random(player.getRNG());
+                : volume.random(player.getRNG())) * inputOptions.getOrDefault("volume_scale", 1F);
 
         final float finalPitch = inputOptions.containsKey("gliding_pitch")
                 ? pitch.on(inputOptions.get("gliding_pitch"))

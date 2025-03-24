@@ -1,6 +1,7 @@
 package eu.ha3.presencefootsteps.sound;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
@@ -24,6 +25,8 @@ import eu.ha3.presencefootsteps.world.StateLookup;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.registry.Registries;
+import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
@@ -34,7 +37,8 @@ public record Isolator (
         Index<Entity, Locomotion> locomotions,
         HeuristicStateLookup heuristics,
         Lookup<EntityType<?>> golems,
-        Lookup<BlockState> blocks,
+        Lookup<BlockState> globalBlocks,
+        Map<EntityType<?>, Lookup<BlockState>> blocks,
         Index<Identifier, BiomeVarianceLookup.BiomeVariance> biomes,
         Lookup<SoundEvent> primitives,
         AcousticLibrary acoustics
@@ -53,15 +57,32 @@ public record Isolator (
                 new HeuristicStateLookup(),
                 new Lookup<>(),
                 new Lookup<>(),
+                new HashMap<>(),
                 new BiomeVarianceLookup(),
                 new Lookup<>(),
                 new AcousticsPlayer(new DelayedSoundPlayer(engine.soundPlayer))
         );
     }
 
+    public Lookup<BlockState> blocks(EntityType<?> sourceType) {
+        if (sourceType == EntityType.PLAYER) {
+            return globalBlocks();
+        }
+        return blocks.getOrDefault(sourceType, globalBlocks());
+    }
+
     public boolean load(ResourceManager manager) {
         boolean hasConfigurations = false;
-        hasConfigurations |= blocks().load(ResourceUtils.load(BLOCK_MAP, manager, StateLookup::new));
+        hasConfigurations |= globalBlocks().load(ResourceUtils.load(BLOCK_MAP, manager, StateLookup::new));
+
+        blocks.clear();
+        blocks.putAll(ResourceUtils.loadDir(ResourceFinder.json("config/blockmaps/entity"), manager, StateLookup::new, id -> {
+            return Registries.ENTITY_TYPE.getOptionalValue(id.withPath(p -> p.replace("config/blockmaps/entity/", "").replace(".json", ""))).orElse(null);
+        }, entries -> {
+            Lookup<BlockState> lookup = new Lookup<>();
+            return lookup.load(entries, globalBlocks()) ? lookup : null;
+        }));
+        hasConfigurations |= !blocks.isEmpty();
         hasConfigurations |= ResourceUtils.forEach(BIOME_MAP, manager, biomes()::load);
         hasConfigurations |= golems().load(ResourceUtils.load(GOLEM_MAP, manager, GolemLookup::new));
         hasConfigurations |= primitives().load(ResourceUtils.load(PRIMITIVE_MAP, manager, PrimitiveLookup::new));
@@ -74,7 +95,7 @@ public record Isolator (
     @Override
     public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
         writer.object(() -> {
-            writer.object("blocks", () -> StateLookup.writeToReport(blocks(), full, writer, groups));
+            writer.object("blocks", () -> StateLookup.writeToReport(globalBlocks(), full, writer, groups));
             writer.object("golems", () -> GolemLookup.writeToReport(golems(), full, writer, groups));
             writer.object("entities", () -> locomotions().writeToReport(full, writer, groups));
             writer.object("primitives", () -> PrimitiveLookup.writeToReport(primitives(), full, writer, groups));
