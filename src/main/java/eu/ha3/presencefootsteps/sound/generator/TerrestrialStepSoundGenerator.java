@@ -243,6 +243,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
                     entity.isTouchingWater() ? SoundsKey.SWIM_WATER : SoundsKey.SWIM_LAVA,
                     (entity.isSubmergedInWater() || entity.isSubmergedIn(FluidTags.LAVA)) ? State.SWIM : event,
                     Options.singular("gliding_volume", volume)
+                    .and(Options.singular("volume_scale", PlayerUtil.isClientPlayer(entity) ? 1 : 0.125F))
             );
             playStep(associations.findAssociation(entity.getBlockPos().down(), Solver.MESSY_FOLIAGE_STRATEGY), event);
         } else {
