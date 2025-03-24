@@ -76,6 +76,11 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
         return substrates.getOrDefault(substrate, Bucket.EMPTY).contains(state);
     }
 
+    @Override
+    public boolean isEmpty() {
+        return substrates.isEmpty();
+    }
+
     public static void writeToReport(Lookup<BlockState> lookup, boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
         writer.each(Registries.BLOCK, block -> {
             BlockState state = block.getDefaultState();

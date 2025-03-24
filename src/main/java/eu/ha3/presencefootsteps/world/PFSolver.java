@@ -76,10 +76,11 @@ public class PFSolver implements Solver {
         pos = pos.up();
         BlockState above = getBlockStateAt(ply, pos);
 
-        SoundsKey foliage = engine.getIsolator().blocks().getAssociation(above, Substrates.FOLIAGE);
+        Lookup<BlockState> lookup = engine.getIsolator().blocks(ply.getType());
+        SoundsKey foliage = lookup.getAssociation(above, Substrates.FOLIAGE);
 
         // we discard the normal block association, and mark the foliage as detected
-        if (foliage.isEmitter() && engine.getIsolator().blocks().getAssociation(above, Substrates.MESSY) == SoundsKey.MESSY_GROUND) {
+        if (foliage.isEmitter() && lookup.getAssociation(above, Substrates.MESSY) == SoundsKey.MESSY_GROUND) {
             return Association.of(above, pos, ply, false, SoundsKey.NON_EMITTER, SoundsKey.NON_EMITTER, foliage);
         }
 

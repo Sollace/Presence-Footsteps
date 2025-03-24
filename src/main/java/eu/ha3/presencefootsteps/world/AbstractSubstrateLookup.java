@@ -76,4 +76,9 @@ abstract class AbstractSubstrateLookup<T> implements Lookup.DataSegment<T> {
     public boolean contains(T key, String substrate) {
         return substrates.containsKey(substrate) && substrates.get(substrate).containsKey(getId(key));
     }
+
+    @Override
+    public boolean isEmpty() {
+        return substrates.isEmpty();
+    }
 }
