@@ -1,33 +1,25 @@
 package eu.ha3.presencefootsteps.sound;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.stream.Stream;
-
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.datafixers.util.Unit;
-
 import eu.ha3.presencefootsteps.PFConfig;
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.player.ImmediateSoundPlayer;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
-import eu.ha3.presencefootsteps.world.Solver;
 import eu.ha3.presencefootsteps.world.PFSolver;
+import eu.ha3.presencefootsteps.world.Solver;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.stream.Stream;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.mob.FlyingEntity;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.ShulkerEntity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.entity.mob.*;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
@@ -42,6 +34,7 @@ import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
+import org.jetbrains.annotations.Nullable;
 
 public class SoundEngine implements IdentifiableResourceReloadListener {
     private static final Identifier ID = PresenceFootsteps.id("sounds");
@@ -116,21 +109,32 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     private Stream<? extends Entity> getTargets(final Entity cameraEntity) {
-        final List<? extends Entity> entities = cameraEntity.getWorld().getOtherEntities(null, cameraEntity.getBoundingBox().expand(16), e -> {
-            return e instanceof LivingEntity
-                    && !(e instanceof WaterCreatureEntity)
-                    && !(e instanceof FlyingEntity)
-                    && !(e instanceof ShulkerEntity
+        final List<? extends Entity> entities =
+                cameraEntity.getWorld().getOtherEntities(null, cameraEntity.getBoundingBox().expand(16), e -> {
+                    return e instanceof LivingEntity
+                            && !(e instanceof WaterCreatureEntity)
+                            && !(e instanceof BatEntity)
+                            && !(e instanceof BlazeEntity)
+                            && !(e instanceof BeeEntity)
+                            && !(e instanceof EnderDragonEntity)
+                            && !(e instanceof GhastEntity)
+                            && !(e instanceof ParrotEntity)
+                            && !(e instanceof PhantomEntity)
+                            && !(e instanceof VexEntity)
+                            && !(e instanceof WitherEntity)
+                            && !(e instanceof ChickenEntity)
+                            && !(e instanceof AllayEntity)
+                            && !(e instanceof ShulkerEntity
                             || e instanceof ArmorStandEntity
                             || e instanceof BoatEntity
                             || e instanceof AbstractMinecartEntity)
-                        && !isolator.golems().contains(e.getType())
-                        && !e.hasVehicle()
-                        && !((LivingEntity)e).isSleeping()
-                        && (!(e instanceof PlayerEntity) || !e.isSpectator())
-                        && e.squaredDistanceTo(cameraEntity) <= 256
-                        && config.getEntitySelector().test(e);
-        });
+                            && !isolator.golems().contains(e.getType())
+                            && !e.hasVehicle()
+                            && !((LivingEntity) e).isSleeping()
+                            && (!(e instanceof PlayerEntity) || !e.isSpectator())
+                            && e.squaredDistanceTo(cameraEntity) <= 256
+                            && config.getEntitySelector().test(e);
+                });
 
         final Comparator<Entity> nearest = Comparator.comparingDouble(e -> e.squaredDistanceTo(cameraEntity));
 
@@ -139,10 +143,12 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
         }
         Set<Integer> alreadyVisited = new HashSet<>();
         return entities.stream()
-            .sorted(nearest)
-                    // Always play sounds for players and the entities closest to the camera
-                        // If multiple entities share the same block, only play sounds for one of each distinct type
-            .filter(e -> e == cameraEntity || e instanceof PlayerEntity || (alreadyVisited.size() < config.getMaxSteppingEntities() && alreadyVisited.add(Objects.hash(e.getType(), e.getBlockPos()))));
+                .sorted(nearest)
+                // Always play sounds for players and the entities closest to the camera
+                // If multiple entities share the same block, only play sounds for one of each distinct type
+                .filter(e -> e == cameraEntity || e instanceof PlayerEntity ||
+                        (alreadyVisited.size() < config.getMaxSteppingEntities() &&
+                                alreadyVisited.add(Objects.hash(e.getType(), e.getBlockPos()))));
     }
 
     public void onFrame(MinecraftClient client, Entity cameraEntity) {
@@ -172,12 +178,13 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     public boolean onSoundRecieved(@Nullable RegistryEntry<SoundEvent> event, SoundCategory category) {
-        return event != null && isRunning(MinecraftClient.getInstance()) && event.getKeyOrValue().right().filter(sound -> {
-            return sound == SoundEvents.ENTITY_PLAYER_SWIM
-                || sound == SoundEvents.ENTITY_PLAYER_SPLASH
-                || sound == SoundEvents.ENTITY_PLAYER_BIG_FALL
-                || sound == SoundEvents.ENTITY_PLAYER_SMALL_FALL;
-        }).isPresent();
+        return event != null && isRunning(MinecraftClient.getInstance()) &&
+                event.getKeyOrValue().right().filter(sound -> {
+                    return sound == SoundEvents.ENTITY_PLAYER_SWIM
+                            || sound == SoundEvents.ENTITY_PLAYER_SPLASH
+                            || sound == SoundEvents.ENTITY_PLAYER_BIG_FALL
+                            || sound == SoundEvents.ENTITY_PLAYER_SMALL_FALL;
+                }).isPresent();
     }
 
     @Override
@@ -186,7 +193,8 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     @Override
-    public CompletableFuture<Void> reload(Synchronizer sync, ResourceManager sender, Executor serverExecutor, Executor clientExecutor) {
+    public CompletableFuture<Void> reload(Synchronizer sync, ResourceManager sender, Executor serverExecutor,
+                                          Executor clientExecutor) {
         return sync.whenPrepared(Unit.INSTANCE).thenRunAsync(() -> {
             Profiler profiler = Profilers.get();
             profiler.push("Reloading PF Sounds");

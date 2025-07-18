@@ -59,14 +59,15 @@ public final class AssociationPool {
     /**
      * Gets matching acoustic names for the supplied position, state, and substrate.
      *
-     * @param pos           The block position being queried.
-     * @param state         The block state found at the queried position.
-     * @param substrate     The substrate corresponding to the stage of lookup being performed. One of the values in {@link Substrates}
+     * @param pos       The block position being queried.
+     * @param state     The block state found at the queried position.
+     * @param substrate The substrate corresponding to the stage of lookup being performed. One of the values in
+     * {@link Substrates}
      * @return The matching acoustic names or {@link Emitter#UNASSIGNED} if no match could be determined.
      */
     public SoundsKey get(BlockPos pos, BlockState state, String substrate) {
         for (Entity golem : entity.getWorld().getOtherEntities(entity, new Box(pos).expand(0.5, 0, 0.5), e -> {
-            return !e.isCollidable() || e.getBoundingBox().maxY < entity.getY() + 0.2F;
+            return !e.isCollidable(entity) || e.getBoundingBox().maxY < entity.getY() + 0.2F;
         })) {
             if ((association = engine.getIsolator().golems().getAssociation(golem.getType(), substrate)).isEmitter()) {
                 wasGolem = true;
@@ -81,12 +82,12 @@ public final class AssociationPool {
         }
 
         if (getForState(state, substrate)
-            || (!baseState.isAir() && (
-                    getForState(baseState, substrate)
-                || (!Substrates.isDefault(substrate) && getForState(baseState, Substrates.DEFAULT))
-                || (getForPrimitive(baseState, substrate))
-            ))
-            || getForPrimitive(state, substrate)
+                || (!baseState.isAir() && (
+                getForState(baseState, substrate)
+                        || (!Substrates.isDefault(substrate) && getForState(baseState, Substrates.DEFAULT))
+                        || (getForPrimitive(baseState, substrate))
+        ))
+                || getForPrimitive(state, substrate)
         ) {
             return association;
         }
@@ -95,7 +96,8 @@ public final class AssociationPool {
     }
 
     private boolean getForState(BlockState state, String substrate) {
-        return (association = engine.getIsolator().blocks(entity.getType()).getAssociation(state, substrate)).isResult();
+        return (association =
+                engine.getIsolator().blocks(entity.getType()).getAssociation(state, substrate)).isResult();
     }
 
     private boolean getForPrimitive(BlockState state, String substrate) {
@@ -103,6 +105,7 @@ public final class AssociationPool {
             return false;
         }
         BlockSoundGroup sounds = state.getSoundGroup();
-        return (association = engine.getIsolator().primitives().getAssociation(sounds.getStepSound(), PrimitiveLookup.getSubstrate(sounds))).isResult();
+        return (association = engine.getIsolator().primitives()
+                .getAssociation(sounds.getStepSound(), PrimitiveLookup.getSubstrate(sounds))).isResult();
     }
 }
