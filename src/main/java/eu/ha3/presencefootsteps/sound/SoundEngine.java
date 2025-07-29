@@ -24,7 +24,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
@@ -118,8 +117,8 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     private Stream<? extends Entity> getTargets(final Entity cameraEntity) {
         final List<? extends Entity> entities = cameraEntity.getWorld().getOtherEntities(null, cameraEntity.getBoundingBox().expand(16), e -> {
             return e instanceof LivingEntity
+                    && !config.isIgnoredForFootsteps(e.getType())
                     && !(e instanceof WaterCreatureEntity)
-                    && !(e instanceof FlyingEntity)
                     && !(e instanceof ShulkerEntity
                             || e instanceof ArmorStandEntity
                             || e instanceof BoatEntity

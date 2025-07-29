@@ -425,6 +425,7 @@
 	"minecraft:carved_pumpkin": "organic_solid",
 	"minecraft:netherrack": "stone",
 	"minecraft:soul_sand": "quicksand",
+  "minecraft:dried_ghast": "mushroom",
 	"minecraft:glowstone": "glowstone",
 	"minecraft:nether_portal": "NOT_EMITTER",
 	"minecraft:jack_o_lantern": "organic_solid",

@@ -3,6 +3,7 @@
     "minecraft:block.honey_block.step": "honey",
     "minecraft:block.pointed_dripstone.step": "ore",
     "minecraft:block.spore_blossom.step": "NOT_EMITTER",
+    "minecraft:block.dried_ghast.step": "mushroom",
     "minecraft:block.anvil.step": "metalcompressed,hardmetal",
     "minecraft:block.copper.step": "copper",
     "minecraft:block.metal.step": "metal",
