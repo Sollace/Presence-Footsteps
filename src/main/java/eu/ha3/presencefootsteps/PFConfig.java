@@ -3,10 +3,11 @@ package eu.ha3.presencefootsteps;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
-
+import com.google.gson.GsonBuilder;
 import com.minelittlepony.common.util.settings.Config;
+import com.minelittlepony.common.util.settings.HeirarchicalJsonConfigAdapter;
 import com.minelittlepony.common.util.settings.Setting;
-
+import com.minelittlepony.common.util.settings.ToStringAdapter;
 import eu.ha3.presencefootsteps.config.EntitySelector;
 import eu.ha3.presencefootsteps.config.VolumeOption;
 import eu.ha3.presencefootsteps.sound.generator.Locomotion;
@@ -48,7 +49,6 @@ public class PFConfig extends Config {
             .addComment("Sets the volume of sounds generated due to walking through foliage and brush")
             .addComment("Default: 50"));
 
-
     private final Setting<Integer> maxSteppingEntities = value("performance", "maxSteppingEntities", 50)
             .addComment("Controls the maximum number of entities the mod can generate footsteps for in a single frame")
             .addComment("Default: 50");
@@ -65,21 +65,36 @@ public class PFConfig extends Config {
     private final Setting<Boolean> exclusive = value("sound", "exclusive", false)
             .addComment("Sets whether to block vanilla footstep sounds when generating sounds for other entities or players");
 
-    private final Setting<Locomotion> stance = value("client", "stance", Locomotion.NONE);
-    private final Setting<EntitySelector> targetEntities = value("client", "targetEntities", EntitySelector.ALL);
+    private final Setting<Locomotion> stance = value("client", "stance", Locomotion.NONE)
+            .addComment("Sets the player's own stance (type of footsteps to generate")
+            .addComment("Options:")
+            .addComment("  NONE (determined by whether Mine Little Pony is installed)")
+            .addComment("  BIPED (always two-legged)")
+            .addComment("  QUADRUPED (always four-legged)")
+            .addComment("  FLYING (always four-legged + wings)")
+            .addComment("  FLYING_BIPED (always two-legged + wings)")
+            .addComment("Default: NONE");
+
+    private final Setting<EntitySelector> targetEntities = value("client", "targetEntities", EntitySelector.ALL)
+            .addComment("Controls which group of entities to generate footsteps for")
+            .addComment("Options: ALL, PLAYERS_AND_HOSTILES, PLAYERS_ONLY")
+            .addComment("Default: ALL");
 
     public final Setting<Set<Identifier>> ignoredEntityTypes = this.<Identifier, Set<Identifier>>value("compatibility", "ignoredEntityTypes", () -> new HashSet<Identifier>(Set.of(
                 Identifier.ofVanilla("ghast"),
                 Identifier.ofVanilla("happy_ghast"),
                 Identifier.ofVanilla("phantom")
             )), Identifier.class)
-            .addComment("A list of dimensions ids that do not have an atmosphere, and thus shouldn't allow pegasi to fly.");
+            .addComment("A list of entity type for any types of mobs that should never produce footsteps. Usually should be any flying 'bird' mobs.")
+            .addComment("Default: minecraft:ghast, minecraft:happy_ghast, minecraft:phantom");
 
 
     private transient final PresenceFootsteps pf;
 
     public PFConfig(Path file, PresenceFootsteps pf) {
-        super(HEIRARCHICAL_JSON_ADAPTER, file);
+        super(new HeirarchicalJsonConfigAdapter(new GsonBuilder()
+                .registerTypeAdapter(Identifier.class, new ToStringAdapter<>(Identifier::toString, Identifier::of))
+        ), file);
         this.pf = pf;
     }
 

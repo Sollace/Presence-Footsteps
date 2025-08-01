@@ -2,6 +2,7 @@ package eu.ha3.presencefootsteps;
 
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,6 +59,8 @@ public class PresenceFootsteps implements ClientModInitializer {
     private KeyBinding toggleKeyBinding;
     private boolean toggleTriggered;
 
+    private final AtomicBoolean configChanged = new AtomicBoolean();
+
     public PresenceFootsteps() {
         instance = this;
     }
@@ -90,6 +93,7 @@ public class PresenceFootsteps implements ClientModInitializer {
 
         config = new PFConfig(pfFolder.resolve("userconfig.json"), this);
         config.load();
+        config.onChangedExternally(c -> configChanged.set(true));
 
         optionsKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.presencefootsteps.settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F10, KEY_BINDING_CATEGORY));
         toggleKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.presencefootsteps.toggle", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), KEY_BINDING_CATEGORY));
@@ -102,7 +106,12 @@ public class PresenceFootsteps implements ClientModInitializer {
     }
 
     private void onTick(MinecraftClient client) {
+        if (client.currentScreen instanceof PFOptionsScreen screen && configChanged.getAndSet(false)) {
+            screen.init(client, screen.width, screen.height);
+        }
+
         Optional.ofNullable(client.player).filter(e -> !e.isRemoved()).ifPresent(cameraEntity -> {
+
             if (client.currentScreen == null) {
                 if (optionsKeyBinding.isPressed()) {
                     client.setScreen(new PFOptionsScreen(client.currentScreen));
