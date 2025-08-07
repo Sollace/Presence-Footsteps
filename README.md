@@ -16,12 +16,12 @@ Expect to see a more rich and immersive Minecraft world, one where Presence Foot
 
 ---
 
-- Wooden chests are creaky and old,
-- stone is dusty and rough.
+- Wooden chests are creaky and old.
+- Stone is dusty and rough.
 - Piston heads sound like wood, whilst their bodies are stone,
-- even cake sounds like you might destroy if you step in the frosting!
-- Tall grass and bristles make a dry, rustling sound as you step through them,
-- Magma sounds like it's literally cooking your souls!
+- Cake sounds like you might destroy it if you step in the frosting!
+- Tall grass and bristles make a dry, rustling sound as you step through them.
+- Magma sounds like it's literally cooking your soles!
 
 ---
 
