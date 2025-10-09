@@ -55,6 +55,7 @@ dependencies {
     modApi fabricApi.module("fabric-screen-api-v1", project.fabric_version)
     modApi fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
     modApi fabricApi.module("fabric-block-api-v1", project.fabric_version)
+    modImplementation fabricApi.module("fabric-transitive-access-wideners-v1", project.fabric_version)
 
     modApi "com.minelittlepony:kirin:${project.kirin_version}"
     include "com.minelittlepony:kirin:${project.kirin_version}"

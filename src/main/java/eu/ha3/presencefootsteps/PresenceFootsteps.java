@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import eu.ha3.presencefootsteps.util.PresenceFootstepsDebugHudEntry;
+import net.minecraft.client.gui.hud.debug.DebugHudEntries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -103,6 +105,7 @@ public class PresenceFootsteps implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(engine);
+        DebugHudEntries.register(id(MODID), new PresenceFootstepsDebugHudEntry());
     }
 
     private void onTick(MinecraftClient client) {
