@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
+import net.minecraft.resource.ResourceReloader;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.datafixers.util.Unit;
@@ -185,13 +186,13 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     @Override
-    public CompletableFuture<Void> reload(Synchronizer sync, ResourceManager sender, Executor serverExecutor, Executor clientExecutor) {
+    public CompletableFuture<Void> reload(ResourceReloader.Store store, Executor prepareExecutor, ResourceReloader.Synchronizer sync, Executor applyExecutor) {
         return sync.whenPrepared(Unit.INSTANCE).thenRunAsync(() -> {
             Profiler profiler = Profilers.get();
             profiler.push("Reloading PF Sounds");
-            reloadEverything(sender);
+            reloadEverything(store.getResourceManager());
             profiler.pop();
-        }, clientExecutor);
+        }, applyExecutor);
     }
 
     public void reloadEverything(ResourceManager manager) {
