@@ -32,7 +32,7 @@ public class PresenceFootsteps implements ClientModInitializer {
     public static final Logger logger = LogManager.getLogger("PFSolver");
 
     private static final String MODID = "presencefootsteps";
-    private static final String KEY_BINDING_CATEGORY = "key.category." + MODID;
+    private static final KeyBinding.Category KEY_BINDING_CATEGORY = KeyBinding.Category.create(id("category"));
     private static final String UPDATER_ENDPOINT = "https://raw.githubusercontent.com/Sollace/Presence-Footsteps/master/version/latest.json";
 
     public static final Text MOD_NAME = Text.translatable("mod.presencefootsteps.name");

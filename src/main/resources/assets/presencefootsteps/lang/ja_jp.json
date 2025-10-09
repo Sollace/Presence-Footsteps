@@ -1,7 +1,7 @@
 {
 	"modmenu.descriptionTranslation.presencefootsteps": "足音MOD",
 	"mod.presencefootsteps.name": "Presence Footsteps",
-	"key.category.presencefootsteps": "Presence Footsteps",
+	"key.category.presencefootsteps.category": "Presence Footsteps",
 	"key.presencefootsteps.settings": "設定を開く",
 	"key.presencefootsteps.toggle": "オン/オフ切替",
 	"key.presencefootsteps.toggle.enabled": "サウンドを有効化しました",
