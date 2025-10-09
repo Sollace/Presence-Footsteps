@@ -16,7 +16,7 @@ public abstract class MClientPlayNetworkHandler implements ClientPlayPacketListe
 
     @Inject(method = "onPlaySound(Lnet/minecraft/network/packet/s2c/play/PlaySoundS2CPacket;)V",
             at = @At(value = "INVOKE", target = "net/minecraft/client/world/ClientWorld.playSound("
-                        + "Lnet/minecraft/entity/player/PlayerEntity;"
+                        + "Lnet/minecraft/entity/Entity;"
                         + "DDD"
                         + "Lnet/minecraft/registry/entry/RegistryEntry;"
                         + "Lnet/minecraft/sound/SoundCategory;"
