@@ -33,7 +33,7 @@ public class PFSolver implements Solver {
     }
 
     private BlockState getBlockStateAt(Entity entity, BlockPos pos) {
-        World world = entity.getWorld();
+        World world = entity.getEntityWorld();
         BlockState state = world.getBlockState(pos);
 
         if (state.isAir() && (entity instanceof ContraptionCollidable collidable)) {
@@ -112,7 +112,7 @@ public class PFSolver implements Solver {
             }
         }
 
-        long time = ply.getWorld().getTime();
+        long time = ply.getEntityWorld().getTime();
         if (time != lastUpdateTime) {
             lastUpdateTime = time;
             associationCache.clear();
@@ -149,7 +149,7 @@ public class PFSolver implements Solver {
 
         if (engine.getConfig().isVisualiserRunning()) {
             for (int i = 0; i < 10; i++) {
-                player.getWorld().addParticleClient(ParticleTypes.DOLPHIN,
+                player.getEntityWorld().addParticleClient(ParticleTypes.DOLPHIN,
                     pos.getX() + 0.5,
                     pos.getY() + 1,
                     pos.getZ() + 0.5, 0, 0, 0);
@@ -159,7 +159,7 @@ public class PFSolver implements Solver {
         if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
             if (!association.state().isLiquid()) {
                 if (engine.getConfig().isVisualiserRunning()) {
-                    player.getWorld().addParticleClient(ParticleTypes.DUST_PLUME,
+                    player.getEntityWorld().addParticleClient(ParticleTypes.DUST_PLUME,
                             association.pos().getX() + 0.5,
                             association.pos().getY() + 0.9,
                             association.pos().getZ() + 0.5, 0, 0, 0);
@@ -186,7 +186,7 @@ public class PFSolver implements Solver {
                     pos.set(x, originalFootPos.getY(), z);
                     if (engine.getConfig().isVisualiserRunning()) {
                         for (int i = 0; i < 10; i++) {
-                            player.getWorld().addParticleClient(ParticleTypes.DOLPHIN,
+                            player.getEntityWorld().addParticleClient(ParticleTypes.DOLPHIN,
                                 pos.getX() + 0.5,
                                 pos.getY() + 1,
                                 pos.getZ() + 0.5, 0, 0, 0);
@@ -195,7 +195,7 @@ public class PFSolver implements Solver {
                     if ((association = findAssociation(associations, player, pos, collider)).isResult()) {
                         if (!association.state().isLiquid()) {
                             if (engine.getConfig().isVisualiserRunning()) {
-                                player.getWorld().addParticleClient(ParticleTypes.DUST_PLUME,
+                                player.getEntityWorld().addParticleClient(ParticleTypes.DUST_PLUME,
                                         association.pos().getX() + 0.5,
                                         association.pos().getY() + 0.9,
                                         association.pos().getZ() + 0.5, 0, 0, 0);
@@ -226,9 +226,9 @@ public class PFSolver implements Solver {
 
         // Try to see if the block above is a carpet...
         pos.move(Direction.UP);
-        final boolean hasRain = entity.getWorld().hasRain(pos);
+        final boolean hasRain = entity.getEntityWorld().hasRain(pos);
         BlockState carpet = getBlockStateAt(entity, pos);
-        VoxelShape shape = carpet.getOutlineShape(entity.getWorld(), pos);
+        VoxelShape shape = carpet.getOutlineShape(entity.getEntityWorld(), pos);
         boolean isValidCarpet = !shape.isEmpty() && shape.getMax(Axis.Y) < 0.3F;
         SoundsKey association = SoundsKey.UNASSIGNED;
         SoundsKey foliage = SoundsKey.UNASSIGNED;
@@ -249,7 +249,7 @@ public class PFSolver implements Solver {
                 BlockState fence = getBlockStateAt(entity, pos);
 
                 // Only check fences if we're actually touching them
-                if (checkCollision(entity.getWorld(), fence, pos, collider) && (association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
+                if (checkCollision(entity.getEntityWorld(), fence, pos, collider) && (association = associations.get(pos, fence, Substrates.FENCE)).isResult()) {
                     carpet = target;
                     target = fence;
                     // reference frame moved down by 1
@@ -260,7 +260,7 @@ public class PFSolver implements Solver {
 
             if (engine.getConfig().foliageSoundsVolume.get() > 0) {
                 if (entity.getEquippedStack(EquipmentSlot.FEET).isEmpty() || entity.isSprinting()) {
-                    if (association.isEmitter() && carpet.getCollisionShape(entity.getWorld(), pos).isEmpty()) {
+                    if (association.isEmitter() && carpet.getCollisionShape(entity.getEntityWorld(), pos).isEmpty()) {
                         // This condition implies that foliage over a NOT_EMITTER block CANNOT PLAY
                         // This block must not be executed if the association is a carpet
                         pos.move(Direction.UP);
@@ -272,14 +272,14 @@ public class PFSolver implements Solver {
         }
 
         // Check collision against small blocks
-        if (association.isResult() && !checkCollision(entity.getWorld(), target, pos, collider)) {
+        if (association.isResult() && !checkCollision(entity.getEntityWorld(), target, pos, collider)) {
             association = SoundsKey.UNASSIGNED;
         }
 
         if (association.isEmitter() && (hasRain
                 || (!associations.wasLastMatchGolem() && (
-                   (target.getFluidState().isIn(FluidTags.WATER) && !target.isSideSolidFullSquare(entity.getWorld(), pos, Direction.UP))
-                || (carpet.getFluidState().isIn(FluidTags.WATER) && !carpet.isSideSolidFullSquare(entity.getWorld(), pos, Direction.UP))
+                   (target.getFluidState().isIn(FluidTags.WATER) && !target.isSideSolidFullSquare(entity.getEntityWorld(), pos, Direction.UP))
+                || (carpet.getFluidState().isIn(FluidTags.WATER) && !carpet.isSideSolidFullSquare(entity.getEntityWorld(), pos, Direction.UP))
         )))) {
             // Only if the block is open to the sky during rain
             // or the block is submerged

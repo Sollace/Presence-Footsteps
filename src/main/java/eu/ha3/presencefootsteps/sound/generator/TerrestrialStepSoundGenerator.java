@@ -88,7 +88,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
     @Override
     public void generateFootsteps() {
-        BiomeVarianceLookup.BiomeVariance variance = entity.getWorld().getBiome(entity.getBlockPos()).getKey().map(RegistryKey::getValue).map(key -> {
+        BiomeVarianceLookup.BiomeVariance variance = entity.getEntityWorld().getBiome(entity.getBlockPos()).getKey().map(RegistryKey::getValue).map(key -> {
             return engine.getIsolator().biomes().lookup(key);
         }).orElse(BiomeVarianceLookup.BiomeVariance.DEFAULT);
 

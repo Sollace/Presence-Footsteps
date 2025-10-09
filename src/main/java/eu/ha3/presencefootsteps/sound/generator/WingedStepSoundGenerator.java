@@ -117,8 +117,8 @@ class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
         }
 
         if (!entity.isSubmergedInWater() && !isFalling && now > nextFlapTime) {
-            nextFlapTime = now + getWingSpeed() + (entity.getWorld().random.nextInt(100) - 50);
-            flapMod = (flapMod + 1) % (1 + entity.getWorld().random.nextInt(4));
+            nextFlapTime = now + getWingSpeed() + (entity.getEntityWorld().random.nextInt(100) - 50);
+            flapMod = (flapMod + 1) % (1 + entity.getEntityWorld().random.nextInt(4));
 
             float volume = 1;
             long diffImmobile = now - lastTimeImmobile;

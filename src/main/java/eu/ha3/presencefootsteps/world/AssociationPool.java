@@ -65,7 +65,7 @@ public final class AssociationPool {
      * @return The matching acoustic names or {@link Emitter#UNASSIGNED} if no match could be determined.
      */
     public SoundsKey get(BlockPos pos, BlockState state, String substrate) {
-        for (Entity golem : entity.getWorld().getOtherEntities(entity, new Box(pos).expand(0.5, 0, 0.5), e -> {
+        for (Entity golem : entity.getEntityWorld().getOtherEntities(entity, new Box(pos).expand(0.5, 0, 0.5), e -> {
             return !e.isCollidable(entity) || e.getBoundingBox().maxY < entity.getY() + 0.2F;
         })) {
             if ((association = engine.getIsolator().golems().getAssociation(golem.getType(), substrate)).isEmitter()) {

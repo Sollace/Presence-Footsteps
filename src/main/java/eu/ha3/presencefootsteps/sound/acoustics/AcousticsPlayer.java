@@ -41,7 +41,7 @@ public class AcousticsPlayer implements AcousticLibrary {
             playAcoustic(association.source(), association.dry(), event, options);
         } else if (!association.state().isLiquid()) {
             BlockSoundGroup soundType = association.state().getSoundGroup();
-            BlockState above = association.source().getWorld().getBlockState(association.pos().up());
+            BlockState above = association.source().getEntityWorld().getBlockState(association.pos().up());
 
             if (above.isOf(Blocks.SNOW)) {
                 soundType = above.getSoundGroup();
