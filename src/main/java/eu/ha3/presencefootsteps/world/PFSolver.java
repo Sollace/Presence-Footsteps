@@ -92,7 +92,7 @@ public class PFSolver implements Solver {
 
         double rot = Math.toRadians(MathHelper.wrapDegrees(ply.getYaw()));
 
-        Vec3d pos = ply.getPos();
+        Vec3d pos = ply.getEntityPos();
 
         float feetDistanceToCenter = 0.2f * (isRightFoot ? -1 : 1)
                 * PlayerUtil.getScale(ply) // scale foot offset by the player's scale
