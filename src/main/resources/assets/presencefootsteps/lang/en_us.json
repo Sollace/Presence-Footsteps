@@ -1,6 +1,6 @@
 {
   "mod.presencefootsteps.name": "Presence Footsteps",
-  "key.category.presencefootsteps": "Presence Footsteps",
+  "key.category.presencefootsteps.category": "Presence Footsteps",
 	"key.presencefootsteps.settings": "Open Settings",
 	"key.presencefootsteps.toggle": "Toggle Mod",
 	"key.presencefootsteps.toggle.enabled": "Sounds Enabled",

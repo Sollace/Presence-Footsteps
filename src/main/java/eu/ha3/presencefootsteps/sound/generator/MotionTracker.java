@@ -70,7 +70,7 @@ public class MotionTracker {
         }
 
         if (ply instanceof OtherClientPlayerEntity) {
-            if (ply.getWorld().getTime() % 1 == 0) {
+            if (ply.getEntityWorld().getTime() % 1 == 0) {
 
                 if (motionX != 0 || motionZ != 0) {
                     ply.distanceTraveled += Math.sqrt(Math.pow(motionX, 2) + Math.pow(motionY, 2) + Math.pow(motionZ, 2)) * 0.8;

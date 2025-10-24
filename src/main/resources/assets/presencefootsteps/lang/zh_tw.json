@@ -1,6 +1,6 @@
 {
     "mod.presencefootsteps.name": "臨場腳步聲 Presence Footsteps",
-    "key.category.presencefootsteps": "臨場腳步聲",
+    "key.category.presencefootsteps.category": "臨場腳步聲",
     "key.presencefootsteps.settings": "臨場腳步聲",
     "key.presencefootsteps.toggle": "切換模組",
     "key.presencefootsteps.toggle.enabled": "音效啟用",

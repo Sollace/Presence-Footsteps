@@ -10,6 +10,8 @@ import eu.ha3.presencefootsteps.world.SoundsKey;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.debug.DebugHudEntries;
+import net.minecraft.client.gui.hud.debug.DebugHudLines;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.Formatting;
@@ -30,7 +32,7 @@ public class PFDebugHud {
         this.engine = engine;
     }
 
-    public void render(HitResult blockHit, HitResult fluidHit, List<String> finalList) {
+    public void render(HitResult blockHit, HitResult fluidHit, DebugHudLines finalList) {
         MinecraftClient client = MinecraftClient.getInstance();
 
         list.add("");
@@ -59,7 +61,8 @@ public class PFDebugHud {
         ));
         list.add(String.format("Has Resource Pack: %s%s", engine.hasData() ? Formatting.GREEN : Formatting.RED, engine.hasData()));
 
-        insertAt(list, finalList, "Targeted Block: ", -1);
+        finalList.addLinesToSection(DebugHudEntries.LOOKING_AT_BLOCK, list);
+        list.clear();
 
         if (blockHit.getType() == HitResult.Type.BLOCK) {
             BlockPos pos = ((BlockHitResult)blockHit).getBlockPos();
@@ -87,13 +90,15 @@ public class PFDebugHud {
             renderSoundList("Step Sounds[P]", engine.getIsolator().primitives().getAssociations(state.getSoundGroup().getStepSound()), list);
             list.add("");
 
-            insertAt(list, finalList, "Targeted Block: ", 1);
+            finalList.addLinesToSection(DebugHudEntries.LOOKING_AT_BLOCK, list);
+            list.clear();
         }
 
         if (client.crosshairTarget instanceof EntityHitResult ehr && ehr.getEntity() != null) {
             list.add(String.format("Targeted Entity Step Mode: %s", engine.getIsolator().locomotions().lookup(ehr.getEntity())));
             renderSoundList("Step Sounds[G]", engine.getIsolator().golems().getAssociations(ehr.getEntity().getType()), list);
-            insertAt(list, finalList, "Targeted Entity", 3);
+            finalList.addLinesToSection(DebugHudEntries.LOOKING_AT_BLOCK, list);
+            list.clear();
         }
     }
 

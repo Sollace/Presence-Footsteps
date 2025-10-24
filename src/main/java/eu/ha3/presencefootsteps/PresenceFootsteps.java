@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import eu.ha3.presencefootsteps.util.PresenceFootstepsDebugHudEntry;
+import net.minecraft.client.gui.hud.debug.DebugHudEntries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -32,7 +34,7 @@ public class PresenceFootsteps implements ClientModInitializer {
     public static final Logger logger = LogManager.getLogger("PFSolver");
 
     private static final String MODID = "presencefootsteps";
-    private static final String KEY_BINDING_CATEGORY = "key.category." + MODID;
+    private static final KeyBinding.Category KEY_BINDING_CATEGORY = KeyBinding.Category.create(id("category"));
     private static final String UPDATER_ENDPOINT = "https://raw.githubusercontent.com/Sollace/Presence-Footsteps/master/version/latest.json";
 
     public static final Text MOD_NAME = Text.translatable("mod.presencefootsteps.name");
@@ -103,6 +105,7 @@ public class PresenceFootsteps implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(engine);
+        DebugHudEntries.register(id(MODID), new PresenceFootstepsDebugHudEntry());
     }
 
     private void onTick(MinecraftClient client) {
