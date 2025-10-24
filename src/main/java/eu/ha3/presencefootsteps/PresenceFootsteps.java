@@ -4,12 +4,12 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import eu.ha3.presencefootsteps.util.PresenceFootstepsDebugHudEntry;
 import net.minecraft.client.gui.hud.debug.DebugHudEntries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import com.minelittlepony.common.client.gui.GameGui;
 import com.minelittlepony.common.util.GamePaths;
 
 import eu.ha3.mc.quick.update.UpdateChecker;
@@ -20,6 +20,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.toast.SystemToast;
@@ -61,8 +62,9 @@ public class PresenceFootsteps implements ClientModInitializer {
         );
     });
 
-    private final KeyBinding optionsKeyBinding = new KeyBinding("key.presencefootsteps.settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F10, KEY_BINDING_CATEGORY);
-    private final KeyBinding toggleKeyBinding = new KeyBinding("key.presencefootsteps.toggle", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), KEY_BINDING_CATEGORY);
+    private final KeyBinding optionsKeyBinding = new KeyBinding("key.presencefootsteps.settings", InputUtil.Type.KEYSYM, InputUtil.GLFW_KEY_F10, KEY_BINDING_CATEGORY);
+    private final KeyBinding toggleKeyBinding = new KeyBinding("key.presencefootsteps.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KEY_BINDING_CATEGORY);
+    private final KeyBinding debugToggleKeyBinding = new KeyBinding("key.presencefootsteps.debug_toggle", InputUtil.Type.KEYSYM, InputUtil.GLFW_KEY_Z, KEY_BINDING_CATEGORY);
     private boolean toggleTriggered;
 
     private final AtomicBoolean configChanged = new AtomicBoolean();
@@ -99,14 +101,19 @@ public class PresenceFootsteps implements ClientModInitializer {
 
         KeyBindingHelper.registerKeyBinding(optionsKeyBinding);
         KeyBindingHelper.registerKeyBinding(toggleKeyBinding);
+        KeyBindingHelper.registerKeyBinding(debugToggleKeyBinding);
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
         ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(SoundEngine.ID, engine);
-        DebugHudEntries.register(id(MODID), new PresenceFootstepsDebugHudEntry());
+        DebugHudEntries.register(PFDebugHud.ID, debugHud);
     }
 
     private void onTick(MinecraftClient client) {
         if (client.currentScreen instanceof PFOptionsScreen screen && configChanged.getAndSet(false)) {
             screen.init(client, screen.width, screen.height);
+        }
+
+        if (SharedConstants.HOTKEYS && GameGui.isKeyDown(InputUtil.GLFW_KEY_F3) && debugToggleKeyBinding.isPressed()) {
+            client.debugHudEntryList.toggleVisibility(PFDebugHud.ID);
         }
 
         Optional.ofNullable(client.player).filter(e -> !e.isRemoved()).ifPresent(cameraEntity -> {
