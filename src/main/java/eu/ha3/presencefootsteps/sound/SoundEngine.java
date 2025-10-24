@@ -20,7 +20,6 @@ import eu.ha3.presencefootsteps.sound.player.ImmediateSoundPlayer;
 import eu.ha3.presencefootsteps.util.PlayerUtil;
 import eu.ha3.presencefootsteps.world.Solver;
 import eu.ha3.presencefootsteps.world.PFSolver;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -43,8 +42,8 @@ import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
 
-public class SoundEngine implements IdentifiableResourceReloadListener {
-    private static final Identifier ID = PresenceFootsteps.id("sounds");
+public class SoundEngine implements ResourceReloader {
+    public static final Identifier ID = PresenceFootsteps.id("sounds");
 
     private Isolator isolator = new Isolator(this);
     private final Solver solver = new PFSolver(this);
@@ -178,11 +177,6 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
                 || sound == SoundEvents.ENTITY_PLAYER_BIG_FALL
                 || sound == SoundEvents.ENTITY_PLAYER_SMALL_FALL;
         }).isPresent();
-    }
-
-    @Override
-    public Identifier getFabricId() {
-        return ID;
     }
 
     @Override

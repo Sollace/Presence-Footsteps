@@ -19,7 +19,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 
 public class PFDebugHud {
@@ -100,18 +99,6 @@ public class PFDebugHud {
             finalList.addLinesToSection(DebugHudEntries.LOOKING_AT_BLOCK, list);
             list.clear();
         }
-    }
-
-    private static void insertAt(List<String> values, List<String> destination, String target, int offset) {
-        int i = 0;
-        for (; i < destination.size(); i++) {
-            if (destination.get(i).indexOf(target) != -1) {
-                break;
-            }
-        }
-
-        destination.addAll(MathHelper.clamp(i + offset, 0, destination.size()), values);
-        values.clear();
     }
 
     private void renderSoundList(String title, Map<String, SoundsKey> sounds, List<String> list) {

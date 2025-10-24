@@ -12,14 +12,13 @@ import org.lwjgl.glfw.GLFW;
 
 import com.minelittlepony.common.util.GamePaths;
 
-import eu.ha3.mc.quick.update.TargettedVersion;
 import eu.ha3.mc.quick.update.UpdateChecker;
 import eu.ha3.mc.quick.update.UpdaterConfig;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -49,16 +48,21 @@ public class PresenceFootsteps implements ClientModInitializer {
         return instance;
     }
 
-    private SoundEngine engine;
+    private final Path pfFolder = GamePaths.getConfigDirectory().resolve("presencefootsteps");
+    private final PFConfig config = new PFConfig(pfFolder.resolve("userconfig.json"), this);
+    private final SoundEngine engine = new SoundEngine(config);
+    private final PFDebugHud debugHud = new PFDebugHud(engine);
 
-    private PFConfig config;
+    private final UpdaterConfig updaterConfig = new UpdaterConfig(pfFolder.resolve("updater.json"));
+    private final UpdateChecker updater = new UpdateChecker(updaterConfig, MODID, UPDATER_ENDPOINT, (newVersion, currentVersion) -> {
+        showSystemToast(
+                Text.translatable("pf.update.title"),
+                Text.translatable("pf.update.text", newVersion.version().getFriendlyString(), newVersion.minecraft().getFriendlyString())
+        );
+    });
 
-    private PFDebugHud debugHud;
-
-    private UpdateChecker updater;
-
-    private KeyBinding optionsKeyBinding;
-    private KeyBinding toggleKeyBinding;
+    private final KeyBinding optionsKeyBinding = new KeyBinding("key.presencefootsteps.settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F10, KEY_BINDING_CATEGORY);
+    private final KeyBinding toggleKeyBinding = new KeyBinding("key.presencefootsteps.toggle", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), KEY_BINDING_CATEGORY);
     private boolean toggleTriggered;
 
     private final AtomicBoolean configChanged = new AtomicBoolean();
@@ -89,22 +93,14 @@ public class PresenceFootsteps implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        Path pfFolder = GamePaths.getConfigDirectory().resolve("presencefootsteps");
-
-        updater = new UpdateChecker(new UpdaterConfig(pfFolder.resolve("updater.json")), MODID, UPDATER_ENDPOINT, this::onUpdate);
-
-        config = new PFConfig(pfFolder.resolve("userconfig.json"), this);
+        updaterConfig.load();
         config.load();
         config.onChangedExternally(c -> configChanged.set(true));
 
-        optionsKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.presencefootsteps.settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F10, KEY_BINDING_CATEGORY));
-        toggleKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.presencefootsteps.toggle", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), KEY_BINDING_CATEGORY));
-
-        engine = new SoundEngine(config);
-        debugHud = new PFDebugHud(engine);
-
+        KeyBindingHelper.registerKeyBinding(optionsKeyBinding);
+        KeyBindingHelper.registerKeyBinding(toggleKeyBinding);
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(engine);
+        ResourceLoader.get(ResourceType.CLIENT_RESOURCES).registerReloader(SoundEngine.ID, engine);
         DebugHudEntries.register(id(MODID), new PresenceFootstepsDebugHudEntry());
     }
 
@@ -135,13 +131,6 @@ public class PresenceFootsteps implements ClientModInitializer {
                 updater.attempt();
             }
         });
-    }
-
-    private void onUpdate(TargettedVersion newVersion, TargettedVersion currentVersion) {
-        showSystemToast(
-                Text.translatable("pf.update.title"),
-                Text.translatable("pf.update.text", newVersion.version().getFriendlyString(), newVersion.minecraft().getFriendlyString())
-        );
     }
 
     void onEnabledStateChange(boolean enabled) {

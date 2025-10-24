@@ -34,7 +34,6 @@ public class UpdaterConfig extends JsonFile {
 
     public UpdaterConfig(Path file) {
         super(file);
-        load();
     }
 
     public boolean shouldReport(TargettedVersion newVersion) {
