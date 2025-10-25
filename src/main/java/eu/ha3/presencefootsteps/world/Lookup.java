@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Lookup<T> {
-    private DataSegment<T> data;
+    private DataSegment<T> data = UnionDataSegment.empty();
 
     public boolean load(Stream<? extends DataSegment<T>> data, Lookup<T> parent) {
         return load(Stream.of(parent.data, UnionDataSegment.of(data)));
@@ -86,13 +86,17 @@ public final class Lookup<T> {
         static final UnionDataSegment<?> EMPTY = new UnionDataSegment<>(List.of(), Set.of());
 
         @SuppressWarnings("unchecked")
+        public static <T> DataSegment<T> empty() {
+            return (UnionDataSegment<T>)EMPTY;
+        }
+
         public static <T> DataSegment<T> of(Stream<? extends DataSegment<T>> entries) {
             var data = entries.filter(i -> !i.isEmpty()).toList().reversed();
             if (data.size() == 1) {
                 return data.get(0);
             }
             if (data.size() == 0) {
-                return (UnionDataSegment<T>)EMPTY;
+                return empty();
             }
             var substrates = data.stream().flatMap(i -> i.getSubstrates().stream()).distinct().collect(Collectors.toUnmodifiableSet());
 
