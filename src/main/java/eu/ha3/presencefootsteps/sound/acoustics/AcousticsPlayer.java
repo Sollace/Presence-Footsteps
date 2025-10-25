@@ -30,29 +30,16 @@ public class AcousticsPlayer implements AcousticLibrary {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void playStep(Association association, State event, Options options) {
         if (association.isSilent()) {
             return;
         }
 
-        if (association.dry().isResult()) {
+        if (association.dry().isResult() && !association.dry().isVanilla()) {
             playAcoustic(association.source(), association.dry(), event, options);
-        } else if (!association.state().isLiquid()) {
-            BlockSoundGroup soundType = association.state().getSoundGroup();
-            BlockState above = association.source().getEntityWorld().getBlockState(association.pos().up());
-
-            if (above.isOf(Blocks.SNOW)) {
-                soundType = above.getSoundGroup();
-            }
-
-            soundPlayer.playSound(association.source(),
-                    soundType.getStepSound().id().toString(),
-                    soundType.getVolume() * 0.15F,
-                    soundType.getPitch(),
-                    options
-            );
+        } else {
+            playVanillaStep(association, options);
         }
 
         if (association.wet().isEmitter() && Options.WET_VOLUME_OPTIONS.get("volume_percentage") > 0.1F) {
@@ -62,6 +49,26 @@ public class AcousticsPlayer implements AcousticLibrary {
         if (association.foliage().isEmitter() && Options.FOLIAGE_VOLUME_OPTIONS.get("volume_percentage") > 0.1F) {
             playAcoustic(association.source(), association.foliage(), event, options.and(Options.FOLIAGE_VOLUME_OPTIONS));
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void playVanillaStep(Association association, Options options) {
+        if (association.state().isLiquid()) {
+            return;
+        }
+        BlockSoundGroup soundType = association.state().getSoundGroup();
+        BlockState above = association.source().getEntityWorld().getBlockState(association.pos().up());
+
+        if (above.isOf(Blocks.SNOW)) {
+            soundType = above.getSoundGroup();
+        }
+
+        soundPlayer.playSound(association.source(),
+                soundType.getStepSound().id().toString(),
+                soundType.getVolume() * 0.15F,
+                soundType.getPitch(),
+                options
+        );
     }
 
     @Override

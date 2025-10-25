@@ -6,6 +6,7 @@ public record SoundsKey(String raw, String[] names) {
     public static final SoundsKey UNASSIGNED = new SoundsKey("UNASSIGNED", new String[0]);
     static final SoundsKey NON_EMITTER = new SoundsKey("NOT_EMITTER", new String[0]);
     static final SoundsKey MESSY_GROUND = new SoundsKey("MESSY_GROUND", new String[0]);
+    static final SoundsKey VANILLA = new SoundsKey("VANILLA", new String[0]);
 
     public static final SoundsKey SWIM_WATER = of("_SWIM_WATER");
     public static final SoundsKey SWIM_LAVA = of("_SWIM_LAVA");
@@ -21,6 +22,9 @@ public record SoundsKey(String raw, String[] names) {
         }
         if (NON_EMITTER.raw().equals(names)) {
             return NON_EMITTER;
+        }
+        if (VANILLA.raw().equals(names)) {
+            return VANILLA;
         }
         return new SoundsKey(names);
     }
@@ -38,6 +42,10 @@ public record SoundsKey(String raw, String[] names) {
 
     public boolean isSilent() {
         return this == NON_EMITTER;
+    }
+
+    public boolean isVanilla() {
+        return this == VANILLA;
     }
 
     public boolean isEmitter() {

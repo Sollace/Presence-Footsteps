@@ -361,7 +361,6 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
                 if (bootSound.isEmitter()) {
                     engine.getIsolator().acoustics().playStep(association, eventType, Options.singular("volume_percentage", 0.5F));
                     engine.getIsolator().acoustics().playAcoustic(entity, bootSound, eventType, Options.EMPTY);
-
                     return;
                 }
             }

@@ -1,10 +1,8 @@
 {
 	"*.wet": "mudfine,splash",
 
-	"minecraft:air": "NOT_EMITTER",
+	"#minecraft:air": "NOT_EMITTER",
 	"minecraft:light": "NOT_EMITTER",
-	"minecraft:cave_air": "NOT_EMITTER",
-	"minecraft:void_air": "NOT_EMITTER",
 	"minecraft:bubble_column": "NOT_EMITTER",
 	"minecraft:structure_void": "NOT_EMITTER",
 	"minecraft:barrier": "NOT_EMITTER",
@@ -1062,7 +1060,7 @@
 	"minecraft:stonecutter": "stone",
 	"minecraft:bell": "metalbar",
 
-	"#minecraft:lanterns": "UNASSIGNED",
+	"#minecraft:lanterns": "VANILLA",
 
 	"minecraft:campfire[lit=false]": "wood",
 	"minecraft:campfire": "wood,magma",
