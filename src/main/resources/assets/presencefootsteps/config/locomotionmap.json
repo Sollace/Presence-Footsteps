@@ -20,7 +20,7 @@
 	"minecraft:evoker": "BIPED",
 	"minecraft:fox": "QUADRUPED",
 	"minecraft:ghast": "NONE",
-  "minecraft:happy_ghast": "NONE",
+	"minecraft:happy_ghast": "NONE",
 	"minecraft:hoglin": "QUADRUPED",
 	"minecraft:giant": "BIPED",
 	"minecraft:guardian": "NONE",
@@ -83,5 +83,7 @@
 	"minecraft:armadillo": "QUADRUPED",
 	"minecraft:bogged": "BIPED",
 	"minecraft:breeze": "NONE",
-	"minecraft:creaking": "BIPED"
+	"minecraft:creaking": "BIPED",
+	"minecraft:copper_golem": "BIPED",
+	"minecraft:mannequin": "BIPED"
 }

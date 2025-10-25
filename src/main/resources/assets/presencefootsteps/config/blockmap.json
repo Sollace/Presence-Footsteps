@@ -302,12 +302,16 @@
 	"#minecraft:wooden_pressure_plates": "wood",
 	"minecraft:pale_oak_pressure_plate.foliage": "softwood",
 	"#minecraft:wooden_pressure_plates.carpet": "wood",
+  
+	"minecraft:pale_oak_shelf": "softwood",
+	"#minecraft:wooden_shelves": "wood",
 
-	"minecraft:lightning_rod": "copper",
+	"#minecraft:lightning_rods": "copper",
 	"minecraft:copper_block": "copper",
 	"minecraft:oxidized_copper": "copper",
 	"minecraft:exposed_copper": "copper",
 	"minecraft:weathered_copper": "copper",
+	"#minecraft:copper_golem_statues": "copper",
 
 	"minecraft:cut_copper": "copper",
 	"minecraft:oxidized_cut_copper": "copper",
@@ -403,6 +407,8 @@
 
 	"minecraft:redstone_torch": "NOT_EMITTER",
 	"minecraft:redstone_wall_torch": "NOT_EMITTER",
+	"minecraft:copper_torch": "NOT_EMITTER",
+	"minecraft:copper_wall_torch": "NOT_EMITTER",
 	"minecraft:stone_button[face=floor].foliage": "stone",
 	"minecraft:stone_button": "NOT_EMITTER",
 
@@ -425,7 +431,7 @@
 	"minecraft:carved_pumpkin": "organic_solid",
 	"minecraft:netherrack": "stone",
 	"minecraft:soul_sand": "quicksand",
-  "minecraft:dried_ghast": "mushroom",
+	"minecraft:dried_ghast": "mushroom",
 	"minecraft:glowstone": "glowstone",
 	"minecraft:nether_portal": "NOT_EMITTER",
 	"minecraft:jack_o_lantern": "organic_solid",
@@ -456,7 +462,7 @@
 	"minecraft:pearlescent_froglight": "mushroom",
 	"minecraft:verdant_froglight": "mushroom",
 
-	"minecraft:iron_bars": "metalbar",
+	"#minecraft:bars": "metalbar",
 	"minecraft:glass_pane": "glass",
 	"minecraft:melon": "organic",
 	"minecraft:pumpkin_stem": "NOT_EMITTER",
@@ -581,6 +587,7 @@
 	"#minecraft:anvil": "metalcompressed,hardmetal",
 
 	"minecraft:trapped_chest": "squeakywood",
+  "#minecraft:copper_chests": "copper",
 	"minecraft:light_weighted_pressure_plate": "hardmetal",
 	"minecraft:light_weighted_pressure_plate.carpet": "hardmetal",
 	"minecraft:heavy_weighted_pressure_plate": "hardmetal",
@@ -978,8 +985,8 @@
 	"minecraft:water_cauldron": "metalbar,waterfine",
 	"minecraft:lava_cauldron": "metalbar,waterfine",
 	"minecraft:powder_snow_cauldron": "metalbar",
-	"minecraft:chain": "chain",
-	"minecraft:chain.foliage": "chain",
+	"#minecraft:chains": "chain",
+	"#minecraft:chains.foliage": "chain",
 
 	"minecraft:potted_oxeye_daisy.foliage": "brush",
 
@@ -1055,8 +1062,7 @@
 	"minecraft:stonecutter": "stone",
 	"minecraft:bell": "metalbar",
 
-	"minecraft:lantern": "UNASSIGNED",
-	"minecraft:soul_lantern": "UNASSIGNED",
+	"#minecraft:lanterns": "UNASSIGNED",
 
 	"minecraft:campfire[lit=false]": "wood",
 	"minecraft:campfire": "wood,magma",
