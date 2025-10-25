@@ -15,12 +15,12 @@ import com.minelittlepony.common.util.GamePaths;
 import eu.ha3.mc.quick.update.UpdateChecker;
 import eu.ha3.mc.quick.update.UpdaterConfig;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
+import eu.ha3.presencefootsteps.util.Edge;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.toast.SystemToast;
@@ -65,7 +65,8 @@ public class PresenceFootsteps implements ClientModInitializer {
     private final KeyBinding optionsKeyBinding = new KeyBinding("key.presencefootsteps.settings", InputUtil.Type.KEYSYM, InputUtil.GLFW_KEY_F10, KEY_BINDING_CATEGORY);
     private final KeyBinding toggleKeyBinding = new KeyBinding("key.presencefootsteps.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KEY_BINDING_CATEGORY);
     private final KeyBinding debugToggleKeyBinding = new KeyBinding("key.presencefootsteps.debug_toggle", InputUtil.Type.KEYSYM, InputUtil.GLFW_KEY_Z, KEY_BINDING_CATEGORY);
-    private boolean toggleTriggered;
+    private final Edge toggler = new Edge(z -> config.toggleDisabled());
+    private final Edge debugToggle = new Edge(z -> MinecraftClient.getInstance().debugHudEntryList.toggleVisibility(PFDebugHud.ID));
 
     private final AtomicBoolean configChanged = new AtomicBoolean();
 
@@ -112,24 +113,14 @@ public class PresenceFootsteps implements ClientModInitializer {
             screen.init(client, screen.width, screen.height);
         }
 
-        if (SharedConstants.HOTKEYS && GameGui.isKeyDown(InputUtil.GLFW_KEY_F3) && debugToggleKeyBinding.isPressed()) {
-            client.debugHudEntryList.toggleVisibility(PFDebugHud.ID);
-        }
+        debugToggle.accept(GameGui.isKeyDown(InputUtil.GLFW_KEY_F3) && debugToggleKeyBinding.isPressed());
 
         Optional.ofNullable(client.player).filter(e -> !e.isRemoved()).ifPresent(cameraEntity -> {
-
             if (client.currentScreen == null) {
                 if (optionsKeyBinding.isPressed()) {
                     client.setScreen(new PFOptionsScreen(client.currentScreen));
                 }
-                if (toggleKeyBinding.isPressed()) {
-                    if (!toggleTriggered) {
-                        toggleTriggered = true;
-                        config.toggleDisabled();
-                    }
-                } else {
-                    toggleTriggered = false;
-                }
+                toggler.accept(toggleKeyBinding.isPressed());
             }
 
             engine.onFrame(client, cameraEntity);
