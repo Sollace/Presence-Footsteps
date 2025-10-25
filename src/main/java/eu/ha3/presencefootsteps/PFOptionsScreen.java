@@ -1,12 +1,18 @@
 package eu.ha3.presencefootsteps;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
+
+import com.google.gson.FormattingStyle;
+import com.google.gson.internal.Streams;
+import com.google.gson.stream.JsonWriter;
 
 import com.minelittlepony.common.client.gui.GameGui;
 import com.minelittlepony.common.client.gui.ScrollContainer;
@@ -18,10 +24,10 @@ import com.minelittlepony.common.client.gui.element.EnumSlider;
 import com.minelittlepony.common.client.gui.element.Label;
 import com.minelittlepony.common.client.gui.element.Slider;
 import com.minelittlepony.common.client.gui.element.Toggle;
+import com.mojang.serialization.JsonOps;
 
 import eu.ha3.mc.quick.update.Versions;
 import eu.ha3.presencefootsteps.config.VolumeOption;
-import eu.ha3.presencefootsteps.sound.Isolator;
 import eu.ha3.presencefootsteps.sound.acoustics.Acoustic;
 import eu.ha3.presencefootsteps.sound.acoustics.AcousticsFile;
 import eu.ha3.presencefootsteps.util.BlockReport;
@@ -156,7 +162,8 @@ class PFOptionsScreen extends GameGui {
             BlockReport.execute(PresenceFootsteps.getInstance().getEngine().getIsolator(), "report_concise", false).thenRun(() -> sender.setEnabled(true));
         })).setEnabled(client.world != null)
             .getStyle()
-            .setText("menu.pf.report.concise");
+            .setText("menu.pf.report.concise")
+            .setTooltip("menu.pf.report.concise.tooltip");
 
         content.addButton(new Button(wideRight, row, 150, 20)
             .onClick(sender -> {
@@ -165,28 +172,38 @@ class PFOptionsScreen extends GameGui {
             }))
             .setEnabled(client.world != null)
             .getStyle()
-                .setText("menu.pf.report.full");
+                .setText("menu.pf.report.full")
+                .setTooltip("menu.pf.report.full.tooltip");
 
         content.addButton(new Button(wideLeft, row += 25, 150, 20)
                 .onClick(sender -> {
                     sender.setEnabled(false);
-                    BlockReport.execute((full, writer, groups) -> {
-                        ResourceUtils.forEach(Isolator.ACOUSTICS, client.getResourceManager(), reader -> {
+                    BlockReport.execute(loc -> {
+                        ResourceUtils.forEach(AcousticsFile.FILE_LOCATION, client.getResourceManager(), reader -> {
                             Map<String, Acoustic> acoustics = new HashMap<>();
+                            @SuppressWarnings("deprecation")
                             AcousticsFile file = AcousticsFile.read(reader, acoustics::put, true);
                             if (file != null) {
-                                try {
-                                    file.write(writer, acoustics);
-                                } catch (IOException e) {
-                                    PresenceFootsteps.logger.error("Error whilst exporting acoustics", e);
+                                for (var acoustic : acoustics.entrySet()) {
+                                    Acoustic.CODEC.encodeStart(JsonOps.INSTANCE, acoustic.getValue()).resultOrPartial(error -> {
+                                        PresenceFootsteps.logger.error("Error whilst exporting acoustic: " + error);
+                                    }).ifPresent(json -> {
+                                        try (var writer = new JsonWriter(Files.newBufferedWriter(loc.resolve(acoustic.getKey().toLowerCase(Locale.ROOT) + ".json")))) {
+                                            writer.setFormattingStyle(FormattingStyle.PRETTY);
+                                            Streams.write(json, writer);
+                                        } catch (IOException e) {
+                                            PresenceFootsteps.logger.error("Error whilst exporting acoustics", e);
+                                        }
+                                    });
                                 }
                             }
                         });
-                    }, "acoustics", true).thenRun(() -> sender.setEnabled(true));
+                    }, "acoustics", "").thenRun(() -> sender.setEnabled(true));
                 }))
                 .setEnabled(client.world != null)
                 .getStyle()
-                    .setText("menu.pf.report.acoustics");
+                    .setText("menu.pf.report.acoustics")
+                    .setTooltip("menu.pf.report-acoustics.tooltip");
 
         addButton(new Button(left, height - 25)
             .onClick(sender -> finish())).getStyle()

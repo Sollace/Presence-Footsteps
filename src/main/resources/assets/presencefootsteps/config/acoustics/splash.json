@@ -1,0 +1,93 @@
+{
+  "jump": {
+    "acoustic": [
+      {
+        "name": "pf_presence.water.water_through",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      {
+        "name": "pf_presence.water_stereofix.water_through",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      }
+    ],
+    "probability": 45.0,
+    "type": "chance"
+  },
+  "land": {
+    "acoustic": [
+      {
+        "name": "pf_presence.water.water_through",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      {
+        "name": "pf_presence.water_stereofix.water_through",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      }
+    ],
+    "probability": 95.0,
+    "type": "chance"
+  },
+  "walk": {
+    "acoustic": [
+      {
+        "name": "pf_presence.water.water_through",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      {
+        "name": "pf_presence.water_stereofix.water_through",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      }
+    ],
+    "probability": 5.0,
+    "type": "chance"
+  },
+  "type": "events"
+}

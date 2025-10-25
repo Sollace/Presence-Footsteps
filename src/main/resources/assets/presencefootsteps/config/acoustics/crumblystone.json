@@ -1,0 +1,94 @@
+{
+  "wander": {
+    "name": "pf_presence.stone.stone_wander",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "land": [
+    {
+      "name": "pf_presence.concrete.concrete_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.crumbly_stone.crumbly_stone_walk",
+        "volume": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "pitch": {
+          "min": 0.4,
+          "max": 0.5
+        },
+        "type": "basic"
+      },
+      "delay": 30,
+      "type": "delayed"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.stone.stone_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 65.0,
+        "max": 70.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.crumbly_stone.crumbly_stone_walk",
+      "volume": {
+        "min": 3.0,
+        "max": 8.0
+      },
+      "pitch": {
+        "min": 0.4,
+        "max": 0.5
+      },
+      "type": "basic"
+    }
+  ],
+  "run": [
+    {
+      "name": "pf_presence.stone.stone_run",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 65.0,
+        "max": 70.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.crumbly_stone.crumbly_stone_walk",
+      "volume": {
+        "min": 9.0,
+        "max": 11.0
+      },
+      "pitch": 0.5,
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

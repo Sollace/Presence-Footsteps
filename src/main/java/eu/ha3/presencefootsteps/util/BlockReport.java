@@ -19,17 +19,22 @@ import net.minecraft.util.Util;
 
 public interface BlockReport {
     static CompletableFuture<?> execute(Reportable reportable, String baseName, boolean full) {
+        return execute(loc -> {
+            try (var writer = JsonObjectWriter.of(new JsonWriter(Files.newBufferedWriter(loc)))) {
+                reportable.writeToReport(full, writer, new Object2ObjectOpenHashMap<>());
+            }
+        }, baseName, ".json");
+    }
+
+    static CompletableFuture<?> execute(UnsafeConsumer<Path> action, String baseName, String ext) {
         MinecraftClient client = MinecraftClient.getInstance();
         ChatHud hud = client.inGameHud.getChatHud();
         return CompletableFuture.supplyAsync(() -> {
             try {
-                Path loc = getUniqueFileName(GamePaths.getGameDirectory().resolve("presencefootsteps"), baseName, ".json");
-                Files.createDirectories(loc.getParent());
-                try (var writer = JsonObjectWriter.of(new JsonWriter(Files.newBufferedWriter(loc)))) {
-                    reportable.writeToReport(full, writer, new Object2ObjectOpenHashMap<>());
-                }
+                Path loc = getUniqueFileName(GamePaths.getGameDirectory().resolve("presencefootsteps"), baseName, ext);
+                action.accept(loc);
                 return loc;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Could not generate report", e);
             }
         }, Util.getIoWorkerExecutor()).thenAcceptAsync(loc -> {
@@ -44,7 +49,7 @@ public interface BlockReport {
         }, client);
     }
 
-    private static Path getUniqueFileName(Path directory, String baseName, String ext) {
+    private static Path getUniqueFileName(Path directory, String baseName, String ext) throws IOException {
         Path loc = null;
 
         int counter = 0;
@@ -53,10 +58,15 @@ public interface BlockReport {
             counter++;
         }
 
+        Files.createDirectories(ext.isEmpty() ? loc : loc.getParent());
         return loc;
     }
 
     interface Reportable {
         void writeToReport(boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException;
+    }
+
+    interface UnsafeConsumer<T> {
+        void accept(T t) throws IOException;
     }
 }

@@ -1,0 +1,90 @@
+{
+  "wander": {
+    "name": "pf_presence.gravel.gravel_wander",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "land": [
+    {
+      "name": "pf_presence.gravel.gravel_run",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.gravel.gravel_land",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.gravel.gravel_walk",
+      "volume": 50.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.gravel.gravel_run",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "walk": {
+    "name": "pf_presence.gravel.gravel_walk",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "run": {
+    "name": "pf_presence.gravel.gravel_run",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}

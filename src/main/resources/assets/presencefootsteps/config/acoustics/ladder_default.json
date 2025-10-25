@@ -1,0 +1,45 @@
+{
+  "land": [
+    {
+      "name": "minecraft:block.ladder.step",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "minecraft:block.ladder.step",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "walk": {
+    "name": "minecraft:block.ladder.step",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}

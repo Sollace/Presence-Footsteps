@@ -1,0 +1,86 @@
+{
+  "stand": {
+    "name": "pf_presence.weakice.weakice_walk",
+    "volume": {
+      "min": 0.0,
+      "max": 5.0
+    },
+    "pitch": 130.0,
+    "type": "basic"
+  },
+  "wander": {
+    "name": "pf_presence.dirt.dirt_wander",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "land": [
+    {
+      "name": "pf_presence.concrete.concrete_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.concrete.concrete_walk",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 30,
+      "type": "delayed"
+    },
+    {
+      "name": "pf_presence.weakice.weakice_walk",
+      "volume": {
+        "min": 40.0,
+        "max": 60.000004
+      },
+      "pitch": 130.0,
+      "type": "basic"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.concrete.concrete_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.weakice.weakice_walk",
+      "volume": {
+        "min": 10.0,
+        "max": 20.0
+      },
+      "pitch": 130.0,
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

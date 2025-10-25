@@ -1,0 +1,81 @@
+{
+  "wander": [
+    {
+      "name": "pf_presence.mud.mud_walk",
+      "volume": {
+        "min": 30.000002,
+        "max": 50.0
+      },
+      "pitch": {
+        "min": 150.0,
+        "max": 170.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.snow.snow_walk",
+      "volume": {
+        "min": 30.000002,
+        "max": 40.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "land": [
+    {
+      "name": "pf_presence.mud.mud_walk",
+      "volume": {
+        "min": 30.000002,
+        "max": 50.0
+      },
+      "pitch": {
+        "min": 150.0,
+        "max": 170.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.snow.snow_walk",
+      "volume": {
+        "min": 30.000002,
+        "max": 40.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.mud.mud_walk",
+      "volume": {
+        "min": 30.000002,
+        "max": 50.0
+      },
+      "pitch": {
+        "min": 150.0,
+        "max": 170.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.snow.snow_walk",
+      "volume": {
+        "min": 30.000002,
+        "max": 40.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

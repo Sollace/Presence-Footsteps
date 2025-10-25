@@ -65,8 +65,16 @@ public class PresenceFootsteps implements ClientModInitializer {
     private final KeyBinding optionsKeyBinding = new KeyBinding("key.presencefootsteps.settings", InputUtil.Type.KEYSYM, InputUtil.GLFW_KEY_F10, KEY_BINDING_CATEGORY);
     private final KeyBinding toggleKeyBinding = new KeyBinding("key.presencefootsteps.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KEY_BINDING_CATEGORY);
     private final KeyBinding debugToggleKeyBinding = new KeyBinding("key.presencefootsteps.debug_toggle", InputUtil.Type.KEYSYM, InputUtil.GLFW_KEY_Z, KEY_BINDING_CATEGORY);
-    private final Edge toggler = new Edge(z -> config.toggleDisabled());
-    private final Edge debugToggle = new Edge(z -> MinecraftClient.getInstance().debugHudEntryList.toggleVisibility(PFDebugHud.ID));
+    private final Edge toggler = new Edge(z -> {
+        if (z) {
+            config.toggleDisabled();
+        }
+    });
+    private final Edge debugToggle = new Edge(z -> {
+        if (z) {
+            MinecraftClient.getInstance().debugHudEntryList.toggleVisibility(PFDebugHud.ID);
+        }
+    });
 
     private final AtomicBoolean configChanged = new AtomicBoolean();
 

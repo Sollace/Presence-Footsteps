@@ -10,8 +10,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Vec3d;
 
 class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
-    private static final SoundsKey SWIFT = SoundsKey.of("_SWIFT");
-    private static final SoundsKey WING = SoundsKey.of("_WING");
+    private static final SoundsKey SWIFT = SoundsKey.of("swift");
+    private static final SoundsKey WING = SoundsKey.of("wing");
     protected boolean isFalling = false;
 
     protected FlightState state = FlightState.IDLE;

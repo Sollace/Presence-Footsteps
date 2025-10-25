@@ -3,14 +3,17 @@ package eu.ha3.presencefootsteps.sound.acoustics;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
-import eu.ha3.presencefootsteps.util.JsonObjectWriter;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.entity.LivingEntity;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,8 +26,14 @@ import java.util.List;
  *
  */
 record WeightedAcoustic(
-        Entry[] entries
+        List<Entry> entries
 ) implements Acoustic {
+    public static final MapCodec<WeightedAcoustic> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Entry.CODEC.listOf().fieldOf("entries").forGetter(WeightedAcoustic::entries)
+    ).apply(i, WeightedAcoustic::new));
+
+    @SuppressWarnings("deprecation")
+    @Deprecated
     static final Serializer FACTORY = Serializer.ofJsObject((json, context) -> {
         List<Entry> entries = new ObjectArrayList<>();
         Iterator<JsonElement> iter = json.getAsJsonArray(json.has("array") ? "array" : "entries").iterator();
@@ -38,7 +47,7 @@ record WeightedAcoustic(
             entries.add(new Entry(weight, Acoustic.read(context, iter.next())));
         }
 
-        return new WeightedAcoustic(entries.toArray(Entry[]::new));
+        return new WeightedAcoustic(entries);
     });
 
     WeightedAcoustic {
@@ -57,31 +66,29 @@ record WeightedAcoustic(
     }
 
     @Override
+    public String type() {
+        return Acoustic.PROBABILITY;
+    }
+
+    @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
         final float rand = player.getRNG().nextFloat();
         int marker = -1;
-        while (++marker < entries.length) {
-            if (entries[marker].threshold >= rand) {
-                entries[marker].acoustic.playSound(player, location, event, inputOptions);
+        while (++marker < entries.size()) {
+            if (entries.get(marker).threshold >= rand) {
+                entries.get(marker).acoustic.playSound(player, location, event, inputOptions);
                 return;
             }
         }
     }
 
-    @Override
-    public void write(AcousticsFile context, JsonObjectWriter writer) throws IOException {
-        writer.object(() -> {
-            writer.field("type", "probability");
-            writer.array("entries", () -> {
-                for (Entry entry : entries) {
-                    writer.writer().value(entry.weight);
-                    entry.acoustic.write(context, writer);
-                }
-            });
-        });
-    }
-
     private static class Entry {
+        public static final Codec<Entry> CODEC = RecordCodecBuilder.create(i -> i.group(
+                Codec.INT.optionalFieldOf("weight", 1)
+                    .validate(weight -> weight >= 0 ? DataResult.success(weight) : DataResult.error(() -> "A probability weight cannot be negative", weight))
+                    .forGetter(o -> o.weight),
+                Acoustic.CODEC.fieldOf("acoustic").forGetter(o -> o.acoustic)
+        ).apply(i, Entry::new));
         private final Acoustic acoustic;
         private final int weight;
         private float threshold;

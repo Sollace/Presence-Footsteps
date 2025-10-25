@@ -1,0 +1,103 @@
+{
+  "jump": {
+    "name": "pf_presence.chain.chain_wander",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 1.0,
+      "max": 50.0
+    },
+    "type": "basic"
+  },
+  "wander": [
+    {
+      "name": "pf_presence.marble.marble_wander",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "entries": [
+        {
+          "weight": 4,
+          "acoustic": {
+            "name": "pf_presence.chain.chain_wander",
+            "volume": {
+              "min": 10.0,
+              "max": 50.0
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        },
+        {
+          "weight": 7,
+          "acoustic": {
+            "name": "",
+            "volume": {
+              "min": 90.0,
+              "max": 100.0
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        }
+      ],
+      "type": "probability"
+    }
+  ],
+  "land": [
+    {
+      "name": "pf_presence.chain.chain_wander",
+      "volume": 170.0,
+      "pitch": {
+        "min": 1.0,
+        "max": 5.0
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.chain.chain_wander",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "type": "basic"
+      },
+      "delay": 30,
+      "type": "delayed"
+    }
+  ],
+  "walk": {
+    "name": "pf_presence.chain.chain_wander",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 1.0,
+      "max": 2.0
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}

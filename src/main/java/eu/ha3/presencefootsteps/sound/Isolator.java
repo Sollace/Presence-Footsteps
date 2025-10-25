@@ -6,8 +6,8 @@ import java.util.Map;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.config.Variator;
+import eu.ha3.presencefootsteps.sound.acoustics.Acoustic;
 import eu.ha3.presencefootsteps.sound.acoustics.AcousticLibrary;
-import eu.ha3.presencefootsteps.sound.acoustics.AcousticsFile;
 import eu.ha3.presencefootsteps.sound.acoustics.AcousticsPlayer;
 import eu.ha3.presencefootsteps.sound.generator.Locomotion;
 import eu.ha3.presencefootsteps.sound.player.DelayedSoundPlayer;
@@ -48,7 +48,7 @@ public record Isolator (
     private static final Identifier GOLEM_MAP = PresenceFootsteps.id("config/golemmap.json");
     private static final Identifier LOCOMOTION_MAP = PresenceFootsteps.id("config/locomotionmap.json");
     private static final Identifier PRIMITIVE_MAP = PresenceFootsteps.id("config/primitivemap.json");
-    public static final Identifier ACOUSTICS = PresenceFootsteps.id("config/acoustics.json");
+    private static final Identifier ACOUSTICS = PresenceFootsteps.id("config/acoustics");
     private static final Identifier VARIATOR = PresenceFootsteps.id("config/variator.json");
 
     public Isolator(SoundEngine engine) {
@@ -87,7 +87,11 @@ public record Isolator (
         hasConfigurations |= golems().load(ResourceUtils.load(GOLEM_MAP, manager, GolemLookup::new));
         hasConfigurations |= primitives().load(ResourceUtils.load(PRIMITIVE_MAP, manager, PrimitiveLookup::new));
         hasConfigurations |= ResourceUtils.forEach(LOCOMOTION_MAP, manager, locomotions()::load);
-        hasConfigurations |= ResourceUtils.forEach(ACOUSTICS, manager, reader -> AcousticsFile.read(reader, acoustics()::addAcoustic, false));
+        var acoustics = ResourceUtils.loadAll(ACOUSTICS, manager, Acoustic.CODEC);
+        hasConfigurations |= !acoustics.isEmpty();
+        acoustics.forEach((id, acoustic) -> {
+            acoustics().addAcoustic(id.getPath(), acoustic);
+        });
         hasConfigurations |= ResourceUtils.forEach(VARIATOR, manager, variator()::load);
         return hasConfigurations;
     }

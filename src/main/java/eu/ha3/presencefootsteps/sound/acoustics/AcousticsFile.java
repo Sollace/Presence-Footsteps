@@ -1,16 +1,13 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
-import com.google.common.base.Strings;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import eu.ha3.presencefootsteps.PresenceFootsteps;
-import eu.ha3.presencefootsteps.util.JsonObjectWriter;
 import eu.ha3.presencefootsteps.util.Range;
+import net.minecraft.util.Identifier;
 
-import java.io.IOException;
 import java.io.Reader;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
@@ -25,8 +22,10 @@ public record AcousticsFile (
         Range defaultPitch,
         String soundRoot
 ) {
+    public static final Identifier FILE_LOCATION = PresenceFootsteps.id("config/acoustics.json");
     private static final int ENGINE_VERSION = 2;
 
+    @Deprecated
     @Nullable
     public static AcousticsFile read(Reader reader, BiConsumer<String, Acoustic> consumer, boolean ignoreVersion) {
         try {
@@ -42,6 +41,7 @@ public record AcousticsFile (
         return null;
     }
 
+    @Deprecated
     private static AcousticsFile read(JsonObject json, boolean ignoreVersion) {
         expect("library".equals(json.get("type").getAsString()), "Invalid type: Expected \"library\" got \"" + json.get("type").getAsString() + "\"");
         expect(ignoreVersion || json.get("engineversion").getAsInt() == ENGINE_VERSION, "Unrecognised Engine version: " + ENGINE_VERSION + " expected, got " + json.get("engineversion").getAsInt());
@@ -69,31 +69,14 @@ public record AcousticsFile (
         );
     }
 
-    public void write(JsonObjectWriter writer, Map<String, Acoustic> acoustics) throws IOException {
-        writer.object(() -> {
-            writer.field("type", "library");
-            writer.field("engineversion", ENGINE_VERSION);
-            writer.object("defaults", () -> {
-                writer.field("volume", () -> defaultVolume.write(writer));
-                writer.field("pitch", () -> defaultPitch.write(writer));
-            });
-            if (!Strings.isNullOrEmpty(soundRoot)) {
-                writer.field("soundroot", soundRoot);
-            }
-            writer.object("contents", () -> {
-                writer.each(acoustics.entrySet(), pair -> {
-                   writer.field(pair.getKey(), () -> pair.getValue().write(this, writer));
-                });
-            });
-        });
-    }
-
+    @Deprecated
     private static void expect(boolean condition, String message) {
         if (!condition) {
             throw new JsonParseException(message);
         }
     }
 
+    @Deprecated
     public String getSoundName(String soundName) {
         if (soundName.charAt(0) != '@') {
             return soundRoot + soundName;

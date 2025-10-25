@@ -1,0 +1,114 @@
+{
+  "wander": [
+    {
+      "name": "pf_presence.stone.stone_wander",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.marble.marble_wander",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "land": [
+    {
+      "name": "pf_presence.concrete.concrete_run",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.stone.stone_walk",
+      "volume": 50.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.stone.stone_run",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.stone.stone_walk",
+      "volume": 80.0,
+      "pitch": {
+        "min": 65.0,
+        "max": 70.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.lino.lino_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 75.0,
+        "max": 85.0
+      },
+      "type": "basic"
+    }
+  ],
+  "run": [
+    {
+      "name": "pf_presence.stone.stone_run",
+      "volume": 80.0,
+      "pitch": {
+        "min": 65.0,
+        "max": 70.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.lino.lino_run",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 75.0,
+        "max": 85.0
+      },
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

@@ -1,0 +1,109 @@
+{
+  "wander": {
+    "entries": [
+      {
+        "weight": 3,
+        "acoustic": {
+          "name": "pf_presence.mud.mud_walk",
+          "volume": {
+            "min": 90.0,
+            "max": 100.0
+          },
+          "pitch": {
+            "min": 95.0,
+            "max": 104.99999
+          },
+          "type": "basic"
+        }
+      },
+      {
+        "acoustic": {
+          "name": "pf_presence.water_stereofix.water_through",
+          "volume": {
+            "min": 90.0,
+            "max": 100.0
+          },
+          "pitch": {
+            "min": 95.0,
+            "max": 104.99999
+          },
+          "type": "basic"
+        }
+      }
+    ],
+    "type": "probability"
+  },
+  "land": [
+    {
+      "name": "pf_presence.water.water_through",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.mud.mud_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.water_stereofix.water_through",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "walk": {
+    "entries": [
+      {
+        "weight": 3,
+        "acoustic": {
+          "name": "pf_presence.mud.mud_walk",
+          "volume": {
+            "min": 90.0,
+            "max": 100.0
+          },
+          "pitch": {
+            "min": 95.0,
+            "max": 104.99999
+          },
+          "type": "basic"
+        }
+      },
+      {
+        "acoustic": {
+          "name": "pf_presence.water_stereofix.water_through",
+          "volume": {
+            "min": 90.0,
+            "max": 100.0
+          },
+          "pitch": {
+            "min": 95.0,
+            "max": 104.99999
+          },
+          "type": "basic"
+        }
+      }
+    ],
+    "type": "probability"
+  },
+  "type": "events"
+}

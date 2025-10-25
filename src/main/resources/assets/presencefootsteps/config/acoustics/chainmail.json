@@ -1,0 +1,19 @@
+{
+  "walk": {
+    "acoustic": {
+      "name": "pf_presence.chain.chain_wander",
+      "volume": {
+        "min": 1.0,
+        "max": 4.0
+      },
+      "pitch": {
+        "min": 0.25,
+        "max": 0.5
+      },
+      "type": "basic"
+    },
+    "probability": 45.0,
+    "type": "chance"
+  },
+  "type": "events"
+}

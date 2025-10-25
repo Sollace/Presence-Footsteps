@@ -1,0 +1,77 @@
+{
+  "stand": {
+    "name": "minecraft:block.fire.extinguish",
+    "volume": {
+      "min": 1.0,
+      "max": 5.0
+    },
+    "pitch": {
+      "min": 60.000004,
+      "max": 70.0
+    },
+    "type": "basic"
+  },
+  "jump": {
+    "name": "pf_presence.mud.mud_walk",
+    "volume": {
+      "min": 1.0,
+      "max": 5.0
+    },
+    "pitch": {
+      "min": 30.000002,
+      "max": 60.000004
+    },
+    "type": "basic"
+  },
+  "wander": {
+    "name": "minecraft:block.fire.extinguish",
+    "volume": {
+      "min": 20.0,
+      "max": 80.0
+    },
+    "pitch": {
+      "min": 70.0,
+      "max": 80.0
+    },
+    "type": "basic"
+  },
+  "land": {
+    "name": "minecraft:block.fire.extinguish",
+    "volume": {
+      "min": 20.0,
+      "max": 80.0
+    },
+    "pitch": {
+      "min": 70.0,
+      "max": 80.0
+    },
+    "type": "basic"
+  },
+  "walk": [
+    {
+      "name": "pf_presence.mud.mud_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "minecraft:block.fire.extinguish",
+      "volume": {
+        "min": 8.0,
+        "max": 15.000001
+      },
+      "pitch": {
+        "min": 70.0,
+        "max": 80.0
+      },
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

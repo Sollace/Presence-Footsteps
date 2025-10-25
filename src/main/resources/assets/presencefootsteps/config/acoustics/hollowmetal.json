@@ -1,0 +1,143 @@
+{
+  "wander": [
+    {
+      "name": "pf_presence.marble.marble_wander",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "entries": [
+        {
+          "weight": 4,
+          "acoustic": {
+            "name": "pf_presence.metalbox.metalbox_wander",
+            "volume": {
+              "min": 10.0,
+              "max": 30.000002
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        },
+        {
+          "weight": 7,
+          "acoustic": {
+            "name": "",
+            "volume": {
+              "min": 90.0,
+              "max": 100.0
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        }
+      ],
+      "type": "probability"
+    }
+  ],
+  "land": [
+    {
+      "name": "pf_presence.metalbox.metalbox_run",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.metalbox.metalbox_walk",
+      "volume": 50.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.metalbox.metalbox_run",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.metalbox.metalbox_walk",
+      "volume": {
+        "min": 70.0,
+        "max": 80.0
+      },
+      "pitch": {
+        "min": 20.0,
+        "max": 30.000002
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.metalbar.metalbar_walk",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "run": [
+    {
+      "name": "pf_presence.metalbox.metalbox_run",
+      "volume": {
+        "min": 70.0,
+        "max": 80.0
+      },
+      "pitch": {
+        "min": 20.0,
+        "max": 30.000002
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.metalbar.metalbar_run",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

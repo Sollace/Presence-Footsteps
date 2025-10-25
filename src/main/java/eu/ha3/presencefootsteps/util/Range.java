@@ -1,20 +1,31 @@
 package eu.ha3.presencefootsteps.util;
 
-import java.io.IOException;
 import java.util.Random;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.util.math.MathHelper;
 
 public record Range (float min, float max) {
+    private static final Codec<Float> PERCENTAGE_CODEC = Codec.FLOAT.xmap(i -> i / 100F, i -> i * 100F);
+    private static final Codec<Range> RANGE_CODEC = RecordCodecBuilder.create(i -> i.group(
+        PERCENTAGE_CODEC.fieldOf("min").forGetter(Range::min),
+        PERCENTAGE_CODEC.fieldOf("max").forGetter(Range::max)
+    ).apply(i, Range::new));
+    private static final Codec<Range> POINT_CODEC = PERCENTAGE_CODEC.xmap(Range::exactly, Range::min);
+    public static final Codec<Range> CODEC = Codec.xor(POINT_CODEC, RANGE_CODEC).xmap(either -> Either.unwrap(either), i -> MathHelper.approximatelyEquals(i.min(), i.max()) ? Either.left(i) : Either.right(i));
+
     public static final Range DEFAULT = exactly(1);
 
     public static Range exactly(float value) {
         return new Range(value, value);
     }
 
+    @Deprecated
     public Range read(String name, JsonObject json) {
         if ("volume".equals(name) && (json.has("vol") || json.has("vol_min") || json.has("vol_max"))) {
             return read("vol", json);
@@ -36,23 +47,12 @@ public record Range (float min, float max) {
         );
     }
 
-    public void write(JsonObjectWriter writer) throws IOException {
-        if (MathHelper.approximatelyEquals(min, max)) {
-            writer.writer().value(min * 100);
-        } else {
-            writer.object(() -> {
-                writer.field("min", min * 100);
-                writer.field("max", max * 100);
-            });
-        }
-    }
-
     public float random(Random rand) {
         return MathUtil.randAB(rand, min, max);
     }
 
     public float on(float value) {
-        return MathUtil.between(min, max, value);
+        return MathHelper.lerp(value, min, max);
     }
 
     private static float getPercentage(JsonObject object, String param, float fallback) {

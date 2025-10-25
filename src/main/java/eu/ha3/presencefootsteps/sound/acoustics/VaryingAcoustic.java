@@ -1,12 +1,14 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
-import java.io.IOException;
-
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
-import eu.ha3.presencefootsteps.util.JsonObjectWriter;
 import eu.ha3.presencefootsteps.util.Range;
 import net.minecraft.entity.LivingEntity;
 
@@ -20,6 +22,13 @@ record VaryingAcoustic(
         Range volume,
         Range pitch
 ) implements Acoustic {
+    public static final MapCodec<VaryingAcoustic> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+            Codec.STRING.fieldOf("name").forGetter(VaryingAcoustic::soundName),
+            Range.CODEC.fieldOf("volume").forGetter(VaryingAcoustic::volume),
+            Range.CODEC.fieldOf("pitch").forGetter(VaryingAcoustic::pitch)
+    ).apply(i, VaryingAcoustic::new));
+    @SuppressWarnings("deprecation")
+    @Deprecated
     static final Serializer FACTORY = (json, context) -> {
         if (json.isJsonPrimitive()) {
             return new VaryingAcoustic(
@@ -30,11 +39,11 @@ record VaryingAcoustic(
         }
         JsonObject jso = json.getAsJsonObject();
         if (!jso.has("name")) {
-            return EmptyAcoustic.INSTANCE;
+            throw new JsonParseException("Acoustic is missing a name");
         }
         String name = jso.get("name").getAsString();
         if (name.isEmpty()) {
-            return EmptyAcoustic.INSTANCE;
+            throw new JsonParseException("Acoustic is missing a name");
         }
         return new VaryingAcoustic(
                 context.getSoundName(name),
@@ -42,6 +51,11 @@ record VaryingAcoustic(
                 context.defaultPitch().read("pitch", jso)
         );
     };
+
+    @Override
+    public String type() {
+        return Acoustic.BASIC;
+    }
 
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
@@ -59,27 +73,5 @@ record VaryingAcoustic(
                 : pitch.random(player.getRNG());
 
         player.playSound(location, soundName, finalVolume, finalPitch, inputOptions);
-    }
-
-    @Override
-    public void write(AcousticsFile context, JsonObjectWriter writer) throws IOException {
-        boolean hasVolume = !volume.equals(context.defaultVolume());
-        boolean hasPitch = !pitch.equals(context.defaultPitch());
-        if (hasVolume || hasPitch) {
-            writer.object(() -> {
-                if (soundName != null && !soundName.isEmpty()) {
-                    writer.field("type", "basic");
-                    writer.field("name", !context.soundRoot().isEmpty() && soundName.startsWith(context.soundRoot()) ? soundName.replace(context.soundRoot(), "") : "@" + soundName);
-                    if (hasVolume) {
-                        writer.field("volume", () -> volume.write(writer));
-                    }
-                    if (hasPitch) {
-                        writer.field("pitch", () -> pitch.write(writer));
-                    }
-                }
-            });
-        } else {
-            writer.writer().value(!context.soundRoot().isEmpty() && soundName.startsWith(context.soundRoot()) ? soundName.replace(context.soundRoot(), "") : "@" + soundName);
-        }
     }
 }

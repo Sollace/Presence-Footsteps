@@ -2,6 +2,7 @@ package eu.ha3.presencefootsteps.util;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -13,8 +14,11 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
+import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
@@ -46,6 +50,11 @@ public interface ResourceUtils {
                 return (T)null;
             }
         }).filter(Objects::nonNull);
+    }
+    static <T> Map<Identifier, T> loadAll(Identifier directory, ResourceManager manager, Codec<T> codec) {
+        Map<Identifier, T> results = new HashMap<>();
+        JsonDataLoader.load(manager, ResourceFinder.json(directory.getPath()), JsonOps.INSTANCE, codec, results);
+        return results;
     }
 
     @SuppressWarnings("unchecked")

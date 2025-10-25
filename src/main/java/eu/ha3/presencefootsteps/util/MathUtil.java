@@ -13,10 +13,6 @@ public interface MathUtil {
         return a >= b ? a : a + rng.nextInt((int) b + 1);
     }
 
-    static float between(float from, float to, float value) {
-        return from + (to - from) * value;
-    }
-
     static float scalex(float number, float min, float max) {
         return MathHelper.clamp((number - min) / (max - min), 0, 1);
     }

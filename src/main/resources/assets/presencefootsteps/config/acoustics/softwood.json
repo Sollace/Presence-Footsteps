@@ -1,0 +1,77 @@
+{
+  "wander": [
+    {
+      "name": "pf_presence.dirt.dirt_wander",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.squeakywood.squeakywood_wander",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "land": [
+    {
+      "name": "pf_presence.wood.wood_walk",
+      "volume": 30.000002,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.wood.wood_walk",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 30,
+      "type": "delayed"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.wood.wood_walk",
+      "volume": 40.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.squeakywood.squeakywood_walk",
+      "volume": 10.0,
+      "pitch": 20.0,
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

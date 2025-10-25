@@ -1,0 +1,115 @@
+{
+  "wander": [
+    {
+      "name": "minecraft:block.heavy_core.step",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "entries": [
+        {
+          "weight": 4,
+          "acoustic": {
+            "name": "pf_presence.metalbox.metalbox_wander",
+            "volume": {
+              "min": 10.0,
+              "max": 50.0
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        },
+        {
+          "weight": 7,
+          "acoustic": {
+            "name": "",
+            "volume": {
+              "min": 90.0,
+              "max": 100.0
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        }
+      ],
+      "type": "probability"
+    }
+  ],
+  "land": [
+    {
+      "name": "minecraft:block.heavy_core.step",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "minecraft:block.heavy_core.step",
+      "volume": 50.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.metalbox.metalbox_run",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "walk": {
+    "name": "minecraft:block.heavy_core.step",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "run": {
+    "name": "minecraft:block.heavy_core.step",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}

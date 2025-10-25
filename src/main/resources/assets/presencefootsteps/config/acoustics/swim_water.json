@@ -1,0 +1,27 @@
+{
+  "swim": {
+    "name": "minecraft:entity.player.swim",
+    "volume": {
+      "min": 10.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 90.0,
+      "max": 110.0
+    },
+    "type": "basic"
+  },
+  "walk": {
+    "name": "minecraft:entity.player.swim",
+    "volume": {
+      "min": 10.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 90.0,
+      "max": 110.0
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}

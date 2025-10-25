@@ -1,0 +1,114 @@
+{
+  "jump": [
+    {
+      "name": "pf_presence.dirt.dirt_wander",
+      "volume": 40.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.leaves.leaves_through",
+      "volume": 40.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "wander": {
+    "name": "pf_presence.dirt.dirt_wander",
+    "volume": 40.0,
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "land": [
+    {
+      "name": "pf_presence.dirt.dirt_land",
+      "volume": 40.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.leaves.leaves_through",
+      "volume": 40.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.dirt.dirt_walk",
+      "volume": 50.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.dirt.dirt_run",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.dirt.dirt_walk",
+      "volume": 20.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.leaves.leaves_through",
+      "volume": 30.000002,
+      "pitch": 80.0,
+      "type": "basic"
+    }
+  ],
+  "run": [
+    {
+      "name": "pf_presence.dirt.dirt_run",
+      "volume": 20.0,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.leaves.leaves_through",
+      "volume": 30.000002,
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

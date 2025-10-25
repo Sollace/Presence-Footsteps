@@ -1,0 +1,106 @@
+{
+  "jump": {
+    "name": "pf_presence.marble.marble_wander",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "wander": [
+    {
+      "name": "pf_presence.marble.marble_wander",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "entries": [
+        {
+          "weight": 9,
+          "acoustic": {
+            "name": "pf_presence.metalbar.metalbar_wander",
+            "volume": {
+              "min": 10.0,
+              "max": 50.0
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        },
+        {
+          "weight": 7,
+          "acoustic": {
+            "name": "",
+            "volume": {
+              "min": 90.0,
+              "max": 100.0
+            },
+            "pitch": {
+              "min": 95.0,
+              "max": 104.99999
+            },
+            "type": "basic"
+          }
+        }
+      ],
+      "type": "probability"
+    }
+  ],
+  "land": [
+    {
+      "name": "pf_presence.marble.marble_wander",
+      "volume": {
+        "min": 90.0,
+        "max": 100.0
+      },
+      "pitch": {
+        "min": 95.0,
+        "max": 104.99999
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.metalbar.metalbar_walk",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 30,
+      "type": "delayed"
+    }
+  ],
+  "walk": {
+    "name": "pf_presence.marble.marble_walk",
+    "volume": {
+      "min": 90.0,
+      "max": 100.0
+    },
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}

@@ -1,0 +1,90 @@
+{
+  "wander": [
+    {
+      "name": "pf_presence.bluntwood.bluntwood_wander",
+      "volume": 10.0,
+      "pitch": {
+        "min": 15.000001,
+        "max": 25.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.marble.marble_wander",
+      "volume": 30.000002,
+      "pitch": {
+        "min": 75.0,
+        "max": 85.0
+      },
+      "type": "basic"
+    }
+  ],
+  "land": [
+    {
+      "name": "pf_presence.bluntwood.bluntwood_walk",
+      "volume": 20.0,
+      "pitch": {
+        "min": 15.000001,
+        "max": 25.0
+      },
+      "type": "basic"
+    },
+    {
+      "acoustic": {
+        "name": "pf_presence.bluntwood.bluntwood_walk",
+        "volume": {
+          "min": 90.0,
+          "max": 100.0
+        },
+        "pitch": {
+          "min": 95.0,
+          "max": 104.99999
+        },
+        "type": "basic"
+      },
+      "delay": 50,
+      "type": "delayed"
+    }
+  ],
+  "walk": [
+    {
+      "name": "pf_presence.bluntwood.bluntwood_walk",
+      "volume": 10.0,
+      "pitch": {
+        "min": 15.000001,
+        "max": 25.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.lino.lino_walk",
+      "volume": 30.000002,
+      "pitch": {
+        "min": 75.0,
+        "max": 85.0
+      },
+      "type": "basic"
+    }
+  ],
+  "run": [
+    {
+      "name": "pf_presence.bluntwood.bluntwood_walk",
+      "volume": 30.000002,
+      "pitch": {
+        "min": 15.000001,
+        "max": 25.0
+      },
+      "type": "basic"
+    },
+    {
+      "name": "pf_presence.lino.lino_run",
+      "volume": 30.000002,
+      "pitch": {
+        "min": 75.0,
+        "max": 85.0
+      },
+      "type": "basic"
+    }
+  ],
+  "type": "events"
+}

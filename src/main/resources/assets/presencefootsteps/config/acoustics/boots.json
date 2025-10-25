@@ -1,0 +1,12 @@
+{
+  "walk": {
+    "name": "pf_presence.rug.rug_walk",
+    "volume": 7.0,
+    "pitch": {
+      "min": 95.0,
+      "max": 104.99999
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}

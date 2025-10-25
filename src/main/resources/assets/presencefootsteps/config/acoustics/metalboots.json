@@ -1,0 +1,15 @@
+{
+  "walk": {
+    "name": "pf_presence.metalbar.metalbar_wander",
+    "volume": {
+      "min": 13.0,
+      "max": 16.0
+    },
+    "pitch": {
+      "min": 1.25,
+      "max": 1.5
+    },
+    "type": "basic"
+  },
+  "type": "events"
+}
