@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 abstract class IEntity {
     @Inject(method = "playStepSounds", at = @At("HEAD"), cancellable = true)
     private void playStepSounds(BlockPos pos, BlockState state, CallbackInfo info) {
-        if (this instanceof StepSoundSource s && s.isStepBlocked()) {
+        if (this instanceof StepSoundSource s && s.isStepBlocked() && ((Entity)(Object)this).getEntityWorld().isClient()) {
             info.cancel();
         }
     }
