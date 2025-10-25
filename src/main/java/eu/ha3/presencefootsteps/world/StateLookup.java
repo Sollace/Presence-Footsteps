@@ -40,10 +40,6 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
         this(new Object2ObjectLinkedOpenHashMap<>());
         json.entrySet().forEach(entry -> {
             SoundsKey sound = SoundsKey.of(entry.getValue().getAsString());
-            if (!sound.isResult()) {
-                return;
-            }
-
             Key k = Key.of(entry.getKey(), sound);
 
             substrates.computeIfAbsent(k.substrate, Bucket.Substrate::new).add(k);
@@ -196,8 +192,9 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
                 return getTile(state).contains(state) || wildcards.findMatch(state) != Key.NULL;
             }
 
+            @SuppressWarnings("deprecation")
             private Bucket getTile(BlockState state) {
-                return blocks.computeIfAbsent(Registries.BLOCK.getId(state.getBlock()), id -> {
+                return blocks.computeIfAbsent(state.getBlock().getRegistryEntry().getKey().get().getValue(), id -> {
                     for (Identifier tag : tags.keySet()) {
                         if (state.isIn(TagKey.of(RegistryKeys.BLOCK, tag))) {
                             return tags.get(tag);
