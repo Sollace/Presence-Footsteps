@@ -17,6 +17,9 @@ public class MotionTracker {
     protected double motionY;
     protected double motionZ;
 
+    protected float distanceTraveled;
+    protected double fallDistance;
+
     private final TerrestrialStepSoundGenerator generator;
 
     public MotionTracker(TerrestrialStepSoundGenerator generator) {
@@ -43,6 +46,14 @@ public class MotionTracker {
         return motionX == 0 && motionZ == 0;
     }
 
+    public float getDistanceTraveled() {
+        return distanceTraveled;
+    }
+
+    public double getFallDistance() {
+        return fallDistance;
+    }
+
     /**
      * Fills in the blanks that aren't present on the client when playing on a
      * remote server.
@@ -52,6 +63,8 @@ public class MotionTracker {
             motionX = ply.getVelocity().x;
             motionY = ply.getVelocity().y;
             motionZ = ply.getVelocity().z;
+            distanceTraveled = ply.distanceTraveled;
+            fallDistance = ply.fallDistance;
         } else {
             // Other players don't send their motion data so we have to make our own
             // approximations.
@@ -69,21 +82,25 @@ public class MotionTracker {
             lastZ = ply.getZ();
         }
 
-        if (ply instanceof OtherClientPlayerEntity) {
+        if (ply instanceof OtherClientPlayerEntity other) {
             if (ply.getWorld().getTime() % 1 == 0) {
 
                 if (motionX != 0 || motionZ != 0) {
-                    ply.distanceTraveled += Math.sqrt(Math.pow(motionX, 2) + Math.pow(motionY, 2) + Math.pow(motionZ, 2)) * 0.8;
+                    distanceTraveled += Math.sqrt(Math.pow(motionX, 2) + Math.pow(motionY, 2) + Math.pow(motionZ, 2)) * 0.8;
                 } else {
-                    ply.distanceTraveled += Math.sqrt(Math.pow(motionX, 2) + Math.pow(motionZ, 2)) * 0.8;
+                    distanceTraveled += Math.sqrt(Math.pow(motionX, 2) + Math.pow(motionZ, 2)) * 0.8;
                 }
 
-                if (ply.isOnGround()) {
-                    ply.fallDistance = 0;
+                if (ply.isOnGround() || ply.hasVehicle() || other.getAbilities().flying || motionY > 0) {
+                    fallDistance = 0;
                 } else if (motionY < 0) {
-                    ply.fallDistance -= motionY * 200;
+                    fallDistance -= motionY;
                 }
             }
+        }
+
+        if (!(ply instanceof PlayerEntity)) {
+            distanceTraveled += (float)Math.sqrt(getHorizontalSpeed()) * 0.6f;
         }
     }
 

@@ -4,7 +4,6 @@ import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.FluidTags;
@@ -35,7 +34,8 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     // Airborne
     protected boolean isAirborne;
 
-    protected float lastFallDistance;
+    protected double lastFallDistance;
+    protected float distanceReference;
     protected float lastReference;
     protected boolean isImmobile;
     protected long timeImmobile;
@@ -99,7 +99,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
         simulateAirborne();
         simulateBrushes();
         simulateStationary();
-        lastFallDistance = entity.fallDistance;
+        lastFallDistance = motionTracker.getFallDistance();
     }
 
     protected void simulateStationary() {
@@ -139,11 +139,7 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
     }
 
     protected void simulateFootsteps() {
-        if (!(entity instanceof PlayerEntity)) {
-            entity.distanceTraveled += (float)Math.sqrt(motionTracker.getHorizontalSpeed()) * 0.6f;
-        }
-
-        final float distanceReference = entity.distanceTraveled;
+        final float distanceReference = motionTracker.getDistanceTraveled();
 
         stepThisFrame = false;
 
