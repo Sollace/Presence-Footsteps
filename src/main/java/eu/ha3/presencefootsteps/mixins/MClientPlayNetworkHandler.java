@@ -27,7 +27,7 @@ public abstract class MClientPlayNetworkHandler implements ClientPlayPacketListe
             cancellable = true
     )
     public void onHandleSoundEffect(PlaySoundS2CPacket packet, CallbackInfo info) {
-        if (PresenceFootsteps.getInstance().getEngine().onSoundRecieved(packet.getSound(), packet.getCategory())) {
+        if (PresenceFootsteps.getInstance().getEngine().onSoundRecieved(packet)) {
             info.cancel();
         }
     }

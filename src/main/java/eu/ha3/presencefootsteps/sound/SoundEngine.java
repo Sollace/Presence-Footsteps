@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.datafixers.util.Either;
 import eu.ha3.presencefootsteps.PFConfig;
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.player.ImmediateSoundPlayer;
@@ -19,6 +20,7 @@ import eu.ha3.presencefootsteps.world.Solver;
 import eu.ha3.presencefootsteps.world.PFSolver;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -29,6 +31,7 @@ import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.sound.SoundCategory;
@@ -38,10 +41,17 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
 
 public class SoundEngine implements IdentifiableResourceReloadListener {
     private static final Identifier ID = PresenceFootsteps.id("sounds");
+    private static final Set<Identifier> BLOCKED_PLAYER_SOUNDS = Set.of(
+            SoundEvents.ENTITY_PLAYER_SWIM.getId(),
+            SoundEvents.ENTITY_PLAYER_SPLASH.getId(),
+            SoundEvents.ENTITY_PLAYER_BIG_FALL.getId(),
+            SoundEvents.ENTITY_PLAYER_SMALL_FALL.getId()
+    );
 
     private Isolator isolator = new Isolator(this);
     private final Solver solver = new PFSolver(this);
@@ -106,8 +116,11 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
     }
 
     public boolean isRunning(MinecraftClient client) {
+        return !client.isPaused() && isActive(client);
+    }
+
+    public boolean isActive(MinecraftClient client) {
         return hasData()
-                && !client.isPaused()
                 && config.getEnabled()
                 && (client.isInSingleplayer() || config.getEnabledMP());
     }
@@ -168,13 +181,19 @@ public class SoundEngine implements IdentifiableResourceReloadListener {
         }
     }
 
-    public boolean onSoundRecieved(@Nullable RegistryEntry<SoundEvent> event, SoundCategory category) {
-        return event != null && isRunning(MinecraftClient.getInstance()) && event.getKeyOrValue().right().filter(sound -> {
-            return event == SoundEvents.ENTITY_PLAYER_SWIM
-                || event == SoundEvents.ENTITY_PLAYER_SPLASH
-                || event == SoundEvents.ENTITY_PLAYER_BIG_FALL
-                || event == SoundEvents.ENTITY_PLAYER_SMALL_FALL;
-        }).isPresent();
+    public boolean onSoundRecieved(PlaySoundS2CPacket packet) {
+        @Nullable RegistryEntry<SoundEvent> event = packet.getSound();
+        @Nullable ClientWorld world = MinecraftClient.getInstance().world;
+
+        if (world == null || event == null || !isActive(MinecraftClient.getInstance())) {
+            return false;
+        }
+
+        var stepAtPos = world.getBlockState(BlockPos.ofFloored(packet.getX(), packet.getY() - 1, packet.getZ())).getSoundGroup().getStepSound();
+        var sound = Either.unwrap(event.getKeyOrValue().mapBoth(i -> i.getValue(), i -> i.getId()));
+
+        return BLOCKED_PLAYER_SOUNDS.contains(sound)
+                || (packet.getCategory() == SoundCategory.PLAYERS && sound.equals(stepAtPos.getId()));
     }
 
     @Override
