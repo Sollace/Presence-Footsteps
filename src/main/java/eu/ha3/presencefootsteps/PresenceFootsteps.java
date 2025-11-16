@@ -118,7 +118,7 @@ public class PresenceFootsteps implements ClientModInitializer {
 
     private void onTick(MinecraftClient client) {
         if (client.currentScreen instanceof PFOptionsScreen screen && configChanged.getAndSet(false)) {
-            screen.init(client, screen.width, screen.height);
+            screen.init(screen.width, screen.height);
         }
 
         debugToggle.accept(GameGui.isKeyDown(InputUtil.GLFW_KEY_F3) && debugToggleKeyBinding.isPressed());
