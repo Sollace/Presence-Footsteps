@@ -7,21 +7,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import eu.ha3.presencefootsteps.PresenceFootsteps;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 
-@Mixin(ClientPlayNetworkHandler.class)
-public abstract class MClientPlayNetworkHandler implements ClientPlayPacketListener {
+@Mixin(ClientPacketListener.class)
+public abstract class MClientPlayNetworkHandler {
 
     @Inject(
-        method = "onPlaySound(Lnet/minecraft/network/packet/s2c/play/PlaySoundS2CPacket;)V",
+        method = "handleSoundEvent(Lnet/minecraft/network/protocol/game/ClientboundSoundPacket;)V",
         at = @At(
             value = "INVOKE",
-            target = "net/minecraft/client/world/ClientWorld.playSound(Lnet/minecraft/entity/Entity;DDDLnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/sound/SoundCategory;FFJ)V",
+            target = "net/minecraft/client/multiplayer/ClientLevel.playSeededSound(Lnet/minecraft/world/entity/Entity;DDDLnet/minecraft/core/Holder;Lnet/minecraft/sounds/SoundSource;FFJ)V",
             shift = Shift.BEFORE),
         cancellable = true)
-    public void onHandleSoundEffect(PlaySoundS2CPacket packet, CallbackInfo info) {
+    public void onHandleSoundEffect(ClientboundSoundPacket packet, CallbackInfo info) {
         if (PresenceFootsteps.getInstance().getEngine().onSoundRecieved(packet)) {
             info.cancel();
         }

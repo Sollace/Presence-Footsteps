@@ -2,7 +2,7 @@ package eu.ha3.presencefootsteps.util;
 
 import java.util.Random;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public interface MathUtil {
     static float randAB(Random rng, float a, float b) {
@@ -14,6 +14,6 @@ public interface MathUtil {
     }
 
     static float scalex(float number, float min, float max) {
-        return MathHelper.clamp((number - min) / (max - min), 0, 1);
+        return Mth.clamp((number - min) / (max - min), 0, 1);
     }
 }

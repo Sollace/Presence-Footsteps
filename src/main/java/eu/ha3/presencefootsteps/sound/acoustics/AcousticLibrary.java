@@ -4,7 +4,7 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.world.Association;
 import eu.ha3.presencefootsteps.world.SoundsKey;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface AcousticLibrary {
     /**

@@ -32,20 +32,20 @@ import eu.ha3.presencefootsteps.sound.acoustics.Acoustic;
 import eu.ha3.presencefootsteps.sound.acoustics.AcousticsFile;
 import eu.ha3.presencefootsteps.util.BlockReport;
 import eu.ha3.presencefootsteps.util.ResourceUtils;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.pack.PackScreen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
+import net.minecraft.network.chat.Component;
 
 class PFOptionsScreen extends GameGui {
-    public static final Text TITLE = Text.translatable("menu.pf.title");
-    public static final Text UP_TO_DATE = Text.translatable("pf.update.up_to_date");
-    public static final Text VOLUME_MIN = Text.translatable("menu.pf.volume.min");
+    public static final Component TITLE = Component.translatable("menu.pf.title");
+    public static final Component UP_TO_DATE = Component.translatable("pf.update.up_to_date");
+    public static final Component VOLUME_MIN = Component.translatable("menu.pf.volume.min");
 
     private final ScrollContainer content = new ScrollContainer();
 
     public PFOptionsScreen(@Nullable Screen parent) {
-        super(Text.translatable("%s (%s)", TITLE, PresenceFootsteps.getInstance().getOptionsKeyBinding().getBoundKeyLocalizedText()), parent);
+        super(Component.translatable("%s (%s)", TITLE, PresenceFootsteps.getInstance().getOptionsKeyBinding().getTranslatedKeyMessage()), parent);
         content.margin.top = 30;
         content.margin.bottom = 30;
         content.getContentPadding().top = 10;
@@ -144,14 +144,14 @@ class PFOptionsScreen extends GameGui {
         content.addButton(new Label(wideLeft, row += 25)).getStyle().setText("menu.pf.group.sound_packs");
 
         content.addButton(new Button(wideLeft, row += 25, 150, 20).onClick(sender -> {
-            client.setScreen(new PackScreen(
-                    client.getResourcePackManager(),
-                    manager -> {
-                        client.options.refreshResourcePacks(manager);
-                        client.setScreen(this);
+            minecraft.setScreen(new PackSelectionScreen(
+                    minecraft.getResourcePackRepository(),
+                    repo -> {
+                        minecraft.options.loadSelectedResourcePacks(repo);
+                        minecraft.setScreen(this);
                     },
-                    client.getResourcePackDir(),
-                    Text.translatable("resourcePack.title")
+                    minecraft.getResourcePackDirectory(),
+                    Component.translatable("resourcePack.title")
             ));
         })).getStyle().setText("options.resourcepack");
 
@@ -160,7 +160,7 @@ class PFOptionsScreen extends GameGui {
         content.addButton(new Button(wideLeft, row += 25, 150, 20).onClick(sender -> {
             sender.setEnabled(false);
             BlockReport.execute(PresenceFootsteps.getInstance().getEngine().getIsolator(), "report_concise", false).thenRun(() -> sender.setEnabled(true));
-        })).setEnabled(client.world != null)
+        })).setEnabled(minecraft.level != null)
             .getStyle()
             .setText("menu.pf.report.concise")
             .setTooltip("menu.pf.report.concise.tooltip");
@@ -170,7 +170,7 @@ class PFOptionsScreen extends GameGui {
                 sender.setEnabled(false);
                 BlockReport.execute(PresenceFootsteps.getInstance().getEngine().getIsolator(), "report_full", true).thenRun(() -> sender.setEnabled(true));
             }))
-            .setEnabled(client.world != null)
+            .setEnabled(minecraft.level != null)
             .getStyle()
                 .setText("menu.pf.report.full")
                 .setTooltip("menu.pf.report.full.tooltip");
@@ -179,7 +179,7 @@ class PFOptionsScreen extends GameGui {
                 .onClick(sender -> {
                     sender.setEnabled(false);
                     BlockReport.execute(loc -> {
-                        ResourceUtils.forEach(AcousticsFile.FILE_LOCATION, client.getResourceManager(), reader -> {
+                        ResourceUtils.forEach(AcousticsFile.FILE_LOCATION, minecraft.getResourceManager(), reader -> {
                             Map<String, Acoustic> acoustics = new HashMap<>();
                             @SuppressWarnings("deprecation")
                             AcousticsFile file = AcousticsFile.read(reader, acoustics::put, true);
@@ -200,7 +200,7 @@ class PFOptionsScreen extends GameGui {
                         });
                     }, "acoustics", "").thenRun(() -> sender.setEnabled(true));
                 }))
-                .setEnabled(client.world != null)
+                .setEnabled(minecraft.level != null)
                 .getStyle()
                     .setText("menu.pf.report.acoustics")
                     .setTooltip("menu.pf.report-acoustics.tooltip");
@@ -237,27 +237,27 @@ class PFOptionsScreen extends GameGui {
            .setColor(hasUpdate ? 0xFF0000 : 0xFFFFFF)
            .setTooltip(versions
                    .map(Versions::latest)
-                   .map(latest -> (Text)Text.translatable("pf.update.updates_available",
+                   .map(latest -> (Component)Component.translatable("pf.update.updates_available",
                            latest.version().getFriendlyString(),
                            latest.minecraft().getFriendlyString()))
                    .orElse(UP_TO_DATE));
     }
 
-    private Text formatVolume(AbstractSlider<Float> slider) {
+    private Component formatVolume(AbstractSlider<Float> slider) {
         if (slider.getValue() <= 0) {
             return VOLUME_MIN;
         }
 
-        return Text.translatable("menu.pf.volume", (int)Math.floor(slider.getValue()));
+        return Component.translatable("menu.pf.volume", (int)Math.floor(slider.getValue()));
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float tickDelta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float tickDelta) {
         super.render(context, mouseX, mouseY, tickDelta);
         content.render(context, mouseX, mouseY, tickDelta);
     }
 
-    static Function<AbstractSlider<Float>, Text> formatVolume(String key) {
-        return slider -> Text.translatable(key, (int)Math.floor(slider.getValue()));
+    static Function<AbstractSlider<Float>, Component> formatVolume(String key) {
+        return slider -> Component.translatable(key, (int)Math.floor(slider.getValue()));
     }
 }

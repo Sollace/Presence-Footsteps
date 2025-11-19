@@ -5,7 +5,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.util.Range;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 import java.io.Reader;
 import java.util.function.BiConsumer;

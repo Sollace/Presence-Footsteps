@@ -8,8 +8,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import eu.ha3.presencefootsteps.sound.Options;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.Mth;
 
 public record Period(long min, long max) implements Options {
     private static final Codec<Period> RANGE_CODEC = RecordCodecBuilder.create(i -> i.group(
@@ -35,8 +35,8 @@ public record Period(long min, long max) implements Options {
         }
 
         return Period.of(
-                JsonHelper.getLong(json, key + "_min", 0),
-                JsonHelper.getLong(json, key + "_max", 0)
+                GsonHelper.getAsLong(json, key + "_min", 0),
+                GsonHelper.getAsLong(json, key + "_max", 0)
         );
     }
 
@@ -45,7 +45,7 @@ public record Period(long min, long max) implements Options {
     }
 
     public float on(float value) {
-        return MathHelper.lerp(value, min, max);
+        return Mth.lerp(value, min, max);
     }
 
     @Override

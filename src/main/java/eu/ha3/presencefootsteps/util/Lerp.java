@@ -1,6 +1,6 @@
 package eu.ha3.presencefootsteps.util;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class Lerp {
     public float previous;
@@ -17,6 +17,6 @@ public class Lerp {
     }
 
     public float get(float tickDelta) {
-        return MathHelper.lerp(tickDelta, previous, current);
+        return Mth.lerp(tickDelta, previous, current);
     }
 }

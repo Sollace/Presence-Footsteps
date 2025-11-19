@@ -22,15 +22,15 @@ import eu.ha3.presencefootsteps.world.LocomotionLookup;
 import eu.ha3.presencefootsteps.world.Lookup;
 import eu.ha3.presencefootsteps.world.PrimitiveLookup;
 import eu.ha3.presencefootsteps.world.StateLookup;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.resource.ResourceFinder;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public record Isolator (
         Variator variator,
@@ -76,8 +76,8 @@ public record Isolator (
         hasConfigurations |= globalBlocks().load(ResourceUtils.load(BLOCK_MAP, manager, StateLookup::new));
 
         blocks.clear();
-        blocks.putAll(ResourceUtils.loadDir(ResourceFinder.json("config/blockmaps/entity"), manager, StateLookup::new, id -> {
-            return Registries.ENTITY_TYPE.getOptionalValue(id.withPath(p -> p.replace("config/blockmaps/entity/", "").replace(".json", ""))).orElse(null);
+        blocks.putAll(ResourceUtils.loadDir(FileToIdConverter.json("config/blockmaps/entity"), manager, StateLookup::new, id -> {
+            return BuiltInRegistries.ENTITY_TYPE.getOptional(id.withPath(p -> p.replace("config/blockmaps/entity/", "").replace(".json", ""))).orElse(null);
         }, entries -> {
             Lookup<BlockState> lookup = new Lookup<>();
             return lookup.load(entries, globalBlocks()) ? lookup : null;
@@ -97,7 +97,7 @@ public record Isolator (
     }
 
     @Override
-    public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
+    public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, SoundType> groups) throws IOException {
         writer.object(() -> {
             writer.object("blocks", () -> StateLookup.writeToReport(globalBlocks(), full, writer, groups));
             writer.object("golems", () -> GolemLookup.writeToReport(golems(), full, writer, groups));

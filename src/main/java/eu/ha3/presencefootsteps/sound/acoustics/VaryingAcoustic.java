@@ -10,7 +10,7 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import eu.ha3.presencefootsteps.util.Range;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * The simplest form of an acoustic. Plays one sound with a set volume and pitch range.

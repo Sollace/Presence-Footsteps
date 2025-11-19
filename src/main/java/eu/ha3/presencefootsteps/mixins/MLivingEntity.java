@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import eu.ha3.presencefootsteps.sound.StepSoundSource;
 import eu.ha3.presencefootsteps.sound.generator.StepSoundGenerator;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 @Mixin(LivingEntity.class)
 abstract class MLivingEntity extends Entity implements StepSoundSource {

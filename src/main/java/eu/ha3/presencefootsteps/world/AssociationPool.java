@@ -2,12 +2,12 @@ package eu.ha3.presencefootsteps.world;
 
 import eu.ha3.presencefootsteps.api.DerivedBlock;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 /**
  * Performs a search against all enabled lookups to match a block position, state, and substrate
@@ -65,8 +65,8 @@ public final class AssociationPool {
      * @return The matching acoustic names or {@link Emitter#UNASSIGNED} if no match could be determined.
      */
     public SoundsKey get(BlockPos pos, BlockState state, String substrate) {
-        for (Entity golem : entity.getEntityWorld().getOtherEntities(entity, new Box(pos).expand(0.5, 0, 0.5), e -> {
-            return !e.isCollidable(entity) || e.getBoundingBox().maxY < entity.getY() + 0.2F;
+        for (Entity golem : entity.level().getEntities(entity, new AABB(pos).inflate(0.5, 0, 0.5), e -> {
+            return !e.canCollideWith(entity) || e.getBoundingBox().maxY < entity.getY() + 0.2F;
         })) {
             if ((association = engine.getIsolator().golems().getAssociation(golem.getType(), substrate)).isEmitter()) {
                 wasGolem = true;
@@ -102,7 +102,7 @@ public final class AssociationPool {
         if (Substrates.isSupplimentary(substrate)) {
             return false;
         }
-        BlockSoundGroup sounds = state.getSoundGroup();
+        SoundType sounds = state.getSoundType();
         return (association = engine.getIsolator().primitives().getAssociation(sounds.getStepSound(), PrimitiveLookup.getSubstrate(sounds))).isResult();
     }
 }

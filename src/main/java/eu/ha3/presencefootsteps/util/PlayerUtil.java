@@ -1,23 +1,23 @@
 package eu.ha3.presencefootsteps.util;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.OtherClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public interface PlayerUtil {
     static boolean isClientPlayer(Entity entity) {
-        PlayerEntity client = MinecraftClient.getInstance().player;
+        Player client = Minecraft.getInstance().player;
 
-        return entity instanceof PlayerEntity
-                && !(entity instanceof OtherClientPlayerEntity)
+        return entity instanceof Player
+                && !(entity instanceof RemotePlayer)
                 && client != null
-                && (client == entity || client.getUuid().equals(entity.getUuid()));
+                && (client == entity || client.getUUID().equals(entity.getUUID()));
     }
 
     static float getScale(LivingEntity entity) {
-        return MathHelper.clamp(entity.getWidth() / entity.getType().getDimensions().width(), 0.01F, 200F);
+        return Mth.clamp(entity.getBbWidth() / entity.getType().getDimensions().width(), 0.01F, 200F);
     }
 }

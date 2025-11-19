@@ -7,7 +7,7 @@ import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.util.MathUtil;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class DelayedSoundPlayer implements SoundPlayer {
     private static final boolean USING_LATENESS = true;
@@ -42,6 +42,7 @@ public class DelayedSoundPlayer implements SoundPlayer {
         pending.add(new PendingSound(location, soundName, volume, pitch, options));
     }
 
+    @Override
     public void think() {
         currentTime = System.currentTimeMillis();
 

@@ -6,11 +6,11 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public enum Locomotion {
     NONE,
@@ -45,12 +45,12 @@ public enum Locomotion {
         return constructor.apply(entity, engine);
     }
 
-    public Text getOptionName() {
-        return Text.translatable("menu.pf.stance", Text.translatable(this == NONE ? AUTO_TRANSLATION_KEY : translationKey));
+    public Component getOptionName() {
+        return Component.translatable("menu.pf.stance", Component.translatable(this == NONE ? AUTO_TRANSLATION_KEY : translationKey));
     }
 
-    public Text getOptionTooltip() {
-        return Text.translatable(translationKey + ".tooltip");
+    public Component getOptionTooltip() {
+        return Component.translatable(translationKey + ".tooltip");
     }
 
     public static Locomotion byName(String name) {
@@ -65,9 +65,9 @@ public enum Locomotion {
         return fallback;
     }
 
-    public static Locomotion forPlayer(PlayerEntity ply, Locomotion preference) {
+    public static Locomotion forPlayer(Player ply, Locomotion preference) {
         if (preference == NONE) {
-            if (ply instanceof ClientPlayerEntity && MineLP.hasPonies()) {
+            if (ply instanceof LocalPlayer && MineLP.hasPonies()) {
                 return MineLP.getLocomotion(ply);
             }
 

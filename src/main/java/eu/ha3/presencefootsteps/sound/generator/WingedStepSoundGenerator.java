@@ -3,11 +3,11 @@ package eu.ha3.presencefootsteps.sound.generator;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.util.MathUtil;
 import eu.ha3.presencefootsteps.world.SoundsKey;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import eu.ha3.presencefootsteps.config.Variator;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.Vec3d;
 
 class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
     private static final SoundsKey SWIFT = SoundsKey.of("swift");
@@ -42,7 +42,7 @@ class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
     protected boolean updateImmobileState(float reference) {
 
         if (isAirborne) {
-            final Vec3d vel = entity.getVelocity();
+            final Vec3 vel = entity.getDeltaMovement();
 
             boolean stationary = vel.x != 0 && vel.z != 0;
             lastReference = reference;
@@ -112,13 +112,13 @@ class WingedStepSoundGenerator extends TerrestrialStepSoundGenerator {
         final long now = System.currentTimeMillis();
         Variator variator = engine.getIsolator().variator();
 
-        if (updateState(motionTracker.getHorizontalSpeed(), motionTracker.getMotionY(), entity.sidewaysSpeed)) {
+        if (updateState(motionTracker.getHorizontalSpeed(), motionTracker.getMotionY(), entity.xxa)) {
             nextFlapTime = now + variator.FLIGHT_TRANSITION_TIME;
         }
 
-        if (!entity.isSubmergedInWater() && !isFalling && now > nextFlapTime) {
-            nextFlapTime = now + getWingSpeed() + (entity.getEntityWorld().random.nextInt(100) - 50);
-            flapMod = (flapMod + 1) % (1 + entity.getEntityWorld().random.nextInt(4));
+        if (!entity.isUnderWater() && !isFalling && now > nextFlapTime) {
+            nextFlapTime = now + getWingSpeed() + (entity.level().random.nextInt(100) - 50);
+            flapMod = (flapMod + 1) % (1 + entity.level().random.nextInt(4));
 
             float volume = 1;
             long diffImmobile = now - lastTimeImmobile;

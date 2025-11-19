@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 abstract class AbstractSubstrateLookup<T> implements Lookup.DataSegment<T> {
     private final Map<String, Map<Identifier, Optional<SoundsKey>>> substrates = new Object2ObjectLinkedOpenHashMap<>();
@@ -22,7 +22,7 @@ abstract class AbstractSubstrateLookup<T> implements Lookup.DataSegment<T> {
 
             substrates
                 .computeIfAbsent(substrate, s -> new Object2ObjectLinkedOpenHashMap<>())
-                .put(Identifier.of(primitive), Optional.of(SoundsKey.of(entry.getValue().getAsString())));
+                .put(Identifier.parse(primitive), Optional.of(SoundsKey.of(entry.getValue().getAsString())));
         });
     }
 

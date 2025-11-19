@@ -1,13 +1,12 @@
 package eu.ha3.mc.quick.update;
 
 import com.google.gson.JsonObject;
-
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.util.JsonHelper;
+import net.minecraft.util.GsonHelper;
 
 public record TargettedVersion (
         Version minecraft,
@@ -15,8 +14,8 @@ public record TargettedVersion (
 
     public TargettedVersion(JsonObject json) throws VersionParsingException {
         this(
-                Version.parse(JsonHelper.getString(json, "minecraft")),
-                Version.parse(JsonHelper.getString(json, "version")));
+                Version.parse(GsonHelper.getAsString(json, "minecraft")),
+                Version.parse(GsonHelper.getAsString(json, "version")));
     }
 
     public TargettedVersion(String modid) {

@@ -3,7 +3,7 @@ package eu.ha3.presencefootsteps.sound.player;
 import java.util.Random;
 
 import eu.ha3.presencefootsteps.sound.Options;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface SoundPlayer {
     /**

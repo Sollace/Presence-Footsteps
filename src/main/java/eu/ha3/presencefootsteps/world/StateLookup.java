@@ -5,13 +5,13 @@ import eu.ha3.presencefootsteps.util.JsonObjectWriter;
 import it.unimi.dsi.fastutil.objects.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
-import net.minecraft.block.BlockState;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -77,14 +77,14 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
         return substrates.isEmpty();
     }
 
-    public static void writeToReport(Lookup<BlockState> lookup, boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
-        writer.each(Registries.BLOCK, block -> {
-            BlockState state = block.getDefaultState();
+    public static void writeToReport(Lookup<BlockState> lookup, boolean full, JsonObjectWriter writer, Map<String, SoundType> groups) throws IOException {
+        writer.each(BuiltInRegistries.BLOCK, block -> {
+            BlockState state = block.defaultBlockState();
 
-            var group = block.getDefaultState().getSoundGroup();
+            var group = state.getSoundType();
             if (group != null && group.getStepSound() != null) {
                 String substrate = String.format(Locale.ENGLISH, "%.2f_%.2f", group.volume, group.pitch);
-                groups.put(group.getStepSound().id().toString() + "@" + substrate, group);
+                groups.put(group.getStepSound().location().toString() + "@" + substrate, group);
             }
 
             boolean excludeFromExport = false;
@@ -100,7 +100,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
             }
 
             if (!excludeFromExport) {
-                writer.object(Registries.BLOCK.getId(block).toString(), () -> {
+                writer.object(BuiltInRegistries.BLOCK.getKey(block).toString(), () -> {
                     writer.field("class", getClassData(state));
                     writer.field("tags", getTagData(state));
                     writer.field("sound", getSoundData(group));
@@ -119,14 +119,14 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
         });
     }
 
-    private static String getSoundData(@Nullable BlockSoundGroup group) {
+    private static String getSoundData(@Nullable SoundType group) {
         if (group == null) {
             return "NULL";
         }
         if (group.getStepSound() == null) {
             return "NO_SOUND";
         }
-        return group.getStepSound().id().getPath();
+        return group.getStepSound().location().getPath();
     }
 
     private static String getClassData(BlockState state) {
@@ -145,7 +145,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
     }
 
     private static String getTagData(BlockState state) {
-        return state.getRegistryEntry().streamTags().map(TagKey::id).map(Identifier::toString).collect(Collectors.joining(","));
+        return state.getBlockHolder().tags().map(TagKey::location).map(Identifier::toString).collect(Collectors.joining(","));
     }
 
     private interface Bucket {
@@ -194,9 +194,9 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
 
             @SuppressWarnings("deprecation")
             private Bucket getTile(BlockState state) {
-                return blocks.computeIfAbsent(state.getBlock().getRegistryEntry().getKey().get().getValue(), id -> {
+                return blocks.computeIfAbsent(state.getBlock().builtInRegistryHolder().unwrapKey().get().identifier(), id -> {
                     for (Identifier tag : tags.keySet()) {
-                        if (state.isIn(TagKey.of(RegistryKeys.BLOCK, tag))) {
+                        if (state.is(TagKey.create(Registries.BLOCK, tag))) {
                             return tags.get(tag);
                         }
                     }
@@ -268,7 +268,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
             boolean isTag,
             boolean isWildcard
     ) {
-        public static final Key NULL = new Key(Identifier.ofVanilla("air"), "", ObjectSets.emptySet(), Optional.empty(), true, false, false);
+        public static final Key NULL = new Key(Identifier.withDefaultNamespace("air"), "", ObjectSets.emptySet(), Optional.empty(), true, false, false);
 
         public static Key of(String key, SoundsKey value) {
             final boolean isTag = key.indexOf('#') == 0;
@@ -279,17 +279,17 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
 
             final String id = key.split("[\\.\\[]")[0];
             final boolean isWildcard = id.indexOf('*') == 0;
-            Identifier identifier =  NULL.identifier();
+            Identifier identifier = NULL.identifier();
 
             if (!isWildcard) {
                 if (id.indexOf('^') > -1) {
-                    identifier = Identifier.of(id.split("\\^")[0]);
+                    identifier = Identifier.parse(id.split("\\^")[0]);
                     PresenceFootsteps.logger.warn("Metadata entry for " + key + "=" + value.raw() + " was ignored");
                 } else {
-                    identifier = Identifier.of(id);
+                    identifier = Identifier.parse(id);
                 }
 
-                if (!isTag && !Registries.BLOCK.containsId(identifier)) {
+                if (!isTag && !BuiltInRegistries.BLOCK.containsKey(identifier)) {
                     PresenceFootsteps.logger.warn("Sound registered for unknown block id " + identifier);
                 }
             }
@@ -322,7 +322,7 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
                 return true;
             }
 
-            Map<Property<?>, Comparable<?>> entries = state.getEntries();
+            Map<Property<?>, Comparable<?>> entries = state.getValues();
             Set<Property<?>> keys = entries.keySet();
 
             for (Attribute property : properties) {

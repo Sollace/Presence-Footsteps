@@ -2,9 +2,9 @@ package eu.ha3.presencefootsteps.world;
 
 import java.util.function.Function;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.Util;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public record ContextualBlockState(EntityType<?> type, BlockState state) {
     private static final Function<EntityType<?>, Function<BlockState, ContextualBlockState>> CACHE = Util.memoize(

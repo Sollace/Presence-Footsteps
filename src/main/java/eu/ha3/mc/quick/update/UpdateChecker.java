@@ -72,7 +72,7 @@ public class UpdateChecker {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }, Util.getIoWorkerExecutor()).exceptionally(e -> {
+        }, Util.ioPool()).exceptionally(e -> {
             LOGGER.error("Error occured whilst checking for updates", e);
             return null;
         });

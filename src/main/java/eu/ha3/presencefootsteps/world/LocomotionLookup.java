@@ -5,15 +5,15 @@ import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.generator.Locomotion;
 import eu.ha3.presencefootsteps.util.JsonObjectWriter;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.SoundType;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,17 +31,17 @@ public class LocomotionLookup implements Index<Entity, Locomotion> {
 
     @Override
     public Locomotion lookup(Entity key) {
-        if (key instanceof PlayerEntity player) {
+        if (key instanceof Player player) {
             return Locomotion.forPlayer(player, config.getLocomotion());
         }
-        return Locomotion.forLiving(key, values.getOrDefault(EntityType.getId(key.getType()), Locomotion.BIPED));
+        return Locomotion.forLiving(key, values.getOrDefault(EntityType.getKey(key.getType()), Locomotion.BIPED));
     }
 
     @Override
     public void add(String key, JsonElement value) {
-        Identifier id = Identifier.of(key);
+        Identifier id = Identifier.parse(key);
 
-        if (!Registries.ENTITY_TYPE.containsId(id)) {
+        if (!BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
             PresenceFootsteps.logger.warn("Locomotion registered for unknown entity type " + id);
         }
 
@@ -54,11 +54,11 @@ public class LocomotionLookup implements Index<Entity, Locomotion> {
     }
 
     @Override
-    public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, BlockSoundGroup> groups) throws IOException {
-        writer.each(Registries.ENTITY_TYPE, type -> {
-            Identifier id = EntityType.getId(type);
+    public void writeToReport(boolean full, JsonObjectWriter writer, Map<String, SoundType> groups) throws IOException {
+        writer.each(BuiltInRegistries.ENTITY_TYPE, type -> {
+            Identifier id = EntityType.getKey(type);
             if (full || !contains(id)) {
-                if (type.create(MinecraftClient.getInstance().world, SpawnReason.CHUNK_GENERATION) instanceof LivingEntity) {
+                if (type.create(Minecraft.getInstance().level, EntitySpawnReason.CHUNK_GENERATION) instanceof LivingEntity) {
                     writer.field(id.toString(), values.getOrDefault(id, Locomotion.NONE).name());
                 }
             }

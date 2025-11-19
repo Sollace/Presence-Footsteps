@@ -1,7 +1,7 @@
 package eu.ha3.presencefootsteps.world;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * Solves in-world locations and players into associations. Associations are an
