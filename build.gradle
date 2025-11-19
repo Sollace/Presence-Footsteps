@@ -19,9 +19,6 @@ java {
     withSourcesJar()
 }
 
-outlet.allowSnapshotsForProject = false
-outlet.mcVersionRange = project.minecraft_version_range
-
 group = project.group
 description = project.displayname
 archivesBaseName = project.name
@@ -34,6 +31,13 @@ reckon {
     scopeFromProp()
     stageFromProp('beta', 'rc', 'final')
 }
+
+outlet {
+    allowSnapshotsForProject = true
+    mcVersionRange = project.minecraft_version_range
+}
+
+System.out.println "Outlet MC Versions: ${outlet.mcVersions()}"
 
 repositories {
     flatDir { dirs 'lib' }
