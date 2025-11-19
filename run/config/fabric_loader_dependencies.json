@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "overrides": {
+    "minelp": {
+      "-depends": {
+        "fabric-api": ""
+      }
+    },
+    "fabwork": {
+      "-depends": {
+        "fabric-api": ""
+      }
+    },
+    "kirin": {
+      "-depends": {
+        "fabric-api": ""
+      }
+    },
+    "presencefootsteps": {
+      "depends": { }
+    },
+    "mson": {
+      "-depends": {
+        "fabric-api": ""
+      }
+    }
+  }
+}
