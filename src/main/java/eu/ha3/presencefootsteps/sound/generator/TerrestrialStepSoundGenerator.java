@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.equipment.Equippable;
 
 class TerrestrialStepSoundGenerator implements StepSoundGenerator {
@@ -308,7 +309,11 @@ class TerrestrialStepSoundGenerator implements StepSoundGenerator {
 
         if (lastFallDistance > 0) {
             if (lastFallDistance > variator.LAND_HARD_DISTANCE_MIN) {
-                playMultifoot(getOffsetMinus(), State.LAND);
+                if (entity instanceof Player) {
+                    playSinglefoot(getOffsetMinus(), motionTracker.pickState(entity, State.CLIMB, State.CLIMB_RUN), isRightFoot);
+                } else {
+                    playMultifoot(getOffsetMinus(), State.LAND);
+                }
                 // Always assume the player lands on their two feet
                 // Do not toggle foot:
                 // After landing sounds, the first foot will be same as the one used to jump.
