@@ -9,7 +9,6 @@ import eu.ha3.presencefootsteps.util.MathUtil;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.World;
 
 public class DelayedSoundPlayer implements SoundPlayer {
     private static final boolean USING_LATENESS = true;
@@ -53,8 +52,7 @@ public class DelayedSoundPlayer implements SoundPlayer {
 
         nextPlayTime = Long.MAX_VALUE;
 
-        World currentWorld = MinecraftClient.getInstance().world;
-        pending.removeIf(s -> s.tick() || s.location.getWorld() != currentWorld);
+        pending.removeIf(PendingSound::tick);
     }
 
     private class PendingSound {
@@ -83,6 +81,10 @@ public class DelayedSoundPlayer implements SoundPlayer {
         }
 
         public boolean tick() {
+            if (location.getWorld() != MinecraftClient.getInstance().world) {
+                return true;
+            }
+
             switch (nextState(currentTime)) {
                 case PLAYING:
                     immediate.playSound(location, soundName, volume, pitch, options);
