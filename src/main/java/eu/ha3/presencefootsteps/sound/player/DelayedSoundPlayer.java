@@ -7,6 +7,7 @@ import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.util.MathUtil;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 
 public class DelayedSoundPlayer implements SoundPlayer {
@@ -80,6 +81,10 @@ public class DelayedSoundPlayer implements SoundPlayer {
         }
 
         public boolean tick() {
+            if (location.getWorld() != MinecraftClient.getInstance().world) {
+                return true;
+            }
+
             switch (nextState(currentTime)) {
                 case PLAYING:
                     immediate.playSound(location, soundName, volume, pitch, options);
