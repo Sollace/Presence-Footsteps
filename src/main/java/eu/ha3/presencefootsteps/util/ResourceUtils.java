@@ -1,19 +1,21 @@
 package eu.ha3.presencefootsteps.util;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.include.com.google.common.base.Preconditions;
 
 import com.google.gson.JsonObject;
-import com.google.gson.internal.Streams;
-import com.google.gson.stream.JsonReader;
+import com.google.gson.JsonParseException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 
@@ -22,7 +24,7 @@ import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.StrictJsonParser;
 
 public interface ResourceUtils {
     static boolean forEach(Identifier id, ResourceManager manager, Consumer<Reader> consumer) {
@@ -31,7 +33,7 @@ public interface ResourceUtils {
                 consumer.accept(stream);
                 return 1;
             } catch (Exception e) {
-                PresenceFootsteps.logger.error("Error encountered loading resource " + id + " from pack" + res.sourcePackId(), e);
+                PresenceFootsteps.LOGGER.error("Error encountered loading resource " + id + " from pack" + res.sourcePackId(), e);
                 return 0;
             }
         }).sum() > 0;
@@ -43,17 +45,30 @@ public interface ResourceUtils {
 
     static <T> Stream<T> load(Identifier id, Stream<Resource> resources, Function<JsonObject, T> reader) {
         return resources.map(res -> {
-            try (JsonReader stream = new JsonReader(new InputStreamReader(res.open()))) {
-                return reader.apply(Streams.parse(stream).getAsJsonObject());
+            try (Reader stream = res.openAsReader()) {
+                return reader.apply(StrictJsonParser.parse(stream).getAsJsonObject());
             } catch (Exception e) {
-                PresenceFootsteps.logger.error("Error encountered loading resource " + id + " from pack" + res.sourcePackId(), e);
+                PresenceFootsteps.LOGGER.error("Error encountered loading resource " + id + " from pack" + res.sourcePackId(), e);
                 return (T)null;
             }
         }).filter(Objects::nonNull);
     }
+
     static <T> Map<Identifier, T> loadAll(Identifier directory, ResourceManager manager, Codec<T> codec) {
         Map<Identifier, T> results = new HashMap<>();
-        SimpleJsonResourceReloadListener.scanDirectory(manager, FileToIdConverter.json(directory.getPath()), JsonOps.INSTANCE, codec, results);
+        var lister = FileToIdConverter.json(directory.getPath());
+        for (Entry<Identifier, Resource> entry : lister.listMatchingResources(manager).entrySet()) {
+            Identifier location = entry.getKey();
+            Identifier id = lister.fileToId(location);
+
+            try (Reader reader = entry.getValue().openAsReader()) {
+                codec.parse(JsonOps.INSTANCE, StrictJsonParser.parse(reader)).ifSuccess(parsed -> {
+                    Preconditions.checkState(results.putIfAbsent(id, parsed) == null, "Duplicate data file ignored with ID " + id);
+                }).ifError(error -> PresenceFootsteps.LOGGER.error("Couldn't parse data file '{}' from '{}': {}", id, location, error));
+            } catch (JsonParseException | IllegalArgumentException | IOException e) {
+                PresenceFootsteps.LOGGER.error("Couldn't parse data file '{}' from '{}'", id, location, e);
+            }
+        }
         return results;
     }
 

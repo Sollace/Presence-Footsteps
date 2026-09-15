@@ -40,7 +40,7 @@ public abstract class JsonFile {
             try (Reader reader = Files.newBufferedReader(file)) {
                 load(reader);
             } catch (Exception e) {
-                PresenceFootsteps.logger.error("Invalid config", e);
+                PresenceFootsteps.LOGGER.error("Invalid config", e);
             }
         }
 

@@ -97,7 +97,7 @@ public class DelayedSoundPlayer implements SoundPlayer {
         private State nextState(long time) {
             if (time >= timeToPlay || USING_EARLYNESS && time >= timeToPlay - Math.pow(maximum, EARLYNESS_THRESHOLD_POW)) {
                 if (USING_EARLYNESS && time < timeToPlay) {
-                    PresenceFootsteps.logger.debug("Playing early sound (early by " + (timeToPlay - time) + "ms, tolerence is " + Math.pow(maximum, EARLYNESS_THRESHOLD_POW));
+                    PresenceFootsteps.LOGGER.debug("Playing early sound (early by " + (timeToPlay - time) + "ms, tolerence is " + Math.pow(maximum, EARLYNESS_THRESHOLD_POW));
                 }
 
                 long lateness = time - timeToPlay;
@@ -108,7 +108,7 @@ public class DelayedSoundPlayer implements SoundPlayer {
                     return State.PLAYING;
                 }
 
-                PresenceFootsteps.logger.debug("Skipped late sound (late by " + lateness + "ms, tolerence is " + maximum / LATENESS_THRESHOLD + "ms)");
+                PresenceFootsteps.LOGGER.debug("Skipped late sound (late by " + lateness + "ms, tolerence is " + maximum / LATENESS_THRESHOLD + "ms)");
 
                 return State.SKIPPING;
             }

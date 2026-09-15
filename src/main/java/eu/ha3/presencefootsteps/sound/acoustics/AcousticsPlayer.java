@@ -5,6 +5,7 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -24,10 +25,17 @@ public class AcousticsPlayer implements AcousticLibrary {
     }
 
     @Override
+    public boolean load(Map<Identifier, Acoustic> acoustics) {
+        acoustics.forEach((id, acoustic) -> {
+            if (this.acoustics.put(id.getPath(), acoustic) != null) {
+                PresenceFootsteps.LOGGER.info("Duplicate acoustic: " + id.getPath());
+            }
+        });
+        return !acoustics.isEmpty();
+    }
+
     public void addAcoustic(String name, Acoustic acoustic) {
-        if (acoustics.put(name, acoustic) != null) {
-            PresenceFootsteps.logger.info("Duplicate acoustic: " + name);
-        }
+
     }
 
     @Override
@@ -76,7 +84,7 @@ public class AcousticsPlayer implements AcousticLibrary {
         for (String acousticName : sounds.names()) {
             Acoustic acoustic = acoustics.get(acousticName);
             if (acoustic == null) {
-                PresenceFootsteps.logger.warn("Tried to play a missing acoustic: " + acousticName);
+                PresenceFootsteps.LOGGER.warn("Tried to play a missing acoustic: " + acousticName);
             } else {
                 acoustic.playSound(soundPlayer, location, event, inputOptions);
             }
@@ -87,4 +95,5 @@ public class AcousticsPlayer implements AcousticLibrary {
     public void think() {
         soundPlayer.think();
     }
+
 }

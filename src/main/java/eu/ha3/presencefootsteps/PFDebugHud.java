@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
@@ -66,7 +67,7 @@ public class PFDebugHud implements DebugScreenEntry {
                         ? String.format("AUTO (%sDETECTED %s%s)", ChatFormatting.BOLD, Locomotion.forPlayer(client.player, Locomotion.NONE), ChatFormatting.RESET)
                         : config.getLocomotion(), config.getEntitySelector(), config.getEnabledFootwear()),
                 String.format("Data Loaded: B%s P%s G%s",
-                        engine.getIsolator().globalBlocks().getSubstrates().size(),
+                        engine.getIsolator().blocks(EntityTypes.PLAYER).getSubstrates().size(),
                         engine.getIsolator().primitives().getSubstrates().size(),
                         engine.getIsolator().golems().getSubstrates().size()
                 ),
@@ -98,7 +99,7 @@ public class PFDebugHud implements DebugScreenEntry {
                                     : hasRain ? ChatFormatting.GRAY + "SHELTERED" : ChatFormatting.GRAY + "DRY"
                     )
             ));
-            finalList.addToGroup(DebugScreenEntries.LOOKING_AT_BLOCK_STATE, renderSoundList("Step Sounds[B]", engine.getIsolator().globalBlocks().getAssociations(state)));
+            finalList.addToGroup(DebugScreenEntries.LOOKING_AT_BLOCK_STATE, renderSoundList("Step Sounds[B]", engine.getIsolator().blocks(EntityTypes.PLAYER).getAssociations(state)));
             finalList.addToGroup(DebugScreenEntries.LOOKING_AT_BLOCK_STATE, renderSoundList("Step Sounds[P]", engine.getIsolator().primitives().getAssociations(state.getSoundType().getStepSound())));
             finalList.addToGroup(DebugScreenEntries.LOOKING_AT_BLOCK_STATE, "");
         }

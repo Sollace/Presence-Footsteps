@@ -4,7 +4,7 @@ buildscript {
     }
 }
 plugins {
-    id "net.fabricmc.fabric-loom" version "1.15-SNAPSHOT"
+    id "net.fabricmc.fabric-loom" version '1.17-SNAPSHOT'
     id 'maven-publish'
     id 'com.modrinth.minotaur' version '2.+'
     id 'org.ajoberstar.reckon' version '0.13.1'
@@ -64,7 +64,10 @@ dependencies {
     if (project.use_minelp == '1') {
       compileOnly "com.minelittlepony:minelittlepony:${project.minelp_version}", { exclude group: "net.fabricmc.fabric-api" }
     } else {
-      compileOnly "com.minelittlepony:minelittlepony:${project.minelp_version}:api", { exclude group: "net.fabricmc.fabric-api" }
+      compileOnly "com.minelittlepony:minelittlepony:${project.minelp_version}:api", {
+        exclude group: "net.fabricmc.fabric-api"
+        exclude group: "com.minelittlepony"
+      }
     }
     compileOnly("com.terraformersmc:modmenu:${project.modmenu_version}", { exclude group: "net.fabricmc.fabric-api" })
 }

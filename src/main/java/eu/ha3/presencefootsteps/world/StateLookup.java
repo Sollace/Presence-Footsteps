@@ -284,13 +284,13 @@ public record StateLookup(Map<String, Bucket> substrates) implements Lookup.Data
             if (!isWildcard) {
                 if (id.indexOf('^') > -1) {
                     identifier = Identifier.parse(id.split("\\^")[0]);
-                    PresenceFootsteps.logger.warn("Metadata entry for " + key + "=" + value.raw() + " was ignored");
+                    PresenceFootsteps.LOGGER.warn("Metadata entry for " + key + "=" + value.raw() + " was ignored");
                 } else {
                     identifier = Identifier.parse(id);
                 }
 
                 if (!isTag && !BuiltInRegistries.BLOCK.containsKey(identifier)) {
-                    PresenceFootsteps.logger.warn("Sound registered for unknown block id " + identifier);
+                    PresenceFootsteps.LOGGER.warn("Sound registered for unknown block id " + identifier);
                 }
             }
 

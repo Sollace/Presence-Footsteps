@@ -52,8 +52,6 @@ public class SoundEngine implements PreparableReloadListener {
 
     private final PFConfig config;
 
-    private boolean hasConfigurations;
-
     public SoundEngine(PFConfig config) {
         this.config = config;
     }
@@ -108,7 +106,7 @@ public class SoundEngine implements PreparableReloadListener {
     }
 
     public boolean hasData() {
-        return hasConfigurations;
+        return !isolator.empty();
     }
 
     public boolean isRunning(Minecraft client) {
@@ -211,12 +209,10 @@ public class SoundEngine implements PreparableReloadListener {
     }
 
     public void reloadEverything(ResourceManager manager) {
-        shutdown();
-        hasConfigurations = isolator.load(manager);
+        isolator = new Isolator(this).load(manager);
     }
 
     public void shutdown() {
         isolator = new Isolator(this);
-        hasConfigurations = false;
     }
 }

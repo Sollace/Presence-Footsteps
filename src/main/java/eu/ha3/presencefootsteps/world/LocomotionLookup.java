@@ -41,7 +41,7 @@ public class LocomotionLookup implements Index<Entity, Locomotion> {
             Identifier id = Identifier.parse(key);
 
             if (!BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
-                PresenceFootsteps.logger.warn("Locomotion registered for unknown entity type " + id);
+                PresenceFootsteps.LOGGER.warn("Locomotion registered for unknown entity type " + id);
             }
 
             values.put(id, Locomotion.byName(value.getAsString().toUpperCase()));

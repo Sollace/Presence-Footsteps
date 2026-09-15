@@ -182,13 +182,13 @@ class PFOptionsScreen extends GameGui {
                             if (file != null) {
                                 for (var acoustic : acoustics.entrySet()) {
                                     Acoustic.CODEC.encodeStart(JsonOps.INSTANCE, acoustic.getValue()).resultOrPartial(error -> {
-                                        PresenceFootsteps.logger.error("Error whilst exporting acoustic: " + error);
+                                        PresenceFootsteps.LOGGER.error("Error whilst exporting acoustic: " + error);
                                     }).ifPresent(json -> {
                                         try (var writer = new JsonWriter(Files.newBufferedWriter(loc.resolve(acoustic.getKey().toLowerCase(Locale.ROOT) + ".json")))) {
                                             writer.setFormattingStyle(FormattingStyle.PRETTY);
                                             Streams.write(json, writer);
                                         } catch (IOException e) {
-                                            PresenceFootsteps.logger.error("Error whilst exporting acoustics", e);
+                                            PresenceFootsteps.LOGGER.error("Error whilst exporting acoustics", e);
                                         }
                                     });
                                 }

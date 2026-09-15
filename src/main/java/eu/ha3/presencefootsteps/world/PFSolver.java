@@ -128,7 +128,7 @@ public class PFSolver implements Solver {
         BlockPos.MutableBlockPos mutableFootPos = footPos.mutable();
 
         if (feetDistanceToCenter > 1) {
-            for (BlockPos underfootPos : BlockPos.withinManhattan(footPos, (int)feetDistanceToCenter, 2, (int)feetDistanceToCenter)) {
+            for (BlockPos underfootPos : BlockPos.withinClippedManhattan(footPos, (int)feetDistanceToCenter, 2, (int)feetDistanceToCenter)) {
                 mutableFootPos.set(underfootPos);
                 Association assos = findAssociation(associations, ply, collider, underfootPos, mutableFootPos);
                 if (assos.isResult()) {

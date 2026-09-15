@@ -36,7 +36,7 @@ public record AcousticsFile (
             });
             return context;
         } catch (JsonParseException e) {
-            PresenceFootsteps.logger.error("Error whilst loading acoustics", e);
+            PresenceFootsteps.LOGGER.error("Error whilst loading acoustics", e);
         }
         return null;
     }

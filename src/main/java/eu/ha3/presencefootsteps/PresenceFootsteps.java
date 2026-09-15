@@ -16,7 +16,6 @@ import net.minecraft.resources.Identifier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
 
 import com.minelittlepony.common.util.GamePaths;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -33,7 +32,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.packs.PackType;
 
 public class PresenceFootsteps implements ClientModInitializer {
-    public static final Logger logger = LogManager.getLogger("PFSolver");
+    public static final Logger LOGGER = LogManager.getLogger("PFSolver");
 
     private static final String MODID = "presencefootsteps";
     private static final KeyMapping.Category KEY_BINDING_CATEGORY = KeyMapping.Category.register(id("category"));
@@ -66,9 +65,9 @@ public class PresenceFootsteps implements ClientModInitializer {
         );
     });
 
-    private final KeyMapping optionsKeyBinding = new KeyMapping("key.presencefootsteps.settings", InputConstants.Type.KEYSYM, InputConstants.KEY_F10, KEY_BINDING_CATEGORY);
-    private final KeyMapping toggleKeyBinding = new KeyMapping("key.presencefootsteps.toggle", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KEY_BINDING_CATEGORY);
-    private final KeyMapping debugToggleKeyBinding = new KeyMapping("key.presencefootsteps.debug_toggle", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KEY_BINDING_CATEGORY, -1);
+    private final KeyMapping optionsKeyBinding = new KeyMapping("key.presencefootsteps.settings", InputConstants.Type.KEYBOARD, InputConstants.UNKNOWN.getValue(), KEY_BINDING_CATEGORY);
+    private final KeyMapping toggleKeyBinding = new KeyMapping("key.presencefootsteps.toggle", InputConstants.Type.KEYBOARD, InputConstants.UNKNOWN.getValue(), KEY_BINDING_CATEGORY);
+    private final KeyMapping debugToggleKeyBinding = new KeyMapping("key.presencefootsteps.debug_toggle", InputConstants.Type.KEYBOARD, InputConstants.UNKNOWN.getValue(), KEY_BINDING_CATEGORY, -1);
     private final Edge toggler = new Edge(z -> {
         if (z) {
             config.toggleDisabled();
