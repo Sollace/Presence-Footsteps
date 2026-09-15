@@ -74,7 +74,7 @@ public class PFDebugHud implements DebugScreenEntry {
                 String.format("Has Resource Pack: %s%s", engine.hasData() ? ChatFormatting.GREEN : ChatFormatting.RED, engine.hasData())
         ));
 
-        if (client.hitResult instanceof BlockHitResult blockHit && blockHit.getType() == HitResult.Type.BLOCK) {
+        if (client.hitResult instanceof BlockHitResult blockHit && blockHit.getType() == HitResult.Type.BLOCK && client.level != null) {
             BlockPos pos = blockHit.getBlockPos();
             BlockState state = client.level.getBlockState(pos);
             BlockPos above = pos.above();
