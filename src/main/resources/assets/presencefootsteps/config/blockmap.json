@@ -99,6 +99,7 @@
 	"minecraft:dark_oak_log": "wood",
 	"minecraft:mangrove_log": "wood",
 	"minecraft:cherry_log": "wood",
+	"minecraft:poplar_log": "wood",
 	"minecraft:pale_oak_log": "softwood",
 
 	"minecraft:creaking_heart": "softwood,creaking",
@@ -111,6 +112,7 @@
 	"minecraft:stripped_dark_oak_log": "wood,stone",
 	"minecraft:stripped_mangrove_log": "wood,stone",
 	"minecraft:stripped_cherry_log": "wood,stone",
+	"minecraft:stripped_poplar_log": "wood,stone",
 	"minecraft:stripped_pale_oak_log": "softwood,stone",
 
 	"minecraft:stripped_oak_wood": "wood,stone",
@@ -121,6 +123,7 @@
 	"minecraft:stripped_dark_oak_wood": "wood,stone",
 	"minecraft:stripped_mangrove_wood": "wood,stone",
 	"minecraft:stripped_cherry_wood": "wood,stone",
+	"minecraft:stripped_poplar_wood": "wood,stone",
 	"minecraft:stripped_pale_oak_wood": "softwood,stone",
 
 	"minecraft:sulfur": "sulfur",
@@ -173,6 +176,7 @@
 	"minecraft:dark_oak_wood": "wood",
 	"minecraft:mangrove_wood": "wood",
 	"minecraft:cherry_wood": "wood",
+	"minecraft:poplar_wood": "wood",
 	"minecraft:pale_oak_wood": "softwood",
 
 	"#minecraft:leaves": "leaves",
@@ -222,6 +226,12 @@
 	"minecraft:dead_bush.messy": "MESSY_GROUND",
 	"minecraft:dead_bush.foliage": "straw",
 
+	"minecraft:shelf_mushroom": "mushroom",
+
+	"minecraft:red_shrub": "NOT_EMITTER",
+	"minecraft:red_shrub.messy": "MESSY_GROUND",
+	"minecraft:red_shrub.foliage": "straw",
+
 	"minecraft:bush": "NOT_EMITTER",
 	"minecraft:bush.messy": "MESSY_GROUND",
 	"minecraft:bush.foliage": "brush",
@@ -244,6 +254,7 @@
 	"minecraft:piston": "stonemachine",
 
 	"#minecraft:wool": "rug",
+	"#minecraft:wool_stairs": "rug",
 
 	"minecraft:dandelion": "NOT_EMITTER",
 
@@ -342,7 +353,7 @@
 	"#minecraft:wooden_pressure_plates": "wood",
 	"minecraft:pale_oak_pressure_plate.foliage": "softwood",
 	"#minecraft:wooden_pressure_plates.carpet": "wood",
-  
+
 	"minecraft:pale_oak_shelf": "softwood",
 	"#minecraft:wooden_shelves": "wood",
 
@@ -627,7 +638,7 @@
 	"#minecraft:anvil": "metalcompressed,hardmetal",
 
 	"minecraft:trapped_chest": "squeakywood",
-  "#minecraft:copper_chests": "copper",
+	"#minecraft:copper_chests": "copper",
 	"minecraft:light_weighted_pressure_plate": "hardmetal",
 	"minecraft:light_weighted_pressure_plate.carpet": "hardmetal",
 	"minecraft:heavy_weighted_pressure_plate": "hardmetal",
@@ -793,22 +804,9 @@
 	"minecraft:red_glazed_terracotta": "composite",
 	"minecraft:black_glazed_terracotta": "composite",
 
-	"minecraft:white_concrete": "stone",
-	"minecraft:orange_concrete": "stone",
-	"minecraft:magenta_concrete": "stone",
-	"minecraft:light_blue_concrete": "stone",
-	"minecraft:yellow_concrete": "stone",
-	"minecraft:lime_concrete": "stone",
-	"minecraft:pink_concrete": "stone",
-	"minecraft:gray_concrete": "stone",
-	"minecraft:light_gray_concrete": "stone",
-	"minecraft:cyan_concrete": "stone",
-	"minecraft:purple_concrete": "stone",
-	"minecraft:blue_concrete": "stone",
-	"minecraft:brown_concrete": "stone",
-	"minecraft:green_concrete": "stone",
-	"minecraft:red_concrete": "stone",
-	"minecraft:black_concrete": "stone",
+	"#minecraft:concrete": "stone",
+	"#minecraft:concrete_slab": "stone",
+	"#minecraft:concrete_stairs": "stone",
 
 	"minecraft:white_concrete_powder": "sand",
 	"minecraft:orange_concrete_powder": "sand",
@@ -1015,6 +1013,8 @@
 	"#candle_cakes.foliage": "brickstone",
 
 	"#minecraft:beds": "rug",
+	"minecraft:straw_bed.carpet": "rug,grass",
+	"minecraft:straw_bed": "rug,grass",
 
 	"minecraft:nether_wart": "NOT_EMITTER",
 	"minecraft:nether_wart.foliage": "organic,mushroom",

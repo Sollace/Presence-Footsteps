@@ -19,6 +19,7 @@
     "minecraft:block.wool.step": "rug",
     "minecraft:block.netherrack.step": "stone",
     "minecraft:block.weeping_vines.step": "mushroom",
+    "minecraft:block.shelf_mushroom.step": "mushroom",
     "minecraft:block.snow.step": "snow",
     "minecraft:block.deepslate_bricks.step": "composite,brickstone",
     "minecraft:block.packed_mud.step": "dirt",
@@ -115,6 +116,8 @@
     "minecraft:block.creaking_heart.step": "softwood,creaking",
     "minecraft:block.leaf_litter.step": "straw",
     "minecraft:block.iron.step": "hardmetal",
+    "minecraft:block.straw_bed.step": "rug,grass",
+    "minecraft:block.poplar_leaves.step": "leaves",
 
     "item.armor.equip_generic": "boots",
     "item.armor.equip_chain": "chainmail",
