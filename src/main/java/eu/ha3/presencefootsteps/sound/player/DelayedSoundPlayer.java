@@ -1,5 +1,6 @@
 package eu.ha3.presencefootsteps.sound.player;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Random;
 
@@ -56,7 +57,7 @@ public class DelayedSoundPlayer implements SoundPlayer {
     }
 
     private class PendingSound {
-        private final LivingEntity location;
+        private final WeakReference<LivingEntity> location;
 
         private final String soundName;
         private final Options options;
@@ -68,7 +69,7 @@ public class DelayedSoundPlayer implements SoundPlayer {
         private final long maximum;
 
         public PendingSound(LivingEntity location, String soundName, float volume, float pitch, Options options) {
-            this.location = location;
+            this.location = new WeakReference<>(location);
             this.soundName = soundName;
             this.volume = volume;
             this.pitch = pitch;
@@ -84,8 +85,10 @@ public class DelayedSoundPlayer implements SoundPlayer {
         public boolean tick() {
             switch (nextState(currentTime)) {
                 case PLAYING:
-                    immediate.playSound(location, soundName, volume, pitch, options);
-                    return true;
+                    var location = this.location.get();
+                    if (location != null) {
+                        immediate.playSound(location, soundName, volume, pitch, options);
+                    }
                 case SKIPPING:
                     return true;
                 default:
@@ -105,6 +108,12 @@ public class DelayedSoundPlayer implements SoundPlayer {
                 if (!USING_LATENESS
                         || maximum < 0
                         || lateness <= maximum / LATENESS_THRESHOLD) {
+
+                    if (location.get() == null) {
+                        PresenceFootsteps.LOGGER.debug("Skipped sound played for removed source");
+                        return State.SKIPPING;
+                    }
+
                     return State.PLAYING;
                 }
 
