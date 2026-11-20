@@ -34,7 +34,7 @@ import net.minecraft.server.packs.PackType;
 public class PresenceFootsteps implements ClientModInitializer {
     public static final Logger LOGGER = LogManager.getLogger("PFSolver");
 
-    private static final String MODID = "presencefootsteps";
+    public static final String MODID = "presencefootsteps";
     private static final KeyMapping.Category KEY_BINDING_CATEGORY = KeyMapping.Category.register(id("category"));
     private static final String UPDATER_ENDPOINT = "https://raw.githubusercontent.com/Sollace/Presence-Footsteps/master/version/latest.json";
 
@@ -44,6 +44,10 @@ public class PresenceFootsteps implements ClientModInitializer {
 
     public static Identifier id(String name) {
         return Identifier.fromNamespaceAndPath(MODID, name);
+    }
+
+    public static Identifier withDefaultNamespace(String s) {
+        return s.indexOf(':') == -1 ? id(s) : Identifier.parse(s);
     }
 
     private static PresenceFootsteps instance;

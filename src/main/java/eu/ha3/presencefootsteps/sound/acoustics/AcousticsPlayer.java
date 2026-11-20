@@ -5,6 +5,7 @@ import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.State;
 import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
@@ -16,7 +17,7 @@ import eu.ha3.presencefootsteps.world.SoundsKey;
 import java.util.Map;
 
 public class AcousticsPlayer implements AcousticLibrary {
-    private final Map<String, Acoustic> acoustics = new Object2ObjectOpenHashMap<>();
+    private final Map<Identifier, Acoustic> acoustics = new Object2ObjectOpenHashMap<>();
 
     private final SoundPlayer soundPlayer;
 
@@ -26,16 +27,21 @@ public class AcousticsPlayer implements AcousticLibrary {
 
     @Override
     public boolean load(Map<Identifier, Acoustic> acoustics) {
-        acoustics.forEach((id, acoustic) -> {
-            if (this.acoustics.put(id.getPath(), acoustic) != null) {
-                PresenceFootsteps.LOGGER.info("Duplicate acoustic: " + id.getPath());
-            }
-        });
+        acoustics.forEach(this::addAcoustic);
         return !acoustics.isEmpty();
     }
 
-    public void addAcoustic(String name, Acoustic acoustic) {
-
+    public void addAcoustic(Identifier id, Acoustic acoustic) {
+        if (this.acoustics.put(id, acoustic) != null) {
+            PresenceFootsteps.LOGGER.info("Duplicate acoustic: " + id);
+        }
+        acoustic.sounds().forEach(sound -> {
+            Minecraft mc = Minecraft.getInstance();
+            Identifier soundId = PresenceFootsteps.withDefaultNamespace(sound.getValue());
+            if (mc.getSoundManager().getSoundEvent(soundId) == null) {
+                PresenceFootsteps.LOGGER.warn("Invalid or unknown sound {} in acoustic {}.{}", soundId, id, sound.getKey());
+            }
+        });
     }
 
     @Override
@@ -81,7 +87,7 @@ public class AcousticsPlayer implements AcousticLibrary {
 
     @Override
     public void playAcoustic(LivingEntity location, SoundsKey sounds, State event, Options inputOptions) {
-        for (String acousticName : sounds.names()) {
+        for (Identifier acousticName : sounds.names()) {
             Acoustic acoustic = acoustics.get(acousticName);
             if (acoustic == null) {
                 PresenceFootsteps.LOGGER.warn("Tried to play a missing acoustic: " + acousticName);

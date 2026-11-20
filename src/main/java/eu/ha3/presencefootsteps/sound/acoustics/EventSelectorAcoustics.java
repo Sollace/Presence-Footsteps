@@ -75,4 +75,9 @@ record EventSelectorAcoustics(Map<State, Acoustic> pairs) implements Acoustic {
             // the possibility of a resonance cascade scenario is extremely unlikely
         }
     }
+
+    @Override
+    public Stream<Map.Entry<String, String>> sounds() {
+        return pairs.entrySet().stream().flatMap(entry -> entry.getValue().sounds().map(e -> Map.entry("event." + entry.getKey().getSerializedName() + "." + e.getKey(), e.getValue())));
+    }
 }

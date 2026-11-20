@@ -3,6 +3,7 @@ package eu.ha3.presencefootsteps.sound.acoustics;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -102,6 +103,8 @@ public interface Acoustic {
     void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions);
 
     String type();
+
+    Stream<Map.Entry<String, String>> sounds();
 
     @Deprecated
     public interface Serializer {

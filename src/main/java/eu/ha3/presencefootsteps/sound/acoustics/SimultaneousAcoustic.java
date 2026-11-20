@@ -6,6 +6,9 @@ import eu.ha3.presencefootsteps.sound.player.SoundPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -39,5 +42,14 @@ record SimultaneousAcoustic(List<Acoustic> acoustics) implements Acoustic {
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
         acoustics.forEach(acoustic -> acoustic.playSound(player, location, event, inputOptions));
+    }
+
+    @Override
+    public Stream<Entry<String, String>> sounds() {
+        final int[] index = new int[1];
+        return acoustics.stream().flatMap(a -> {
+            int i = index[0]++;
+            return a.sounds().map(e -> Map.entry("simultaneous[" + i + "]." + e.getKey(), e.getValue()));
+        });
     }
 }

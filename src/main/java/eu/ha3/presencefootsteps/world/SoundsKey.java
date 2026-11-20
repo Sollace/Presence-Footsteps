@@ -6,13 +6,16 @@ import java.util.stream.Stream;
 import com.google.common.collect.Interner;
 import com.google.common.collect.Interners;
 
-public record SoundsKey(String raw, String[] names) {
+import eu.ha3.presencefootsteps.PresenceFootsteps;
+import net.minecraft.resources.Identifier;
+
+public record SoundsKey(String raw, Identifier[] names) {
     private static final Interner<SoundsKey> INTERNER = Interners.newWeakInterner();
 
-    public static final SoundsKey UNASSIGNED = INTERNER.intern(new SoundsKey("UNASSIGNED", new String[0]));
-    public static final SoundsKey NON_EMITTER = INTERNER.intern(new SoundsKey("NOT_EMITTER", new String[0]));
-    public static final SoundsKey MESSY_GROUND = INTERNER.intern(new SoundsKey("MESSY_GROUND", new String[0]));
-    public static final SoundsKey VANILLA = INTERNER.intern(new SoundsKey("VANILLA", new String[0]));
+    public static final SoundsKey UNASSIGNED = INTERNER.intern(new SoundsKey("UNASSIGNED", new Identifier[0]));
+    public static final SoundsKey NON_EMITTER = INTERNER.intern(new SoundsKey("NOT_EMITTER", new Identifier[0]));
+    public static final SoundsKey MESSY_GROUND = INTERNER.intern(new SoundsKey("MESSY_GROUND", new Identifier[0]));
+    public static final SoundsKey VANILLA = INTERNER.intern(new SoundsKey("VANILLA", new Identifier[0]));
 
     public static final SoundsKey SWIM_WATER = of("swim_water");
     public static final SoundsKey SWIM_LAVA = of("swim_lava");
@@ -37,10 +40,11 @@ public record SoundsKey(String raw, String[] names) {
     }
 
     SoundsKey(String names) {
-        this(names, names.indexOf(',') == -1 ? new String[] { names } : Stream.of(names.split(","))
+        this(names, names.indexOf(',') == -1 ? new Identifier[] { PresenceFootsteps.withDefaultNamespace(names) } : Stream.of(names.split(","))
                 .filter(s -> !s.isEmpty())
                 .distinct()
-                .toArray(String[]::new));
+                .map(PresenceFootsteps::withDefaultNamespace)
+                .toArray(Identifier[]::new));
     }
 
     public boolean isResult() {

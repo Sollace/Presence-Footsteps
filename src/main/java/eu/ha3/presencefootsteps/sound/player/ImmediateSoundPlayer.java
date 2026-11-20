@@ -6,9 +6,11 @@ import eu.ha3.presencefootsteps.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import eu.ha3.presencefootsteps.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.Options;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import eu.ha3.presencefootsteps.sound.StepSoundSource;
@@ -50,18 +52,23 @@ public final class ImmediateSoundPlayer implements SoundPlayer {
             pitch *= generator.getLocalPitch(tickDelta);
         }
 
-        SimpleSoundInstance sound = new UncappedSoundInstance(soundName, volume, pitch, location);
+        SoundManager sm = mc.getSoundManager();
+        Identifier soundid = PresenceFootsteps.withDefaultNamespace(soundName);
+        if (!PlayerUtil.isClientPlayer(location)) {
+            soundid = UncappedSoundInstance.getMonoSoundId(soundid, sm);
+        }
+        SimpleSoundInstance sound = new UncappedSoundInstance(soundid, volume, pitch, location);
 
         if (distance > 100) {
-            mc.getSoundManager().playDelayed(sound, (int) Math.floor(Math.sqrt(distance) / 2));
+            sm.playDelayed(sound, (int) Math.floor(Math.sqrt(distance) / 2));
         } else {
-            mc.getSoundManager().play(sound);
+            sm.play(sound);
         }
     }
 
     public static class UncappedSoundInstance extends SimpleSoundInstance {
-        public UncappedSoundInstance(String soundName, float volume, float pitch, Entity entity) {
-            super(getSoundId(soundName, entity),
+        public UncappedSoundInstance(Identifier soundId, float volume, float pitch, Entity entity) {
+            super(soundId,
                     entity.getSoundSource(),
                     volume, pitch, SoundInstance.createUnseededRandom(), false, 0,
                     SoundInstance.Attenuation.LINEAR,
@@ -75,18 +82,10 @@ public final class ImmediateSoundPlayer implements SoundPlayer {
             return 3;
         }
 
-        private static Identifier getSoundId(String name, Entity location) {
-            if (name.indexOf(':') >= 0) {
-                return Identifier.parse(name);
-            }
-
-            String domain = "presencefootsteps";
-
-            if (!PlayerUtil.isClientPlayer(location)) {
-                domain += "mono"; // Switch to mono if playing another player
-            }
-
-            return Identifier.fromNamespaceAndPath(domain, name);
+        public static Identifier getMonoSoundId(Identifier id, SoundManager sm) {
+            Identifier monoId = Identifier.fromNamespaceAndPath(id.getNamespace() + "mono", id.getPath());
+            // Switch to mono if playing another player and a mono sound is available
+            return sm.getSoundEvent(monoId) == null ? id : monoId;
         }
     }
 }

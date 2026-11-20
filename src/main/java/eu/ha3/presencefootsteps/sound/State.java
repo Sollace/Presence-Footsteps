@@ -1,5 +1,7 @@
 package eu.ha3.presencefootsteps.sound;
 
+import java.util.Locale;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.StringRepresentable;
@@ -66,7 +68,7 @@ public enum State implements StringRepresentable {
 
     State(@Nullable State dest) {
         destination = dest == null ? this : dest;
-        jsonName = name().toLowerCase();
+        jsonName = name().toLowerCase(Locale.ROOT);
     }
 
     @Override

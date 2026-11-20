@@ -1,5 +1,9 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.serialization.Codec;
@@ -73,5 +77,10 @@ record VaryingAcoustic(
                 : pitch.random(player.getRNG());
 
         player.playSound(location, soundName, finalVolume, finalPitch, inputOptions);
+    }
+
+    @Override
+    public Stream<Entry<String, String>> sounds() {
+        return Stream.of(Map.entry("varying", soundName));
     }
 }

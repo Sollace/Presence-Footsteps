@@ -16,6 +16,8 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  *
@@ -97,5 +99,14 @@ record WeightedAcoustic(
             this.weight = weight;
             this.acoustic = acoustic;
         }
+    }
+
+    @Override
+    public Stream<Map.Entry<String, String>> sounds() {
+        final int[] index = new int[1];
+        return entries.stream().flatMap(entry -> {
+            int i = index[0]++;
+            return entry.acoustic.sounds().map(e -> Map.entry("weighted[" + i + "]." + e.getKey(), e.getValue()));
+        });
     }
 }

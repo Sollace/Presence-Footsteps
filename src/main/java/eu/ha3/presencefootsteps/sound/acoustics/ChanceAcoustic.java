@@ -1,5 +1,9 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -34,5 +38,10 @@ record ChanceAcoustic(
         if (player.getRNG().nextFloat() * 100 <= probability) {
             acoustic.playSound(player, location, event, inputOptions);
         }
+    }
+
+    @Override
+    public Stream<Entry<String, String>> sounds() {
+        return acoustic.sounds().map(e -> Map.entry("chance." + e.getKey(), e.getValue()));
     }
 }

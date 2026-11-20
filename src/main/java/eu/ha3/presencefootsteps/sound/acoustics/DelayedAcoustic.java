@@ -1,5 +1,9 @@
 package eu.ha3.presencefootsteps.sound.acoustics;
 
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
+
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -33,5 +37,10 @@ record DelayedAcoustic(
     @Override
     public void playSound(SoundPlayer player, LivingEntity location, State event, Options inputOptions) {
         acoustic.playSound(player, location, event, inputOptions.and(delay));
+    }
+
+    @Override
+    public Stream<Entry<String, String>> sounds() {
+        return acoustic.sounds().map(e -> Map.entry("delayed." + e.getKey(), e.getValue()));
     }
 }
