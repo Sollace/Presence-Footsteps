@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class PFSolver implements Solver {
@@ -228,7 +229,7 @@ public class PFSolver implements Solver {
         pos.move(Direction.UP);
         final boolean hasRain = entity.level().isRainingAt(pos);
         BlockState carpet = getBlockStateAt(entity, pos);
-        VoxelShape shape = carpet.getCollisionShape(entity.level(), pos);
+        VoxelShape shape = carpet.getVisualShape(entity.level(), pos, CollisionContext.of(entity));
         boolean isValidCarpet = !shape.isEmpty() && shape.max(Axis.Y) < 0.3F;
         SoundsKey association = SoundsKey.UNASSIGNED;
         SoundsKey foliage = SoundsKey.UNASSIGNED;
