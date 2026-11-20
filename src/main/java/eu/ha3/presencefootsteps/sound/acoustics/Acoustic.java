@@ -31,6 +31,7 @@ public interface Acoustic {
             either -> Either.unwrap(either),
             acoustic -> Acoustic.SIMULTANEOUS.contentEquals(acoustic.type()) ? Either.left(acoustic) : Either.right(acoustic)
     );
+    String EMPTY = register("empty", EmptyAcoustic.CODEC);
     String BASIC = register("basic", VaryingAcoustic.CODEC);
     String EVENTS = register("events", EventSelectorAcoustics.CODEC);
     String SIMULTANEOUS = register("simultaneous", SimultaneousAcoustic.MAP_CODEC);
@@ -40,6 +41,7 @@ public interface Acoustic {
 
     @Deprecated
     Map<String, Serializer> FACTORIES = Object2ObjectMaps.unmodifiable(new Object2ObjectOpenHashMap<>(new String[] {
+            "empty",
             "basic",
             "events",
             "simultaneous",
@@ -47,6 +49,7 @@ public interface Acoustic {
             "probability",
             "chance"
     }, new Serializer[] {
+            EmptyAcoustic.FACTORY,          // empty
             VaryingAcoustic.FACTORY,        // basic
             EventSelectorAcoustics.FACTORY, // events
             SimultaneousAcoustic.FACTORY,   // simultaneous

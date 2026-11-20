@@ -35,8 +35,12 @@ record VaryingAcoustic(
     @Deprecated
     static final Serializer FACTORY = (json, context) -> {
         if (json.isJsonPrimitive()) {
+            String soundName = context.getSoundName(json.getAsString());
+            if (soundName.isEmpty()) {
+                return EmptyAcoustic.INSTANCE;
+            }
             return new VaryingAcoustic(
-                context.getSoundName(json.getAsString()),
+                soundName,
                 context.defaultVolume(),
                 context.defaultPitch()
             );
