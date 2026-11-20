@@ -35,7 +35,7 @@
     },
     {
       "acoustic": {
-        "name": "pf_presence.stone.gravel_walk",
+        "name": "pf_presence.gravel.gravel_walk",
         "volume": {
           "min": 90.0,
           "max": 100.0

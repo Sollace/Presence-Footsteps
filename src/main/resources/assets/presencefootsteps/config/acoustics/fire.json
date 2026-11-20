@@ -24,7 +24,7 @@
     "type": "basic"
   },
   "walk": {
-    "name": "pf_presence.fire_flames",
+    "name": "pf_presence.fire.flames",
     "volume": {
       "min": 90.0,
       "max": 100.0
